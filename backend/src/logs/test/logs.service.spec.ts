@@ -1,0 +1,159 @@
+import { Between, MoreThanOrEqual, Repository } from 'typeorm'
+import { LogsService } from '../logs.service'
+import { AppLog } from '../entities/app-log.entity'
+
+function makeService() {
+  const execute = jest.fn().mockResolvedValue({ affected: 0 })
+  const qb = {
+    delete: jest.fn().mockReturnThis(),
+    where: jest.fn().mockReturnThis(),
+    execute,
+  }
+  const repo = {
+    insert: jest.fn().mockResolvedValue({}),
+    find: jest.fn().mockResolvedValue([]),
+    count: jest.fn().mockResolvedValue(0),
+    createQueryBuilder: jest.fn().mockReturnValue(qb),
+  } as unknown as jest.Mocked<Repository<AppLog>>
+  return { service: new LogsService(repo), repo, qb, execute }
+}
+
+describe('LogsService', () => {
+  describe('record', () => {
+    it('log kaydını level, context ve mesajla insert eder', async () => {
+      const { service, repo } = makeService()
+      await service.record('error', 'bir şeyler patladı', 'ChatService')
+      expect(repo.insert).toHaveBeenCalledWith({
+        level: 'error',
+        context: 'ChatService',
+        message: 'bir şeyler patladı',
+      })
+    })
+
+    it('context yoksa null yazar', async () => {
+      const { service, repo } = makeService()
+      await service.record('warn', 'uyarı')
+      expect((repo.insert as jest.Mock).mock.calls[0][0].context).toBeNull()
+    })
+
+    it('4000 karakterden uzun mesajı kırpar', async () => {
+      const { service, repo } = makeService()
+      await service.record('error', 'a'.repeat(5000))
+      expect((repo.insert as jest.Mock).mock.calls[0][0].message).toHaveLength(4000)
+    })
+
+    it('insert hatası yutulur, fırlatılmaz', async () => {
+      jest.spyOn(console, 'error').mockImplementation(() => {})
+      const { service, repo } = makeService()
+      ;(repo.insert as jest.Mock).mockRejectedValue(new Error('db down'))
+      await expect(service.record('error', 'x')).resolves.toBeUndefined()
+    })
+
+    it('aynı mesaj+context 10 sn içinde ikinci kez yazılmaz (hata fırtınası)', async () => {
+      const { service, repo } = makeService()
+      await service.record('error', 'Redis bağlantı hatası', 'AuthService')
+      await service.record('error', 'Redis bağlantı hatası', 'AuthService')
+      await service.record('error', 'Redis bağlantı hatası', 'AuthService')
+      expect(repo.insert).toHaveBeenCalledTimes(1)
+    })
+
+    it('farklı mesaj, context ya da level dedupe\'a takılmaz', async () => {
+      const { service, repo } = makeService()
+      await service.record('error', 'Redis bağlantı hatası', 'AuthService')
+      await service.record('error', 'Redis bağlantı hatası', 'ChatService')
+      await service.record('warn', 'Redis bağlantı hatası', 'AuthService')
+      await service.record('error', 'Groq isteği başarısız', 'AuthService')
+      expect(repo.insert).toHaveBeenCalledTimes(4)
+    })
+
+    it('pencere dolunca aynı mesaj yeniden yazılır', async () => {
+      jest.useFakeTimers()
+      try {
+        const { service, repo } = makeService()
+        await service.record('error', 'tekrar eden hata')
+        jest.advanceTimersByTime(11_000)
+        await service.record('error', 'tekrar eden hata')
+        expect(repo.insert).toHaveBeenCalledTimes(2)
+      } finally {
+        jest.useRealTimers()
+      }
+    })
+  })
+
+  describe('findAllWithStats', () => {
+    it('ilk 50 kaydı tarihe göre ve istatistiklerle döner', async () => {
+      const { service, repo } = makeService()
+      ;(repo.count as jest.Mock)
+        .mockResolvedValueOnce(120) // filtreli toplam (sayfa hesabı)
+        .mockResolvedValueOnce(120) // stats.total
+        .mockResolvedValueOnce(3)
+        .mockResolvedValueOnce(7)
+      const result = await service.findAllWithStats()
+      expect(repo.find).toHaveBeenCalledWith({
+        where: {},
+        order: { createdAt: 'DESC' },
+        take: 50,
+        skip: 0,
+      })
+      expect(result.stats).toEqual({ total: 120, errors24h: 3, warns24h: 7 })
+      expect(result.page).toBe(1)
+      expect(result.pageCount).toBe(3)
+    })
+
+    it('level verilirse where filtresi uygular', async () => {
+      const { service, repo } = makeService()
+      await service.findAllWithStats('error')
+      expect((repo.find as jest.Mock).mock.calls[0][0].where).toEqual({ level: 'error' })
+    })
+
+    it('tarih aralığı createdAt üzerinden Between filtresine çevrilir', async () => {
+      const { service, repo } = makeService()
+      const from = new Date('2026-07-01T00:00:00.000Z')
+      const to = new Date('2026-07-15T23:59:59.999Z')
+      await service.findAllWithStats(undefined, 1, { from, to })
+      const where = (repo.find as jest.Mock).mock.calls[0][0].where
+      expect(where).toEqual({ createdAt: Between(from, to) })
+      // pageCount aynı filtreli where ile sayılır
+      expect((repo.count as jest.Mock).mock.calls[0][0]).toEqual({ where })
+    })
+
+    it('level ve tek uçlu tarih birlikte uygulanır', async () => {
+      const { service, repo } = makeService()
+      const from = new Date('2026-07-01T00:00:00.000Z')
+      await service.findAllWithStats('error', 1, { from })
+      expect((repo.find as jest.Mock).mock.calls[0][0].where).toEqual({
+        level: 'error',
+        createdAt: MoreThanOrEqual(from),
+      })
+    })
+
+    it('page parametresi skip değerine çevrilir', async () => {
+      const { service, repo } = makeService()
+      await service.findAllWithStats(undefined, 3)
+      expect((repo.find as jest.Mock).mock.calls[0][0].skip).toBe(100)
+    })
+
+    it('kayıt yokken pageCount en az 1 olur', async () => {
+      const { service } = makeService()
+      const result = await service.findAllWithStats()
+      expect(result.pageCount).toBe(1)
+    })
+  })
+
+  describe('purgeOldLogs', () => {
+    it('30 günden eski kayıtları siler', async () => {
+      const { service, qb, execute } = makeService()
+      execute.mockResolvedValue({ affected: 12 })
+      await service.purgeOldLogs()
+      expect(qb.delete).toHaveBeenCalled()
+      expect((qb.where as jest.Mock).mock.calls[0][0]).toContain(':retention::interval')
+      expect((qb.where as jest.Mock).mock.calls[0][1]).toEqual({ retention: '30 days' })
+    })
+
+    it('silme hatası cron\'u patlatmaz', async () => {
+      const { service, execute } = makeService()
+      execute.mockRejectedValue(new Error('db down'))
+      await expect(service.purgeOldLogs()).resolves.toBeUndefined()
+    })
+  })
+})

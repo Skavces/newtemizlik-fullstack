@@ -1,0 +1,23 @@
+import { Controller, Get, Query, UseGuards } from '@nestjs/common'
+import { JwtAuthGuard } from '../auth/jwt-auth.guard'
+import { LogsService } from './logs.service'
+import { LogLevel } from './entities/app-log.entity'
+import { parsePage } from '../common/pagination'
+import { parseDateRange } from '../common/date-range'
+
+@Controller('logs')
+export class LogsController {
+  constructor(private readonly service: LogsService) {}
+
+  @UseGuards(JwtAuthGuard)
+  @Get('admin/all')
+  findAll(
+    @Query('level') level?: string,
+    @Query('page') page?: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+  ) {
+    const narrowed: LogLevel | undefined = level === 'error' || level === 'warn' ? level : undefined
+    return this.service.findAllWithStats(narrowed, parsePage(page), parseDateRange(from, to))
+  }
+}
