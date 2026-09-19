@@ -131,3 +131,78 @@ export interface TwoFaSetup {
   // data:image/png;base64,... — doğrudan <img src> olarak kullanılır
   qrCodeUrl: string
 }
+
+// ── Panel yazma (DTO) tipleri ────────────────────────────────────────────
+// Backend `forbidNonWhitelisted: true` çalıştırıyor — bu şekillerin DIŞINDA
+// hiçbir alan (id, createdAt, updatedAt, publishedAt gibi) gönderilmemeli,
+// yoksa 400 döner. Kaynak: backend/src/*/dto/*.dto.ts.
+
+export interface LoginDto {
+  username: string
+  password: string
+  rememberMe?: boolean
+}
+
+export interface Verify2faDto {
+  preAuthToken: string
+  code: string
+}
+
+export interface ChangeCredentialsDto {
+  currentPassword: string
+  newUsername?: string
+  newPassword?: string
+  totpCode?: string
+}
+
+export interface ConfirmSetupDto {
+  secret: string
+  code: string
+  currentCode?: string
+}
+
+export interface Remove2faDto {
+  code: string
+  currentPassword: string
+}
+
+export interface CreateBlogPostDto {
+  title: string
+  slug?: string
+  excerpt?: string
+  metaDescription?: string
+  content?: string
+  coverImage?: string
+  published?: boolean
+  sortOrder?: number
+}
+
+export type UpdateBlogPostDto = Partial<CreateBlogPostDto>
+
+export interface CreateFaqDto {
+  scope: FaqScope
+  question: string
+  answer: string
+  published?: boolean
+  sortOrder?: number
+}
+
+export type UpdateFaqDto = Partial<CreateFaqDto>
+
+export interface CreateReferenceDto {
+  name: string
+  logo?: string
+  scale?: number
+  published?: boolean
+  sortOrder?: number
+}
+
+export type UpdateReferenceDto = Partial<CreateReferenceDto>
+
+export interface ReorderDto {
+  orderedIds: string[]
+}
+
+export interface UpdateQuoteStatusDto {
+  status: QuoteStatus
+}

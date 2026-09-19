@@ -2,6 +2,12 @@
 
 @theme {
   --font-sans: var(--font-poppins), var(--font-inter), system-ui, -apple-system, sans-serif;
+  /* --color-primary'nin gerçek değeri aşağıdaki [data-theme] bloklarında
+     tanımlı (her iki temada da #7FBF3A) — burada yalnızca Tailwind'e
+     bg-primary/text-primary/border-primary utility'lerini üretmesi için
+     tanıtılıyor (bkz. Faz 4 planı). Yeni panel kodu bunu kullanır; public
+     sitedeki mevcut #7FBF3A tekrarları Faz 6'ya bırakıldı. */
+  --color-primary: #7FBF3A;
 }
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));

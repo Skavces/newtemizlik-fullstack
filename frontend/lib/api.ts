@@ -4,7 +4,9 @@
 import { ApiError } from './errors'
 import type { BlogPost, BlogPostSummary, Faq, FaqScope, Reference } from '@/types/api'
 
-const API_URL = process.env.API_URL || 'http://localhost:3001/api'
+// export: app/nt-panel/(korumali)/layout.tsx'in sunucu tarafı oturum
+// kontrolü (GET /auth/me) de aynı iç adresi kullanır.
+export const API_URL = process.env.API_URL || 'http://localhost:3001/api'
 
 interface ApiFetchOptions {
   revalidate?: number
