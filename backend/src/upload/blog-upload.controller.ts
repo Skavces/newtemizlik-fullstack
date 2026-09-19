@@ -33,4 +33,27 @@ export class BlogUploadController {
       throw err
     }
   }
+
+  // Tiptap editöründe yazı gövdesine resim eklemek için — kapak görselinin
+  // aksine bir kayıt id'si istemez (yeni yazı henüz kaydedilmemişken de
+  // editöre resim konulabilsin diye). Dönen URL editör tarafından <img src>
+  // olarak metne gömülür; sahiplenilmeyen (hiçbir yazının content'inde
+  // geçmeyen) dosyalar haftalık orphan-cleanup tarafından temizlenir (bkz.
+  // uploads-cleanup.service.ts).
+  @UseGuards(JwtAuthGuard)
+  @Post('content-image')
+  @UseInterceptors(FileInterceptor('file', { storage: imageStorage, fileFilter: logoFilter, limits: { fileSize: 10 * 1024 * 1024 } }))
+  async uploadContentImage(@UploadedFile() file: Express.Multer.File) {
+    if (!file) throw new BadRequestException('Geçerli bir görsel yükleyin (JPEG, PNG veya WEBP)')
+    let currentPath = file.path
+    try {
+      await assertMagicBytes(currentPath, ALLOWED_IMAGE_MIMES)
+      currentPath = await toWebp(currentPath)
+      const url = await saveWithSeoName(currentPath, 'blog-icerik', '.webp')
+      return { url }
+    } catch (err) {
+      await unlink(currentPath).catch(() => {})
+      throw err
+    }
+  }
 }

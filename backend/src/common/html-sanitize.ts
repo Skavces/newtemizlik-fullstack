@@ -1,10 +1,14 @@
 import sanitizeHtml from 'sanitize-html'
 
-// Blog içeriği için allowlist — frontend'deki tiptap editörünün (RichTextEditor.jsx)
+// Blog içeriği için allowlist — frontend'deki tiptap editörünün (RichTextEditor.tsx)
 // üretebildiği çıktıyla birebir: StarterKit (h1-h3), Underline, TextStyle+Color,
-// FontFamily, TextAlign, Link. Editöre yeni extension eklenirse burası da güncellenmeli,
-// yoksa meşru içerik yazma anında budanır. Render tarafındaki DOMPurify (BlogDetay.jsx)
-// ikinci savunma katmanı olarak kalır.
+// FontFamily, TextAlign, Link, Image (bkz. Faz 4 planı, gövde görseli desteği).
+// Editöre yeni extension eklenirse burası da güncellenmeli, yoksa meşru içerik
+// yazma anında budanır. Render tarafındaki DOMPurify (BlogArticleLayout) ikinci
+// savunma katmanı olarak kalır.
+const UPLOAD_IMG_SRC = /^\/uploads\/[^\s"'<>]+$/
+const HTTPS_IMG_SRC = /^https:\/\/[^\s"'<>]+$/
+
 const RICH_TEXT_OPTIONS: sanitizeHtml.IOptions = {
   allowedTags: [
     'p', 'br', 'hr',
@@ -13,6 +17,7 @@ const RICH_TEXT_OPTIONS: sanitizeHtml.IOptions = {
     'a', 'span',
     'ul', 'ol', 'li',
     'blockquote', 'code', 'pre',
+    'img',
   ],
   allowedAttributes: {
     a: ['href', 'target', 'rel'],
@@ -21,6 +26,7 @@ const RICH_TEXT_OPTIONS: sanitizeHtml.IOptions = {
     h2: ['style'],
     h3: ['style'],
     span: ['style'],
+    img: ['src', 'alt', 'width', 'height'],
   },
   allowedStyles: {
     '*': {
@@ -32,6 +38,15 @@ const RICH_TEXT_OPTIONS: sanitizeHtml.IOptions = {
   allowedSchemes: ['http', 'https', 'mailto', 'tel'],
   transformTags: {
     a: sanitizeHtml.simpleTransform('a', { rel: 'noopener noreferrer' }, true),
+  },
+  // img.src'yi kendi upload'larımızla (/uploads/...) veya https ile sınırlar —
+  // sanitize-html'in allowedSchemes'i şema doğrular ama yol biçimini denetlemez;
+  // burada onaylanmayan her img (data:, http:, javascript:, srcset kaçışı vb.)
+  // tamamen düşürülür.
+  exclusiveFilter: (frame) => {
+    if (frame.tag !== 'img') return false
+    const src = frame.attribs.src || ''
+    return !(UPLOAD_IMG_SRC.test(src) || HTTPS_IMG_SRC.test(src))
   },
 }
 

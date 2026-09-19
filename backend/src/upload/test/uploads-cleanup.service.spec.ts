@@ -14,9 +14,17 @@ jest.mock('../uploaded-files', () => ({
   },
 }))
 
-function makeService(referenced: { covers?: string[]; logos?: string[] }) {
+function makeService(referenced: { covers?: string[]; logos?: string[]; contents?: string[] }) {
   const blogRepo = {
-    find: jest.fn().mockResolvedValue((referenced.covers ?? []).map(coverImage => ({ coverImage }))),
+    // collectReferencedFilenames iki ayrı find() çağrısı yapar: biri
+    // coverImage için, biri de gövdedeki gömülü görselleri taramak üzere
+    // content için (bkz. Faz 4 planı) — hangisi olduğunu `select` ile ayırt et.
+    find: jest.fn((opts?: { select?: string[] }) => {
+      if (opts?.select?.includes('content')) {
+        return Promise.resolve((referenced.contents ?? []).map(content => ({ content })))
+      }
+      return Promise.resolve((referenced.covers ?? []).map(coverImage => ({ coverImage })))
+    }),
   } as unknown as Repository<BlogPost>
   const referenceRepo = {
     find: jest.fn().mockResolvedValue((referenced.logos ?? []).map(logo => ({ logo }))),
@@ -76,6 +84,34 @@ describe('UploadsCleanupService', () => {
     await createFile('b.webp', 48)
 
     const service = makeService({ covers: ['/uploads/a.webp'], logos: ['/uploads/b.webp'] })
+
+    await expect(service.run()).resolves.toBe(0)
+  })
+
+  it('should keep files referenced only inside blog post content HTML', async () => {
+    await createFile('gomulu-gorsel.webp', 48)
+    await createFile('gone.webp', 48)
+
+    const service = makeService({
+      contents: ['<p>metin</p><img src="/uploads/gomulu-gorsel.webp" alt="x">'],
+    })
+    const deleted = await service.run()
+
+    expect(deleted).toBe(1)
+    const remaining = await readdir(mockUploadsDir)
+    expect(remaining.sort()).toEqual(['gomulu-gorsel.webp'])
+  })
+
+  it('should keep every image referenced in a content field with multiple images', async () => {
+    await createFile('birinci.webp', 48)
+    await createFile('ikinci.webp', 48)
+
+    const service = makeService({
+      contents: [
+        '<img src="/uploads/birinci.webp">',
+        '<p>ikinci yazı</p><img src="/uploads/ikinci.webp">',
+      ],
+    })
 
     await expect(service.run()).resolves.toBe(0)
   })

@@ -6,12 +6,12 @@ import { createE2eApp, extractAdminCookie, flushTestRedis, resetAdminConfig } fr
 import { QuoteRequest } from '../src/quote/entities/quote-request.entity'
 
 const VALID_BODY = {
-  name: 'Mert Yılmaz',
-  phone: '0554 379 60 04',
-  city: 'Soma / Manisa',
-  serviceType: 'cati-ges',
-  monthlyBill: 1500,
-  message: 'Çatıma güneş paneli yaptırmak istiyorum.',
+  adSoyad: 'Mert Yılmaz',
+  telefon: '0554 379 60 04',
+  ePosta: 'mert@example.com',
+  panelAdeti: 120,
+  sahaMegavati: 1.5,
+  suUlasimi: true,
   kvkkConsent: true,
 }
 
@@ -36,7 +36,7 @@ describe('Quote requests (e2e)', () => {
   })
 
   afterAll(async () => {
-    await ds.getRepository(QuoteRequest).delete({ serviceType: 'cati-ges' })
+    await ds.getRepository(QuoteRequest).delete({ adSoyad: 'Mert Yılmaz' })
     await app.close()
   })
 
@@ -45,7 +45,7 @@ describe('Quote requests (e2e)', () => {
     expect(res.body.id).toBeDefined()
 
     const saved = await ds.getRepository(QuoteRequest).findOne({ where: { id: res.body.id } })
-    expect(saved?.phone).toBe('905543796004')
+    expect(saved?.telefon).toBe('905543796004')
     expect(saved?.status).toBe('new')
     expect(saved?.kvkkConsent).toBe(true)
   })
@@ -60,14 +60,7 @@ describe('Quote requests (e2e)', () => {
   it('rejects an invalid phone number', async () => {
     await request(server)
       .post('/api/quote')
-      .send({ ...VALID_BODY, phone: '123' })
-      .expect(400)
-  })
-
-  it('rejects an unknown service type', async () => {
-    await request(server)
-      .post('/api/quote')
-      .send({ ...VALID_BODY, serviceType: 'ucan-daire' })
+      .send({ ...VALID_BODY, telefon: '123' })
       .expect(400)
   })
 
@@ -84,7 +77,7 @@ describe('Quote requests (e2e)', () => {
 
   it('lists submitted requests for an authenticated admin', async () => {
     const res = await request(server).get('/api/quote/admin/all').set('Cookie', cookie).expect(200)
-    const names = (res.body.requests as QuoteRequest[]).map(r => r.name)
+    const names = (res.body.requests as QuoteRequest[]).map(r => r.adSoyad)
     expect(names).toContain('Mert Yılmaz')
     expect(res.body.stats.total).toBeGreaterThanOrEqual(1)
   })
@@ -102,8 +95,18 @@ describe('Quote requests (e2e)', () => {
     expect(saved?.status).toBe('contacted')
   })
 
+  it('rejects an invalid status value', async () => {
+    const created = await request(server).post('/api/quote').send(VALID_BODY).expect(201)
+
+    await request(server)
+      .patch(`/api/quote/admin/${created.body.id}/status`)
+      .set('Cookie', cookie)
+      .send({ status: 'ucan-daire' })
+      .expect(400)
+  })
+
   it('rejects delete without auth', async () => {
-    await request(server).delete('/api/quote/admin/some-id').expect(401)
+    await request(server).delete('/api/quote/admin/00000000-0000-0000-0000-000000000000').expect(401)
   })
 
   it('deletes a request', async () => {

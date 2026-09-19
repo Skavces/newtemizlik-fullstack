@@ -78,10 +78,73 @@ describe('Blog cover upload (e2e)', () => {
       .expect(201)
 
     const coverImage: string = res.body.coverImage
-    expect(coverImage).toMatch(/^\/uploads\/e2e-test-yazisi-gunes-paneli-temizligi-\d+\.webp$/)
+    // saveWithSeoName `${slug}-${SEO_SUFFIX}-${timestamp}-${rand}${ext}` üretir
+    // (bkz. upload.utils.ts) — iki ayrı sayısal grup, tek değil.
+    expect(coverImage).toMatch(/^\/uploads\/e2e-test-yazisi-gunes-paneli-temizligi-\d+-\d+\.webp$/)
 
     // Testin ürettiği dosyayı temizle
     await unlink(`.${coverImage}`)
+  })
+})
+
+describe('Blog content-image upload (e2e)', () => {
+  let app: NestExpressApplication
+  let server: ReturnType<NestExpressApplication['getHttpServer']>
+  let cookie: string
+
+  beforeAll(async () => {
+    app = await createE2eApp()
+    server = app.getHttpServer()
+    await resetAdminConfig(app)
+    await flushTestRedis(app)
+
+    const login = await request(server)
+      .post('/api/auth/login')
+      .send({ username: E2E_ADMIN_USERNAME, password: E2E_ADMIN_PASSWORD })
+      .expect(201)
+    cookie = extractAdminCookie(login.headers['set-cookie'])
+  })
+
+  afterAll(async () => {
+    await app.close()
+  })
+
+  it('rejects the upload without a cookie', async () => {
+    await request(server)
+      .post('/api/upload/blog/content-image')
+      .attach('file', REAL_PNG, 'gorsel.png')
+      .expect(401)
+  })
+
+  // Kapak görselinden farklı olarak bir kayıt id'si gerektirmez — Tiptap
+  // editöründe yeni (henüz kaydedilmemiş) bir yazının gövdesine de görsel
+  // eklenebilsin diye (bkz. Faz 4 planı).
+  it('accepts a real PNG without an existing post and returns a URL', async () => {
+    const res = await request(server)
+      .post('/api/upload/blog/content-image')
+      .set('Cookie', cookie)
+      .attach('file', REAL_PNG, 'gorsel.png')
+      .expect(201)
+
+    const url: string = res.body.url
+    expect(url).toMatch(/^\/uploads\/blog-icerik-gunes-paneli-temizligi-\d+-\d+\.webp$/)
+
+    await unlink(`.${url}`)
+  })
+
+  it('rejects a text file masquerading as PNG and leaves no file behind', async () => {
+    const before = await readdir(UPLOADS_DIR)
+
+    const res = await request(server)
+      .post('/api/upload/blog/content-image')
+      .set('Cookie', cookie)
+      .attach('file', Buffer.from('bu dosya aslinda png degil'), 'sahte.png')
+      .expect(400)
+
+    expect(res.body.message).toContain('Dosya içeriği izin verilen türlerle eşleşmiyor')
+
+    const after = await readdir(UPLOADS_DIR)
+    expect(after.sort()).toEqual(before.sort())
   })
 })
 

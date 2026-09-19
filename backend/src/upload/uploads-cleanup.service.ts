@@ -56,22 +56,28 @@ export class UploadsCleanupService {
     return deleted
   }
 
-  // NOT: blog içeriğine (Tiptap) gömülü resimler henüz taranmıyor — sadece
-  // coverImage/logo kolonları. Editöre görsel ekleme desteği eklenince
-  // (bkz. plan Faz 4) content HTML'inden /uploads/ referansları da buraya eklenmeli.
   private async collectReferencedFilenames(): Promise<Set<string>> {
-    const [posts, references] = await Promise.all([
+    const [posts, allPosts, references] = await Promise.all([
       this.blogRepo.find({ select: ['coverImage'], where: { coverImage: Not(IsNull()) } }),
+      // content'teki gömülü görseller (bkz. Faz 4 planı, Tiptap gövde görseli
+      // desteği) — tek bir /uploads/ regex'iyle taranamayacak kadar serbest
+      // biçimli HTML olduğu için ayrı bir sorguyla tüm gövdeler çekilip
+      // aşağıda regex'le taranır.
+      this.blogRepo.find({ select: ['content'] }),
       this.referenceRepo.find({ select: ['logo'], where: { logo: Not(IsNull()) } }),
     ])
 
     const referenced = new Set<string>()
-    const add = (src: string | null) => {
-      const match = src && /^\/uploads\/(.+)$/.exec(src)
+    const add = (src: string | null | undefined) => {
+      const match = src && /^\/uploads\/([^\s"'<>]+)/.exec(src)
       if (match) referenced.add(match[1])
     }
     posts.forEach(p => add(p.coverImage))
     references.forEach(r => add(r.logo))
+    for (const post of allPosts) {
+      const matches = post.content.matchAll(/\/uploads\/([^\s"'<>]+)/g)
+      for (const m of matches) referenced.add(m[1])
+    }
     return referenced
   }
 }
