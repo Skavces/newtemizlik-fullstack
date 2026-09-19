@@ -65,14 +65,24 @@ async function parseBody(res: Response): Promise<unknown> {
   }
 }
 
-async function panelFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
-  const isFormData = init.body instanceof FormData
+interface PanelFetchInit extends RequestInit {
+  // Bazı guard'lı uçlarda 401, oturumun geçersizliğini değil bir iş kuralı
+  // ihlalini (yanlış şifre, yanlış/süresi dolmuş TOTP kodu) taşır — bkz.
+  // auth.service.ts: changeCredentials/confirm2faSetup/remove2fa kimlik
+  // doğrulanmış bir istekte de 401 fırlatabiliyor. Bu uçlar merkezi
+  // "401 → girişe at" davranışını atlar; hatayı forma bırakır.
+  skipAuthRedirect?: boolean
+}
+
+async function panelFetch<T>(path: string, init: PanelFetchInit = {}): Promise<T> {
+  const { skipAuthRedirect, ...fetchInit } = init
+  const isFormData = fetchInit.body instanceof FormData
   const res = await fetch(`${API_URL}${path}`, {
-    ...init,
+    ...fetchInit,
     credentials: 'include',
     headers: {
       ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
-      ...init.headers,
+      ...fetchInit.headers,
     },
   })
 
@@ -81,7 +91,7 @@ async function panelFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
     const message = extractMessage(body) ?? `İstek başarısız (${res.status})`
     // Oturum düşmüşse (süre doldu, tokenVersion arttı, jti kara listede) tek
     // merkezden girişe at — çağıran sayfa 401'i ayrıca ele almak zorunda kalmaz.
-    if (res.status === 401 && typeof window !== 'undefined' && !window.location.pathname.startsWith(LOGIN_PATH)) {
+    if (res.status === 401 && !skipAuthRedirect && typeof window !== 'undefined' && !window.location.pathname.startsWith(LOGIN_PATH)) {
       window.location.href = LOGIN_PATH
     }
     throw new ApiError(message, res.status)
@@ -92,15 +102,15 @@ async function panelFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
 
 // ── Auth ──────────────────────────────────────────────────────────────────
 
-export const login = (dto: LoginDto) => panelFetch<LoginResponse>('/auth/login', { method: 'POST', body: JSON.stringify(dto) })
-export const verify2fa = (dto: Verify2faDto) => panelFetch<{ success: true }>('/auth/2fa/verify', { method: 'POST', body: JSON.stringify(dto) })
+export const login = (dto: LoginDto) => panelFetch<LoginResponse>('/auth/login', { method: 'POST', body: JSON.stringify(dto), skipAuthRedirect: true })
+export const verify2fa = (dto: Verify2faDto) => panelFetch<{ success: true }>('/auth/2fa/verify', { method: 'POST', body: JSON.stringify(dto), skipAuthRedirect: true })
 export const logout = () => panelFetch<{ ok: true }>('/auth/logout', { method: 'POST' })
 export const getMe = () => panelFetch<AuthMe>('/auth/me')
-export const changeCredentials = (dto: ChangeCredentialsDto) => panelFetch<{ ok: true }>('/auth/credentials', { method: 'PATCH', body: JSON.stringify(dto) })
+export const changeCredentials = (dto: ChangeCredentialsDto) => panelFetch<{ ok: true }>('/auth/credentials', { method: 'PATCH', body: JSON.stringify(dto), skipAuthRedirect: true })
 export const get2faStatus = () => panelFetch<TwoFaStatus>('/auth/2fa/status')
 export const get2faSetup = () => panelFetch<TwoFaSetup>('/auth/2fa/setup')
-export const confirm2faSetup = (dto: ConfirmSetupDto) => panelFetch<{ ok: true }>('/auth/2fa/setup/confirm', { method: 'POST', body: JSON.stringify(dto) })
-export const remove2fa = (dto: Remove2faDto) => panelFetch<{ ok: true }>('/auth/2fa/setup', { method: 'DELETE', body: JSON.stringify(dto) })
+export const confirm2faSetup = (dto: ConfirmSetupDto) => panelFetch<{ ok: true }>('/auth/2fa/setup/confirm', { method: 'POST', body: JSON.stringify(dto), skipAuthRedirect: true })
+export const remove2fa = (dto: Remove2faDto) => panelFetch<{ ok: true }>('/auth/2fa/setup', { method: 'DELETE', body: JSON.stringify(dto), skipAuthRedirect: true })
 
 // ── Blog ──────────────────────────────────────────────────────────────────
 
