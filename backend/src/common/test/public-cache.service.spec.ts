@@ -45,6 +45,19 @@ describe('PublicCacheService', () => {
     expect(faqFn).toHaveBeenCalledTimes(1) // bust'tan etkilenmedi
   })
 
+  it('bust bir tablonun önek olduğu başka bir tabloyu düşürmez ("blog" vs "blog_posts")', async () => {
+    const cache = new PublicCacheService()
+    const shortTableFn = jest.fn().mockResolvedValue('kısa')
+    await cache.wrap('blog:list', shortTableFn)
+
+    // "blog_posts" tablosunu bust etmek, adı "blog" ile başlayan farklı bir
+    // tabloyu (varsayımsal) yanlışlıkla düşürmemeli — sınır ":" ile net olmalı.
+    cache.bust('blog_posts')
+
+    await cache.wrap('blog:list', shortTableFn)
+    expect(shortTableFn).toHaveBeenCalledTimes(1)
+  })
+
   it('does not cache when fn throws (NotFound anahtarları birikmez)', async () => {
     const cache = new PublicCacheService()
     const fn = jest.fn().mockRejectedValueOnce(new Error('yok')).mockResolvedValue('artık var')

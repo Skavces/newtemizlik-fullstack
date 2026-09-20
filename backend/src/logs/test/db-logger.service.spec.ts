@@ -49,4 +49,21 @@ describe('DbLogger', () => {
       'InstagramTokenService',
     )
   })
+
+  it('konsola (Nest ConsoleLogger process.stderr.write üzerinden yazar) da redakte edilmiş metni yazar — DB kopyasıyla aynı garanti tek bir sinke özel değil', () => {
+    const { logger } = makeLogger()
+    const stderrSpy = process.stderr.write as jest.Mock
+    logger.error('Token yenileme başarısız: ?access_token=IGQWReallyLiveToken', 'InstagramTokenService')
+    const printed = stderrSpy.mock.calls.map((c) => String(c[0])).join(' ')
+    expect(printed).not.toContain('IGQWReallyLiveToken')
+    expect(printed).toContain('access_token=[REDACTED]')
+  })
+
+  it('optionalParams içindeki sır taşıyan string context de konsolda maskelenir (warn -> stdout)', () => {
+    const { logger } = makeLogger()
+    const stdoutSpy = process.stdout.write as jest.Mock
+    logger.warn('istek başarısız', 'https://api.example.com/x?token=SUPERSECRET')
+    const printed = stdoutSpy.mock.calls.map((c) => String(c[0])).join(' ')
+    expect(printed).not.toContain('SUPERSECRET')
+  })
 })

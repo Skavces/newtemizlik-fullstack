@@ -71,7 +71,19 @@ interface PanelFetchInit extends RequestInit {
   // auth.service.ts: changeCredentials/confirm2faSetup/remove2fa kimlik
   // doğrulanmış bir istekte de 401 fırlatabiliyor. Bu uçlar merkezi
   // "401 → girişe at" davranışını atlar; hatayı forma bırakır.
+  //
+  // DİKKAT: skipAuthRedirect uç-bazlı, yanıt-bazlı DEĞİL — changeCredentials
+  // gibi bir uçta oturum bu istek sırasında gerçekten düşmüşse (JwtAuthGuard
+  // reddeder) bu bayrak o durumu da yanlışlıkla bastırırdı. Bu yüzden guard'ın
+  // fırlattığı 401'ler backend'de ayrıca `code: 'SESSION_EXPIRED'` taşır (bkz.
+  // jwt-auth.guard.ts) — aşağıda skipAuthRedirect'ten BAĞIMSIZ olarak bu koda
+  // her zaman öncelik verilir, servis katmanının düz "yanlış şifre/TOTP"
+  // 401'lerinde bu kod hiç olmaz.
   skipAuthRedirect?: boolean
+}
+
+function isSessionExpired(body: unknown): boolean {
+  return typeof body === 'object' && body !== null && (body as { code?: unknown }).code === 'SESSION_EXPIRED'
 }
 
 async function panelFetch<T>(path: string, init: PanelFetchInit = {}): Promise<T> {
@@ -91,7 +103,8 @@ async function panelFetch<T>(path: string, init: PanelFetchInit = {}): Promise<T
     const message = extractMessage(body) ?? `İstek başarısız (${res.status})`
     // Oturum düşmüşse (süre doldu, tokenVersion arttı, jti kara listede) tek
     // merkezden girişe at — çağıran sayfa 401'i ayrıca ele almak zorunda kalmaz.
-    if (res.status === 401 && !skipAuthRedirect && typeof window !== 'undefined' && !window.location.pathname.startsWith(LOGIN_PATH)) {
+    const shouldRedirect = res.status === 401 && (isSessionExpired(body) || !skipAuthRedirect)
+    if (shouldRedirect && typeof window !== 'undefined' && !window.location.pathname.startsWith(LOGIN_PATH)) {
       window.location.href = LOGIN_PATH
     }
     throw new ApiError(message, res.status)

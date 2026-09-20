@@ -29,9 +29,16 @@ export class PublicCacheService {
 
   // Önce süreç içi cache düşer, sonra Next.js'e webhook gider: Next tazelenip
   // backend'e geri sorduğunda 60sn'lik cache'in düşmüş olması gerekiyor.
+  //
+  // Anahtarlar her zaman `${tableName}:${suffix}` biçiminde (bkz.
+  // BaseContentService.cacheKey) — burada da aynı ":" sınırıyla eşleştiriyoruz.
+  // Salt startsWith(prefix) ("blog" gibi bir tablo adının "blog_posts" gibi
+  // başka bir tablonun önekiyle çakışması) ileride eklenecek bir tablo çifti
+  // için sessizce yanlış anahtarları düşürebilir/düşürmeyebilirdi.
   bust(prefix: string): void {
+    const boundedPrefix = `${prefix}:`
     for (const key of this.store.keys()) {
-      if (key.startsWith(prefix)) this.store.delete(key)
+      if (key.startsWith(boundedPrefix)) this.store.delete(key)
     }
     this.revalidation?.notify(prefix)
   }

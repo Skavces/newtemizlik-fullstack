@@ -55,4 +55,24 @@ describe('toWebp', () => {
     const detected = await fileTypeFromFile(outPath)
     expect(detected?.mime).toBe('image/webp')
   })
+
+  it('uzantısız bir dosya adında bile yeniden kodlamayı atlamaz (extname boş dönerse önceki regex no-op yapıyordu)', async () => {
+    const src = join(dir, 'uzantisiz')
+    await writeFile(src, REAL_PNG)
+
+    const outPath = await toWebp(src)
+
+    expect(outPath).toBe(join(dir, 'uzantisiz.webp'))
+    const detected = await fileTypeFromFile(outPath)
+    expect(detected?.mime).toBe('image/webp')
+  })
+
+  it('zaten .webp uzantılı bir dosyada gerçekten yeniden kodlamayı atlar', async () => {
+    const src = join(dir, 'zaten.webp')
+    await writeFile(src, REAL_PNG)
+
+    const outPath = await toWebp(src)
+
+    expect(outPath).toBe(src)
+  })
 })

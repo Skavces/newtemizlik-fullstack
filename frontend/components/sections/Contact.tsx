@@ -9,7 +9,7 @@ import { API_URL } from '@/lib/apiClient'
 function formatTurkishPhone(rawValue: string) {
   let value = rawValue.replace(/[^\d+]/g, '')
   if (value.startsWith('90')) value = '+' + value
-  if (!value.startsWith('+90')) value = '+90' + value.replace(/^\+?/, '')
+  if (!value.startsWith('+90')) value = '+90' + value.replace(/^\+?0?/, '')
   const match = value.match(/^(\+90)(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})$/)
   if (!match) return value
   return match[1] + ' ' + match[2] + (match[3] ? ' ' + match[3] : '') + (match[4] ? ' ' + match[4] : '') + (match[5] ? ' ' + match[5] : '')

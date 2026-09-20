@@ -1,4 +1,4 @@
-import { ConflictException, NotFoundException } from '@nestjs/common'
+import { BadRequestException, ConflictException, NotFoundException } from '@nestjs/common'
 import { Repository } from 'typeorm'
 import { BlogService } from '../../blog/blog.service'
 import { BlogPost } from '../../blog/entities/blog-post.entity'
@@ -112,12 +112,24 @@ describe('BaseContentService (BlogService üzerinden)', () => {
 
   it('reorder tüm sıralamayı tek CASE sorgusuyla yazar', async () => {
     const { repo, managerQuery } = makeRepo<BlogPost>()
+    ;(repo.find as jest.Mock).mockResolvedValueOnce([{ id: 'b' }, { id: 'a' }, { id: 'c' }])
     const service = new BlogService(repo, new PublicCacheService())
     await service.reorder(['b', 'a', 'c'])
     expect(managerQuery).toHaveBeenCalledTimes(1)
     const [sql, params] = managerQuery.mock.calls[0]
     expect(sql).toContain('UPDATE "blog_posts" SET "sortOrder" = CASE')
     expect(params).toEqual([['b', 'a', 'c'], 'b', 'a', 'c'])
+  })
+
+  it('reorder eksik id listesinde (mevcut satırların tamamını kapsamıyorsa) BadRequestException fırlatır ve CASE sorgusunu hiç çalıştırmaz', async () => {
+    const { repo, managerQuery } = makeRepo<BlogPost>()
+    ;(repo.find as jest.Mock).mockResolvedValueOnce([{ id: 'a' }, { id: 'b' }, { id: 'c' }])
+    const service = new BlogService(repo, new PublicCacheService())
+    // 'c' eksik — çağıran taraf bayat bir istemci, kısmi bir toplu işlem, ya da
+    // elle hazırlanmış bir istek olabilir; sessizce kabul edilirse 'c' eski
+    // sortOrder'ında kalır ve yeni atananlarla çakışabilir.
+    await expect(service.reorder(['b', 'a'])).rejects.toThrow(BadRequestException)
+    expect(managerQuery).not.toHaveBeenCalled()
   })
 })
 
@@ -137,9 +149,14 @@ describe('BaseContentService — public cache (4.4)', () => {
     await service.create({ title: 'yeni' })
     await service.findAllPublic()
     expect(repo.find).toHaveBeenCalledTimes(2)
+    // reorder artık göndeirlen id listesinin tam olduğunu doğrulamak için de
+    // bir repo.find çağrısı yapıyor (bkz. base-content.service.ts) — bu yüzden
+    // sayaç bu adımda 2 değil 1 artıyor.
+    ;(repo.find as jest.Mock).mockResolvedValueOnce([{ id: 'a' }, { id: 'b' }])
     await service.reorder(['a', 'b'])
-    await service.findAllPublic()
     expect(repo.find).toHaveBeenCalledTimes(3)
+    await service.findAllPublic()
+    expect(repo.find).toHaveBeenCalledTimes(4)
   })
 
   it('update ve remove cache\'i düşürür', async () => {

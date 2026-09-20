@@ -1,4 +1,4 @@
-import { ConflictException, NotFoundException } from '@nestjs/common'
+import { BadRequestException, ConflictException, NotFoundException } from '@nestjs/common'
 import {
   DeepPartial,
   EntityTarget,
@@ -122,7 +122,19 @@ export abstract class BaseContentService<T extends ContentEntity> {
     this.bustCache()
   }
 
+  // reorderByCase yalnızca gönderilen id'leri 0..n-1'e yeniden numaralar; eksik
+  // bir id listesi (bayat bir istemci, ileride eklenecek toplu silme/reorder
+  // birleşimi, ya da elle hazırlanmış bir istek) gönderilmeyen satırları eski
+  // sortOrder'ında bırakır ve bu değerler yeni atananlarla çakışabilir —
+  // sıralama sessizce bozulur. ReorderDto yalnızca UUID biçimini doğruladığından
+  // (bkz. common/dto/reorder.dto.ts) tamlık kontrolü burada, tek genel yerde yapılır.
   async reorder(orderedIds: string[]): Promise<void> {
+    const rows = await this.repo.find({ select: ['id'] as (keyof T)[] })
+    const existingIds = new Set(rows.map((r) => r.id))
+    const hasAllRows = orderedIds.length === existingIds.size && orderedIds.every((id) => existingIds.has(id))
+    if (!hasAllRows) {
+      throw new BadRequestException('Sıralama listesi mevcut kayıtların tümünü içermeli')
+    }
     await reorderByCase(this.repo, orderedIds)
     this.bustCache()
   }

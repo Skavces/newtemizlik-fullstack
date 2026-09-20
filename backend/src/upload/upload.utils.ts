@@ -47,8 +47,17 @@ export const mimeFilter =
 export const logoFilter = mimeFilter(ALLOWED_LOGO_MIMES)
 
 export async function toWebp(filePath: string): Promise<string> {
-  const webpPath = filePath.replace(/\.[^.]+$/, '.webp')
-  if (filePath === webpPath) return filePath
+  // Zaten .webp uzantılıysa yeniden kodlamayı atla (küçük bir optimizasyon).
+  // DİKKAT: bunun için basit bir replace+eşitlik kontrolü kullanmak, uzantısız
+  // dosya adlarında da (extname boş string döner, replace hiçbir şeyi
+  // değiştirmez) yanlışlıkla eşleşip webp dönüşümünü atlıyordu — magic-byte
+  // kontrolünden geçmiş ama uzantısız gelen bir dosya, sharp'ın yeniden
+  // kodlamadan (polyglot/eklenti-veri temizleme savunmasından) geçmeden
+  // doğrudan .webp diye kaydediliyordu. Bu yüzden "zaten webp mi" sorusu
+  // uzantı varlığından bağımsız, açıkça soruluyor.
+  if (/\.webp$/i.test(filePath)) return filePath
+  const ext = extname(filePath)
+  const webpPath = ext ? filePath.slice(0, -ext.length) + '.webp' : `${filePath}.webp`
   try {
     await sharp(filePath).webp({ quality: 82 }).toFile(webpPath)
   } catch (err) {

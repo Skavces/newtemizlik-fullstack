@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import DOMPurify from 'isomorphic-dompurify'
 import { Calendar, Clock, ArrowLeft } from 'lucide-react'
 import TrackedLink from './TrackedLink'
 import { estimateReadTime } from '@/lib/readTime'
@@ -15,6 +16,25 @@ interface BlogArticleLayoutProps {
   relatedPosts?: RelatedPost[]
 }
 
+// Backend'in allowlist'iyle (bkz. backend/src/common/html-sanitize.ts) birebir
+// eşleşen render-taraflı ikinci savunma katmanı. Backend zaten sanitize ediyor;
+// bu katman yalnızca allowlist'te bir boşluk (editöre eklenip html-sanitize.ts'e
+// eklenmeyen bir tiptap extension'ı, ya da sanitize-html'de bir CVE) çıktığında
+// devreye girer.
+const SANITIZE_OPTIONS = {
+  ALLOWED_TAGS: [
+    'p', 'br', 'hr',
+    'h1', 'h2', 'h3',
+    'strong', 'b', 'em', 'i', 'u', 's', 'strike',
+    'a', 'span',
+    'ul', 'ol', 'li',
+    'blockquote', 'code', 'pre',
+    'img',
+  ],
+  ALLOWED_ATTR: ['href', 'target', 'rel', 'style', 'src', 'alt', 'width', 'height'],
+  ALLOWED_URI_REGEXP: /^(?:https?|mailto|tel):/i,
+}
+
 // Sayfa Navbar/Footer/WhatsAppButton'ı (site) layout'undan alır — burada
 // yalnızca makale gövdesi var. content = backend'in sanitize edip döndürdüğü
 // güvenli HTML (bkz. backend/src/common/html-sanitize.ts).
@@ -23,6 +43,7 @@ export default function BlogArticleLayout({ title, publishedAt, content, related
     ? new Date(publishedAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })
     : null
   const readTime = estimateReadTime(content)
+  const safeContent = DOMPurify.sanitize(content, SANITIZE_OPTIONS)
 
   return (
     <>
@@ -56,7 +77,7 @@ export default function BlogArticleLayout({ title, publishedAt, content, related
 
       {/* Article body */}
       <article className="max-w-3xl mx-auto px-5 sm:px-8 lg:px-12" style={{ padding: '40px 0 80px' }}>
-        <div className="blog-content" dangerouslySetInnerHTML={{ __html: content }} />
+        <div className="blog-content" dangerouslySetInnerHTML={{ __html: safeContent }} />
 
         {/* CTA */}
         <div
