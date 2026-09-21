@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Target, Eye, Leaf, Users, ShieldCheck, Award } from 'lucide-react'
 import PageHero from '@/components/ui/PageHero'
@@ -110,38 +111,42 @@ export default function KurumsalPage() {
             <div className="w-full lg:w-1/2">
               <div className="grid grid-cols-2 gap-3" style={{ height: '480px' }}>
                 <div className="flex flex-col gap-3">
-                  <div className="overflow-hidden" style={{ borderRadius: '12px', flex: 1 }}>
-                    <img
+                  <div className="overflow-hidden" style={{ position: 'relative', borderRadius: '12px', flex: 1 }}>
+                    <Image
                       src={collageImages[0].src}
                       alt={collageImages[0].alt}
-                      loading="lazy"
-                      className="collage-img w-full h-full object-cover"
+                      fill
+                      sizes="(max-width: 1024px) 50vw, 25vw"
+                      className="collage-img object-cover"
                     />
                   </div>
-                  <div className="overflow-hidden" style={{ borderRadius: '12px', flex: 1 }}>
-                    <img
+                  <div className="overflow-hidden" style={{ position: 'relative', borderRadius: '12px', flex: 1 }}>
+                    <Image
                       src={collageImages[1].src}
                       alt={collageImages[1].alt}
-                      loading="lazy"
-                      className="collage-img w-full h-full object-cover"
+                      fill
+                      sizes="(max-width: 1024px) 50vw, 25vw"
+                      className="collage-img object-cover"
                     />
                   </div>
                 </div>
                 <div className="flex flex-col gap-3">
-                  <div className="overflow-hidden" style={{ borderRadius: '12px', flex: 2 }}>
-                    <img
+                  <div className="overflow-hidden" style={{ position: 'relative', borderRadius: '12px', flex: 2 }}>
+                    <Image
                       src={collageImages[2].src}
                       alt={collageImages[2].alt}
-                      loading="lazy"
-                      className="collage-img w-full h-full object-cover"
+                      fill
+                      sizes="(max-width: 1024px) 50vw, 25vw"
+                      className="collage-img object-cover"
                     />
                   </div>
-                  <div className="overflow-hidden" style={{ borderRadius: '12px', flex: 1 }}>
-                    <img
+                  <div className="overflow-hidden" style={{ position: 'relative', borderRadius: '12px', flex: 1 }}>
+                    <Image
                       src={collageImages[3].src}
                       alt={collageImages[3].alt}
-                      loading="lazy"
-                      className="collage-img w-full h-full object-cover"
+                      fill
+                      sizes="(max-width: 1024px) 50vw, 25vw"
+                      className="collage-img object-cover"
                     />
                   </div>
                 </div>

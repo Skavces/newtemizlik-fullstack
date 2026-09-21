@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import PageHero from '@/components/ui/PageHero'
 import JsonLd from '@/components/ui/JsonLd'
 import { buildMetadata, SITE_URL } from '@/lib/seo'
@@ -81,14 +82,18 @@ export default async function ReferanslarPage() {
                 className="section-card flex flex-col items-center justify-center p-4 gap-3"
                 style={{ aspectRatio: '4/3' }}
               >
-                <img
-                  src={ref.logo ?? undefined}
-                  alt={`${ref.name} Logosu`}
-                  loading="lazy"
-                  decoding="async"
-                  className="object-contain transition-all duration-300"
-                  style={{ width: '80%', height: '65%', transform: scale && scale !== 1 ? `scale(${scale})` : undefined }}
-                />
+                {ref.logo && (
+                  <div style={{ position: 'relative', width: '80%', height: '65%' }}>
+                    <Image
+                      src={ref.logo}
+                      alt={`${ref.name} Logosu`}
+                      fill
+                      sizes="160px"
+                      className="object-contain transition-all duration-300"
+                      style={{ transform: scale && scale !== 1 ? `scale(${scale})` : undefined }}
+                    />
+                  </div>
+                )}
                 <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', textAlign: 'center', lineHeight: 1.3 }}>
                   {ref.name}
                 </span>

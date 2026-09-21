@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useEffect, type MouseEvent, type TouchEvent } from 'react'
+import Image from 'next/image'
 import type { Reference } from '@/types/api'
 
 // references artık backend'den geliyor (GET /api/references) — sayfa (server
@@ -131,6 +132,7 @@ export default function Referanslar({ references }: { references: Reference[] })
                 key={i}
                 className="reference-logo-card"
                 style={{
+                  position: 'relative',
                   flexShrink: 0,
                   width: '160px',
                   height: '88px',
@@ -144,20 +146,22 @@ export default function Referanslar({ references }: { references: Reference[] })
                   transition: 'border-color 0.2s',
                 }}
               >
-                <img
-                  src={ref.logo ?? undefined}
-                  alt={`${ref.name} logosu`}
-                  draggable={false}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                    filter: 'grayscale(1) opacity(0.5)',
-                    transform: scale && scale !== 1 ? `scale(${scale})` : undefined,
-                    transition: 'filter 0.3s',
-                    pointerEvents: 'none',
-                  }}
-                />
+                {ref.logo && (
+                  <Image
+                    src={ref.logo}
+                    alt={`${ref.name} logosu`}
+                    fill
+                    draggable={false}
+                    sizes="160px"
+                    style={{
+                      objectFit: 'contain',
+                      filter: 'grayscale(1) opacity(0.5)',
+                      transform: scale && scale !== 1 ? `scale(${scale})` : undefined,
+                      transition: 'filter 0.3s',
+                      pointerEvents: 'none',
+                    }}
+                  />
+                )}
               </div>
             )
           })}

@@ -1,4 +1,5 @@
 import { Fragment } from 'react'
+import Image from 'next/image'
 import { Search, ClipboardList, Play, CheckCircle2, type LucideIcon } from 'lucide-react'
 
 const CARD_H = 400   // fixed card height (px)
@@ -108,13 +109,13 @@ function StepCard({ step }: { step: Step }) {
     <div style={{ height: `${CARD_H}px`, display: 'flex', flexDirection: 'column' }}>
       {/* Image */}
       <div style={{ position: 'relative', flexShrink: 0, height: '195px' }}>
-        <div style={{ borderRadius: '10px', overflow: 'hidden', height: '100%' }}>
-          <img
+        <div style={{ position: 'relative', borderRadius: '10px', overflow: 'hidden', height: '100%' }}>
+          <Image
             src={step.img}
             alt={step.alt}
-            loading="lazy"
-            decoding="async"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            fill
+            sizes="(max-width: 768px) 100vw, 25vw"
+            style={{ objectFit: 'cover' }}
           />
         </div>
         {/* Step number badge — overflows image corner */}
@@ -243,10 +244,10 @@ export default function Process() {
               </div>
               <div>
                 <div style={{ position: 'relative' }}>
-                  <div style={{ borderRadius: '10px', overflow: 'hidden' }}>
-                    <img
-                      src={step.img} alt={step.alt} loading="lazy" decoding="async"
-                      style={{ width: '100%', aspectRatio: '16/9', objectFit: 'cover', display: 'block' }}
+                  <div style={{ position: 'relative', borderRadius: '10px', overflow: 'hidden', aspectRatio: '16/9' }}>
+                    <Image
+                      src={step.img} alt={step.alt} fill sizes="100vw"
+                      style={{ objectFit: 'cover' }}
                     />
                   </div>
                 </div>

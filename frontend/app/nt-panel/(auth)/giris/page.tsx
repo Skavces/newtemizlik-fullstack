@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, type FormEvent } from 'react'
+import Image from 'next/image'
 import { Eye, EyeOff, ShieldCheck } from 'lucide-react'
 import { login, verify2fa } from '@/lib/panelApi'
 import { isApiError } from '@/lib/errors'
@@ -101,7 +102,7 @@ export default function GirisPage() {
         style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}
       >
         <div className="mb-8 flex flex-col items-center">
-          <img src="/logo.png" alt="New Temizlik" className="h-16 w-auto object-contain" />
+          <Image src="/logo.png" alt="New Temizlik" width={1080} height={1015} className="h-16 w-auto object-contain" />
           <p className="mt-3 text-sm" style={{ color: 'var(--text-muted)' }}>
             Yönetim Paneli
           </p>

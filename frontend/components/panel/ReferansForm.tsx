@@ -108,6 +108,7 @@ export default function ReferansForm({ referenceId }: { referenceId?: string }) 
             >
               {logoPreview ? (
                 <>
+                  {/* eslint-disable-next-line @next/next/no-img-element -- blob: object URL (URL.createObjectURL), next/image can't optimize it */}
                   <img src={logoPreview} alt="logo" className="max-h-24 max-w-full object-contain" />
                   <button
                     type="button"

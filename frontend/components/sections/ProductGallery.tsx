@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, type MouseEvent } from 'react'
+import Image from 'next/image'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface Photo {
@@ -32,13 +33,14 @@ export default function ProductGallery({ photos }: { photos: Photo[] }) {
           <div
             key={i}
             onClick={() => setLightboxIndex(i)}
-            style={{ borderRadius: '10px', overflow: 'hidden', width: 'calc(25% - 9px)', minWidth: '160px', aspectRatio: '1/1', background: 'var(--bg-card)', flexShrink: 0, cursor: 'pointer' }}
+            style={{ position: 'relative', borderRadius: '10px', overflow: 'hidden', width: 'calc(25% - 9px)', minWidth: '160px', aspectRatio: '1/1', background: 'var(--bg-card)', flexShrink: 0, cursor: 'pointer' }}
           >
-            <img
+            <Image
               src={photo.src}
               alt={photo.alt}
-              loading="lazy"
-              className="collage-img w-full h-full object-cover"
+              fill
+              sizes="(max-width: 640px) 50vw, 25vw"
+              className="collage-img object-cover"
             />
           </div>
         ))}
@@ -88,11 +90,15 @@ export default function ProductGallery({ photos }: { photos: Photo[] }) {
                 <ChevronLeft size={24} />
               </button>
 
-              <img
-                src={photo.src}
-                alt={photo.alt}
-                style={{ maxWidth: '100%', maxHeight: '90vh', borderRadius: '12px', objectFit: 'contain', display: 'block' }}
-              />
+              <div style={{ position: 'relative', width: '80vw', height: '80vh', maxWidth: '900px', maxHeight: '900px' }}>
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  sizes="90vw"
+                  style={{ borderRadius: '12px', objectFit: 'contain' }}
+                />
+              </div>
 
               {/* Next */}
               <button

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Calendar } from 'lucide-react'
 import PageHero from '@/components/ui/PageHero'
@@ -98,12 +99,13 @@ export default async function BlogPage() {
               >
                 <article className="blog-card">
                   {post.coverImage && (
-                    <div style={{ aspectRatio: '16/9', overflow: 'hidden' }}>
-                      <img
+                    <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden' }}>
+                      <Image
                         src={post.coverImage}
                         alt={post.title}
-                        loading="lazy"
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        style={{ objectFit: 'cover' }}
                       />
                     </div>
                   )}

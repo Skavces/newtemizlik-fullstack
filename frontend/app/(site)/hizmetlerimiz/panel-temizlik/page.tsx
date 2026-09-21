@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { CheckCircle, ArrowRight, MapPin } from 'lucide-react'
 import PageHero from '@/components/ui/PageHero'
 import JsonLd from '@/components/ui/JsonLd'
@@ -132,11 +133,13 @@ export default async function PanelTemizlikPage() {
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
           <div className="flex flex-col lg:flex-row gap-16 items-center">
 
-            <div className="w-full lg:w-1/2 overflow-hidden" style={{ borderRadius: '16px', aspectRatio: '4/3' }}>
-              <img
+            <div className="w-full lg:w-1/2 overflow-hidden" style={{ position: 'relative', borderRadius: '16px', aspectRatio: '4/3' }}>
+              <Image
                 src="/endustriyel-gunes-paneli-yikama.webp"
                 alt="GES sahasında profesyonel güneş paneli temizlik çalışması"
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
               />
             </div>
 

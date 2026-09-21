@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { Plus, Pencil, Trash2, Eye, EyeOff, GripVertical } from 'lucide-react'
 import { getAllBlogPostsAdmin, deleteBlogPost, reorderBlogPosts } from '@/lib/panelApi'
@@ -95,9 +96,9 @@ export default function BlogListPage() {
                             </button>
                           </td>
                           <td className="w-20 px-3 py-4">
-                            <div className="flex h-12 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg" style={{ background: 'var(--bg-alt)' }}>
+                            <div className="relative flex h-12 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg" style={{ background: 'var(--bg-alt)' }}>
                               {post.coverImage ? (
-                                <img src={post.coverImage} alt={post.title} className="h-full w-full object-cover" />
+                                <Image src={post.coverImage} alt={post.title} fill sizes="64px" className="object-cover" />
                               ) : (
                                 <span className="text-xs" style={{ color: 'var(--text-faint)' }}>Görsel yok</span>
                               )}

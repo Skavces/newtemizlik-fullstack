@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X, Sun, Moon, ChevronDown, ChevronRight } from 'lucide-react'
@@ -90,9 +91,12 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link href="/" className="shrink-0 cursor-pointer bg-transparent border-none p-0">
-            <img
+            <Image
               src="/logo.png"
               alt="New Temizlik Hizmetleri"
+              width={1080}
+              height={1015}
+              priority
               className="h-20 md:h-28 w-auto object-contain"
             />
           </Link>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { Plus, Pencil, Trash2, Eye, EyeOff, GripVertical } from 'lucide-react'
 import { getAllReferencesAdmin, deleteReference, reorderReferences } from '@/lib/panelApi'
@@ -93,9 +94,9 @@ export default function ReferanslarListPage() {
                             </button>
                           </td>
                           <td className="px-3 py-5">
-                            <div className="flex h-16 w-16 shrink-0 items-center justify-center">
+                            <div className="relative flex h-16 w-16 shrink-0 items-center justify-center">
                               {r.logo ? (
-                                <img src={r.logo} alt={r.name} className="max-h-14 max-w-full object-contain" />
+                                <Image src={r.logo} alt={r.name} fill sizes="64px" className="object-contain" />
                               ) : (
                                 <span className="text-base font-bold" style={{ color: 'var(--text-faint)' }}>{r.name.charAt(0)}</span>
                               )}

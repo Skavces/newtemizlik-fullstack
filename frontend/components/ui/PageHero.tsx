@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 
@@ -27,15 +28,13 @@ export default function PageHero({ title, image, breadcrumbs = [] }: PageHeroPro
       }}
     >
       {/* Arka plan resmi */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(/${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          transform: 'scale(1.05)',
-        }}
+      <Image
+        src={`/${image}`}
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        style={{ objectFit: 'cover', objectPosition: 'center', transform: 'scale(1.05)' }}
       />
 
       {/* Koyu overlay */}

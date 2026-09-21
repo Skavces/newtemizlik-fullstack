@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { Facebook, Instagram, MapPin, Phone, Mail, type LucideIcon } from 'lucide-react'
 import TrackedLink from '@/components/ui/TrackedLink'
@@ -65,9 +66,11 @@ export default function Footer() {
 
           {/* Brand */}
           <div className="lg:col-span-1">
-            <img
+            <Image
               src="/logo.png"
               alt="New Temizlik Hizmetleri"
+              width={1080}
+              height={1015}
               className="h-16 w-auto object-contain mb-5"
               style={{ filter: 'brightness(0) invert(1)' }}
             />

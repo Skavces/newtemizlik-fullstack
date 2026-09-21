@@ -197,6 +197,7 @@ export default function BlogForm({ postId }: { postId?: string }) {
           <label className="mb-1.5 block text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>Kapak Görseli</label>
           {coverPreview ? (
             <div className="group relative h-52 w-full overflow-hidden rounded-xl">
+              {/* eslint-disable-next-line @next/next/no-img-element -- blob: object URL (URL.createObjectURL), next/image can't optimize it */}
               <img src={coverPreview} alt="Kapak" className="h-full w-full object-cover" />
               <button
                 type="button"

@@ -461,6 +461,7 @@ export default function GuvenlikPage() {
                 <p className="mb-1 text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>1. QR kodu tarayın</p>
                 <p className="mb-3 text-xs" style={{ color: 'var(--text-faint)' }}>Google Authenticator veya Authy kullanın</p>
                 <div className="flex justify-center">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- data: URI (base64 QR code), next/image can't optimize it */}
                   <img src={setup.qrCodeUrl} alt="QR Code" className="h-44 w-44 rounded-xl" style={{ border: '1px solid var(--border-subtle)' }} />
                 </div>
               </div>

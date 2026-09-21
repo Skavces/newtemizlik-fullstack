@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { TrendingDown, Flame, RefreshCw, AlertTriangle, Droplets, Wrench, type LucideIcon } from 'lucide-react'
 
 interface Stat {
@@ -167,14 +168,13 @@ export default function KirProblemleri() {
               >
                 {/* Image */}
                 <div className={isReverse ? 'md:order-2' : ''} style={{ position: 'relative' }}>
-                  <div style={{ borderRadius: '12px', overflow: 'hidden', boxShadow: '0 12px 48px rgba(0,0,0,0.14)' }}>
-                    <img
+                  <div style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 12px 48px rgba(0,0,0,0.14)', aspectRatio: '4/3' }}>
+                    <Image
                       src={card.img}
                       alt={card.altText}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full object-cover"
-                      style={{ aspectRatio: '4/3', display: 'block' }}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover"
                     />
                   </div>
                   {/* Number badge */}

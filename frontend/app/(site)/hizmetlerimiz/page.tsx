@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import PageHero from '@/components/ui/PageHero'
@@ -77,15 +78,14 @@ export default function HizmetlerimizPage() {
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-7">
             {services.map((service, i) => (
               <div key={i} className="section-card overflow-hidden flex flex-col">
-                <div className="overflow-hidden" style={{ borderRadius: '10px 10px 0 0', aspectRatio: '16/10' }}>
-                  <img
+                <div className="overflow-hidden" style={{ position: 'relative', borderRadius: '10px 10px 0 0', aspectRatio: '16/10' }}>
+                  <Image
                     src={service.img}
                     alt={service.alt}
                     title={service.alt}
-                    loading="lazy"
-                    decoding="async"
-                    className="collage-img w-full h-full object-cover"
-                    style={{ display: 'block' }}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                    className="collage-img object-cover"
                   />
                 </div>
                 <div className="p-7 flex flex-col flex-1">
