@@ -1,6 +1,5 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import { ArrowRight, ChevronDown, FolderCheck, CalendarDays, ThumbsUp, Users, Sun, type LucideIcon } from 'lucide-react'
 import { trackEvent } from '@/lib/analytics'
@@ -12,12 +11,6 @@ interface InfoStat {
   desc: string
 }
 
-interface MediaItem {
-  type: 'image' | 'video'
-  src: string
-  alt: string
-}
-
 const infoStats: InfoStat[] = [
   { icon: FolderCheck,  num: '195+', label: 'Tamamlanan Proje',    desc: 'Türkiye genelinde başarıyla teslim edilen GES projeleri.' },
   { icon: CalendarDays, num: '5+',   label: 'Yıllık Saha Deneyimi', desc: 'Güneş enerji santrallerinde kesintisiz saha tecrübesi.' },
@@ -25,78 +18,30 @@ const infoStats: InfoStat[] = [
   { icon: Users,        num: '17+',  label: 'Uzman Personel',       desc: 'Sertifikalı saha uzmanları ve teknik ekipten oluşan kadro.' },
 ]
 
-const mediaItems: MediaItem[] = [
-  {
-    type: 'video',
-    src: '/otonom-panel-yikama-robotu-test.mp4',
-    alt: 'Soma GES otonom panel yıkama robotu saha testi ve performans analizi',
-  },
-]
+const HERO_VIDEO_ALT = 'Soma GES otonom panel yıkama robotu saha temizliği'
 
 export default function Hero() {
-  const [current, setCurrent] = useState(0)
-  const [transitioning, setTransitioning] = useState(false)
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
-
-  const goTo = useCallback(
-    (index: number) => {
-      if (transitioning) return
-      setTransitioning(true)
-      setCurrent(index)
-      setTimeout(() => setTransitioning(false), 600)
-    },
-    [transitioning]
-  )
-
-  const next = useCallback(() => goTo((current + 1) % mediaItems.length), [current, goTo])
-
-  useEffect(() => {
-    if (mediaItems[current].type === 'video') return
-    const t = setInterval(next, 5000)
-    return () => clearInterval(t)
-  }, [current, next])
-
-  useEffect(() => {
-    videoRefs.current.forEach((el, i) => {
-      if (!el) return
-      if (i === current) {
-        el.currentTime = 0
-        el.play().catch(() => {})
-      } else {
-        el.pause()
-      }
-    })
-  }, [current])
-
   return (
     <section
       className="relative w-full"
       style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', position: 'relative', zIndex: 2 }}
     >
-      {/* Background videos */}
+      {/* Background video */}
       <div className="absolute inset-0 z-0">
-        {mediaItems.map((item, i) => (
-          <div
-            key={i}
-            className="absolute inset-0"
-            style={{ opacity: i === current ? 1 : 0, transition: 'opacity 0.7s ease-in-out' }}
-          >
-            {item.type === 'image' ? (
-              <img src={item.src} alt={item.alt} className="w-full h-full object-cover" loading="lazy" />
-            ) : (
-              <video
-                ref={(el) => { videoRefs.current[i] = el }}
-                src={item.src}
-                aria-label={item.alt}
-                title={item.alt}
-                className="w-full h-full object-cover"
-                muted playsInline
-                preload={i === current ? 'auto' : 'metadata'}
-                loop
-              />
-            )}
-          </div>
-        ))}
+        <video
+          aria-label={HERO_VIDEO_ALT}
+          title={HERO_VIDEO_ALT}
+          className="w-full h-full object-cover"
+          poster="/hero-poster.webp"
+          muted
+          playsInline
+          autoPlay
+          loop
+          preload="none"
+        >
+          <source src="/otonom-panel-yikama-robotu.webm" type="video/webm" />
+          <source src="/otonom-panel-yikama-robotu.mp4" type="video/mp4" />
+        </video>
       </div>
 
       {/* Dark overlay */}
