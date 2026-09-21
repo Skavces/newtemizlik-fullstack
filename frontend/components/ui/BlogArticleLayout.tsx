@@ -32,7 +32,12 @@ const SANITIZE_OPTIONS = {
     'img',
   ],
   ALLOWED_ATTR: ['href', 'target', 'rel', 'style', 'src', 'alt', 'width', 'height'],
-  ALLOWED_URI_REGEXP: /^(?:https?|mailto|tel):/i,
+  // https?/mailto/tel for <a href>, plus a literal /uploads/ prefix for <img src>
+  // (backend-hosted content images, matching backend/src/common/html-sanitize.ts's
+  // UPLOAD_IMG_SRC) — without this, DOMPurify's default same-scheme-only check
+  // stripped every body image's src, since relative /uploads/ paths match none
+  // of https/mailto/tel. This silently broke Faz 4's content-image feature.
+  ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto|tel):|\/uploads\/)/i,
 }
 
 // Sayfa Navbar/Footer/WhatsAppButton'ı (site) layout'undan alır — burada

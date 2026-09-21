@@ -1,6 +1,7 @@
 import { mkdtemp, rm, writeFile } from 'fs/promises'
 import { tmpdir } from 'os'
 import { join } from 'path'
+import sharp from 'sharp'
 import { fileTypeFromFile } from 'file-type'
 import { assertMagicBytesFromBuffer, toWebp, ALLOWED_IMAGE_MIMES } from '../upload.utils'
 
@@ -74,5 +75,35 @@ describe('toWebp', () => {
     const outPath = await toWebp(src)
 
     expect(outPath).toBe(src)
+  })
+
+  it('en uzun kenarı 1920px\'i aşan bir görseli orantılı olarak küçültür', async () => {
+    const src = join(dir, 'buyuk.png')
+    await sharp({
+      create: { width: 4000, height: 2000, channels: 3, background: { r: 100, g: 150, b: 200 } },
+    })
+      .png()
+      .toFile(src)
+
+    const outPath = await toWebp(src)
+
+    const meta = await sharp(outPath).metadata()
+    expect(meta.width).toBe(1920)
+    expect(meta.height).toBe(960)
+  })
+
+  it('1920px sınırı altındaki bir görseli büyütmez', async () => {
+    const src = join(dir, 'kucuk.png')
+    await sharp({
+      create: { width: 400, height: 300, channels: 3, background: { r: 10, g: 20, b: 30 } },
+    })
+      .png()
+      .toFile(src)
+
+    const outPath = await toWebp(src)
+
+    const meta = await sharp(outPath).metadata()
+    expect(meta.width).toBe(400)
+    expect(meta.height).toBe(300)
   })
 })

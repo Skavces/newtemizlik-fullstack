@@ -26,6 +26,12 @@ export const ALLOWED_MEDIA_MIMES = [...ALLOWED_IMAGE_MIMES, 'video/mp4', 'video/
 // Video uzantısını MIME'den al, orijinal dosya adına güvenme
 export const SEO_SUFFIX = 'gunes-paneli-temizligi'
 
+// Hiçbir görüntülenme boyutu bunun üzerinde değil (en büyük next/image talebi
+// solar-panel.webp'nin fill+100vw kullanımı) — admin panelden yüklenen
+// yeniden kodlanmamış boyutlu bir fotoğraf, bu fazda temizlenen asset
+// şişkinliğinin zamanla geri gelmesine neden olmasın diye sınırlanıyor.
+const MAX_UPLOAD_DIMENSION = 1920
+
 export const videoExtMap: Record<string, string> = {
   'video/mp4': '.mp4',
   'video/quicktime': '.mov',
@@ -59,7 +65,10 @@ export async function toWebp(filePath: string): Promise<string> {
   const ext = extname(filePath)
   const webpPath = ext ? filePath.slice(0, -ext.length) + '.webp' : `${filePath}.webp`
   try {
-    await sharp(filePath).webp({ quality: 82 }).toFile(webpPath)
+    await sharp(filePath)
+      .resize(MAX_UPLOAD_DIMENSION, MAX_UPLOAD_DIMENSION, { fit: 'inside', withoutEnlargement: true })
+      .webp({ quality: 82 })
+      .toFile(webpPath)
   } catch (err) {
     // sharp yarım dosya bırakmış olabilir; kaynak dosya çağıranın sorumluluğunda
     await unlink(webpPath).catch(() => {})
