@@ -17,6 +17,8 @@ import type {
   CreateBlogPostDto,
   CreateFaqDto,
   CreateReferenceDto,
+  DashMetricType,
+  DashUnit,
   Faq,
   LogAdminListResponse,
   LoginDto,
@@ -28,6 +30,9 @@ import type {
   Remove2faDto,
   TwoFaSetup,
   TwoFaStatus,
+  UmamiMetric,
+  UmamiPageviews,
+  UmamiStats,
   UpdateBlogPostDto,
   UpdateFaqDto,
   UpdateReferenceDto,
@@ -175,6 +180,28 @@ export interface LogAdminListParams {
 
 export const getLogAdminList = (params: LogAdminListParams = {}) =>
   panelFetch<LogAdminListResponse>(`/logs/admin/all${toQuery(params)}`)
+
+// ── Analitik ──────────────────────────────────────────────────────────────
+// bkz. backend/src/analytics/analytics.controller.ts (/api/dash/*). Umami
+// henüz bağlanmadıysa (UMAMI_WEBSITE_ID boş) uçlar 200 + boş gövde döner —
+// bu bir hata değil, Analitik sayfası bunu ayrı bir boş durum olarak gösterir.
+
+export interface DashRangeParams {
+  startAt: number
+  endAt: number
+}
+
+export const getDashStats = (params: DashRangeParams) =>
+  panelFetch<UmamiStats>(`/dash/stats${toQuery(params)}`)
+
+export const getDashPageviews = (params: DashRangeParams & { unit?: DashUnit }) =>
+  panelFetch<UmamiPageviews>(`/dash/pageviews${toQuery(params)}`)
+
+export const getDashPages = (params: DashRangeParams) =>
+  panelFetch<UmamiMetric[]>(`/dash/pages${toQuery(params)}`)
+
+export const getDashMetrics = (params: DashRangeParams & { type: DashMetricType }) =>
+  panelFetch<UmamiMetric[]>(`/dash/metrics${toQuery(params)}`)
 
 // ── Upload ────────────────────────────────────────────────────────────────
 // Content-Type elle set edilmez — multipart boundary'yi tarayıcı yazar.

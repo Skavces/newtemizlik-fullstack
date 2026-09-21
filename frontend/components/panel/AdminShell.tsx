@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
   LayoutDashboard,
+  BarChart3,
   FileText,
   HelpCircle,
   Images,
@@ -26,10 +27,9 @@ interface NavItem {
   match: (pathname: string) => boolean
 }
 
-// Analitik kasıtlı olarak burada değil — Umami Faz 5'te kuruluyor, o zamana
-// kadar gerçek veriye karşı doğrulanamaz (bkz. Faz 4 planı kararları).
 const NAV: NavItem[] = [
   { href: '/nt-panel', label: 'Ana Sayfa', icon: LayoutDashboard, match: (p) => p === '/nt-panel' },
+  { href: '/nt-panel/analitik', label: 'Analitik', icon: BarChart3, match: (p) => p.startsWith('/nt-panel/analitik') },
   { href: '/nt-panel/blog', label: 'Blog', icon: FileText, match: (p) => p.startsWith('/nt-panel/blog') },
   { href: '/nt-panel/sss', label: 'S.S.S.', icon: HelpCircle, match: (p) => p.startsWith('/nt-panel/sss') },
   { href: '/nt-panel/referanslar', label: 'Referanslar', icon: Images, match: (p) => p.startsWith('/nt-panel/referanslar') },

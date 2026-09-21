@@ -10,6 +10,28 @@ export interface UmamiStats {
   bounces: UmamiStat
   totaltime: UmamiStat
 }
+
+// Umami'nin GERÇEKTE döndürdüğü şekil (3.1.0'a karşı canlı doğrulandı, Faz 5) —
+// renel-enerji'den taşınırken varsayılan {value,change} iç içe şekli yanlış
+// çıktı: API düz sayılar + ayrı bir `comparison` (önceki eşdeğer dönem) nesnesi
+// veriyor. renel'in frontend'i bunu `stats?.x?.value ?? stats?.x ?? 0` ile
+// sessizce tolere ediyordu (değişim yüzdesi hiç gösterilmeden); burada bunun
+// yerine backend sınırında normalize ediyoruz ki UmamiStat sözleşmesi gerçek
+// olsun ve panel değişim yüzdesini gösterebilsin.
+interface UmamiRawStats {
+  pageviews: number
+  visitors: number
+  visits: number
+  bounces: number
+  totaltime: number
+  comparison?: {
+    pageviews: number
+    visitors: number
+    visits: number
+    bounces: number
+    totaltime: number
+  }
+}
 interface UmamiSeriesPoint { x: string; y: number }
 export interface UmamiPageviews {
   pageviews: UmamiSeriesPoint[]
@@ -82,10 +104,26 @@ export class AnalyticsService {
     return res.json()
   }
 
+  // previous=0 iken yüzde hesaplamak (0/0) tanımsız — önceki dönemde hiç veri
+  // yoksa ve şimdi varsa "yeni" durumu +%100 olarak, ikisi de sıfırsa %0 olarak
+  // gösterilir.
+  private toStat(current: number, previous: number): UmamiStat {
+    if (previous > 0) return { value: current, change: Math.round(((current - previous) / previous) * 100) }
+    return { value: current, change: current > 0 ? 100 : 0 }
+  }
+
   async getStats(startAt: number, endAt: number): Promise<UmamiStats | null> {
     if (!this.websiteId) return null
     try {
-      return await this.fetch<UmamiStats>(`/api/websites/${this.websiteId}/stats?startAt=${startAt}&endAt=${endAt}`)
+      const raw = await this.fetch<UmamiRawStats>(`/api/websites/${this.websiteId}/stats?startAt=${startAt}&endAt=${endAt}`)
+      const prev = raw.comparison ?? { pageviews: 0, visitors: 0, visits: 0, bounces: 0, totaltime: 0 }
+      return {
+        pageviews: this.toStat(raw.pageviews, prev.pageviews),
+        visitors: this.toStat(raw.visitors, prev.visitors),
+        visits: this.toStat(raw.visits, prev.visits),
+        bounces: this.toStat(raw.bounces, prev.bounces),
+        totaltime: this.toStat(raw.totaltime, prev.totaltime),
+      }
     } catch (err) {
       this.logger.warn('Umami getStats hatası:', err)
       return null

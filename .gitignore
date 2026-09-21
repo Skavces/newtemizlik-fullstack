@@ -1,0 +1,4 @@
+# Kök docker-compose.yml'in okuduğu .env — backend/frontend'in kendi .env'leri
+# zaten kendi .gitignore'larında hariç tutuluyor; bu sadece Faz 5'te eklenen
+# kök seviyesindeki gerçek dosya için gerekti.
+.env

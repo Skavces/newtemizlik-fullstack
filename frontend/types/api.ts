@@ -113,6 +113,44 @@ export interface LogAdminListResponse extends PagedMeta {
   logs: AppLog[]
 }
 
+// ── Analitik (Umami) ─────────────────────────────────────────────────────
+// bkz. backend/src/analytics/analytics.service.ts. UMAMI_WEBSITE_ID henüz
+// ayarlanmamışsa (Umami bağlanmadıysa) /api/dash/* uçları 200 + boş gövde
+// döner (stats/pageviews için {}, pages/metrics için []) — bu yüzden
+// UmamiStats/UmamiPageviews'ın tüm alanları opsiyonel.
+export interface UmamiStat {
+  value: number
+  change: number
+}
+
+export interface UmamiStats {
+  pageviews?: UmamiStat
+  visitors?: UmamiStat
+  visits?: UmamiStat
+  bounces?: UmamiStat
+  totaltime?: UmamiStat
+}
+
+export interface UmamiSeriesPoint {
+  x: string
+  y: number
+}
+
+export interface UmamiPageviews {
+  pageviews?: UmamiSeriesPoint[]
+  sessions?: UmamiSeriesPoint[]
+}
+
+export interface UmamiMetric {
+  x: string
+  y: number
+}
+
+// analytics.controller.ts'in ALLOWED_UNITS / ALLOWED_METRICS allowlist'leriyle
+// birebir — geçersiz değer burada derlemede, backend'de 400 ile yakalanır.
+export type DashUnit = 'hour' | 'day' | 'month' | 'year'
+export type DashMetricType = 'referrer' | 'browser' | 'os' | 'device' | 'country' | 'language'
+
 // ── Auth ──────────────────────────────────────────────────────────────────
 
 export interface AuthMe {

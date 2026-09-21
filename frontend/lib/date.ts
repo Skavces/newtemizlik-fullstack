@@ -13,6 +13,22 @@ export function dayRangeToIso(fromDay?: string, toDay?: string): { from?: string
   return result
 }
 
+// dayRangeToIso ile aynı yerel gün sınırı mantığı, ama /api/dash/* (Umami
+// proxy'si) ISO string değil ms epoch sayı bekliyor (startAt/endAt) — bkz.
+// analytics.controller.ts. Faz 5, Analitik sayfası için.
+export function dayRangeToEpoch(fromDay?: string, toDay?: string): { startAt?: number; endAt?: number } {
+  const result: { startAt?: number; endAt?: number } = {}
+  if (fromDay) {
+    const start = new Date(`${fromDay}T00:00:00`)
+    if (!isNaN(start.getTime())) result.startAt = start.getTime()
+  }
+  if (toDay) {
+    const end = new Date(`${toDay}T23:59:59.999`)
+    if (!isNaN(end.getTime())) result.endAt = end.getTime()
+  }
+  return result
+}
+
 export function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('tr-TR', {
     day: '2-digit',

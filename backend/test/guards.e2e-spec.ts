@@ -18,6 +18,7 @@ const PROTECTED_ROUTES: Array<['get' | 'post' | 'patch' | 'delete', string]> = [
   ['post', '/api/references'],
   ['get', '/api/references/admin/all'],
   ['get', '/api/quote/admin/all'],
+  ['get', '/api/dash/stats'],
 ]
 
 describe('JWT guard coverage (e2e)', () => {

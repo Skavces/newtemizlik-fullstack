@@ -84,6 +84,16 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
         gtag('js', new Date());
         gtag('config', 'G-TZDD4EVYEF');`}
       </Script>
+      {/* Faz 5: Umami, GA4'ün yanında ikinci ve bağımsız bir analitik kaynağı —
+          ikisi de kaldırılmadan bir süre paralel çalışacak. İki env değişkeni de
+          yoksa script hiç yüklenmez (bkz. frontend/.env.example). */}
+      {process.env.NEXT_PUBLIC_UMAMI_URL && process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
+        <Script
+          src={`${process.env.NEXT_PUBLIC_UMAMI_URL}/script.js`}
+          data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+          strategy="afterInteractive"
+        />
+      )}
     </ThemeProvider>
   )
 }

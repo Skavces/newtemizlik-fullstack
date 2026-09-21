@@ -1,0 +1,38 @@
+services:
+  # Faz 5: yalnızca analitik (Umami) stack'i. Faz 7'de backend/frontend/db/redis/nginx
+  # servisleri aynı dosyaya eklenecek — port numaraları (3003, ileride 8081) o zaman
+  # renel-enerji'nin aynı VPS'te kullandığı 3002/8080 ile çakışmayacak şekilde seçildi.
+  umami-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    mem_limit: 512m
+    environment:
+      POSTGRES_USER: umami
+      POSTGRES_PASSWORD: ${UMAMI_DB_PASS}
+      POSTGRES_DB: umami
+    volumes:
+      - umami_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U umami -d umami"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  umami:
+    # renel-enerji'de üretimde çalışan digest'e sabitlenmiş imaj — :latest kullanılmaz
+    # (tedarik zinciri riski), bilinçli olmadan bump edilmez.
+    image: ghcr.io/umami-software/umami:3.1.0@sha256:e3f80c0625aad7179b49da27d475357cabb1068b8cacd9a792cfd6966888b123
+    restart: unless-stopped
+    mem_limit: 512m
+    ports:
+      - "127.0.0.1:3003:3000"
+    environment:
+      DATABASE_URL: postgresql://umami:${UMAMI_DB_PASS}@umami-db:5432/umami
+      APP_SECRET: ${UMAMI_APP_SECRET}
+      BASE_PATH: /umami
+    depends_on:
+      umami-db:
+        condition: service_healthy
+
+volumes:
+  umami_pgdata:

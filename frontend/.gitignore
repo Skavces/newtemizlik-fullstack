@@ -32,6 +32,11 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# .env.example dokümantasyon amaçlı, gerçek sır içermez — commit edilmeli
+# (backend/.gitignore'da bu zaten doğru; Next.js'in ürettiği bu dosyada
+# geniş .env* deseni onu da yutuyordu — .env.example hiçbir zaman commit
+# edilmemiş, Faz 5 doğrulamasında fark edildi)
+!.env.example
 
 # vercel
 .vercel
