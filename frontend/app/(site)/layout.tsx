@@ -37,7 +37,7 @@ const organizationSchema = {
       '@type': 'Product',
       '@id': `${SITE_URL}/#robot`,
       name: 'Otonom GES Temizlik Robotu',
-      image: `${SITE_URL}/soma-ges-otonom-temizlik-robotu.jpeg`,
+      image: `${SITE_URL}/soma-ges-otonom-temizlik-robotu.webp`,
       description: 'Büyük ölçekli güneş enerji santralleri için insansız, yapay zeka destekli profesyonel panel yıkama makinesi.',
       category: 'Industrial Equipment',
       offers: {

@@ -29,7 +29,7 @@ const BLOG_POSTS = [
     title: 'Güneş Paneli Temizliği Ne Zaman Yapılmalı? Mevsimlik Rehber',
     excerpt: 'İlkbahar, yaz, sonbahar ve kış için mevsimlik temizlik takvimi. Bölgenize ve santral büyüklüğünüze göre doğru temizlik sıklığını öğrenin.',
     metaDescription: 'Güneş paneli temizliğinin ne zaman ve ne sıklıkla yapılması gerektiğini öğrenin. İlkbahar, yaz, sonbahar ve kış için mevsimlik temizlik takvimi rehberi.',
-    coverImage: '/endustriyel-gunes-paneli-yikama.jpeg',
+    coverImage: '/endustriyel-gunes-paneli-yikama.webp',
     sortOrder: 0,
     content: `
 <p>Güneş panellerinin temizlik sıklığı, santralinizin bulunduğu coğrafyaya, çevresel kirlilik düzeyine ve yıllık üretim hedeflerinize göre değişir. Yanlış zamanda ya da çok seyrek yapılan temizlik, beklenenden çok daha büyük üretim kayıplarına yol açabilir.</p>
@@ -65,7 +65,7 @@ const BLOG_POSTS = [
     title: "GES'te Hotspot (Sıcak Nokta) Nedir ve Nasıl Tespit Edilir?",
     excerpt: 'Hotspot neden oluşur, panel sağlığına ve güvenliğine ne gibi zararlar verir? Termal kamera ile erken tespitin önemi.',
     metaDescription: 'GES panellerinde hotspot (sıcak nokta) nedir, neden oluşur, ne gibi zararlara yol açar ve termal kamera ile nasıl tespit edilir? Kapsamlı teknik rehber.',
-    coverImage: '/ges-bakim-onarim-termal-analiz.jpeg',
+    coverImage: '/ges-bakim-onarim-termal-analiz.webp',
     sortOrder: 1,
     content: `
 <p>Güneş enerji santrallerinin uzun vadeli sağlığını tehdit eden en ciddi sorunlardan biri <strong>hotspot</strong>, yani sıcak nokta oluşumudur. Çoğu zaman çıplak gözle fark edilemeyen bu sorun, fark edilmeden ilerlediğinde ciddi verim kayıplarına, panel hasarına ve hatta yangın riskine yol açabilir.</p>
@@ -144,7 +144,7 @@ const BLOG_POSTS = [
     title: 'GES Temizliğinde Otonom Robot mu, Manuel Temizlik mi?',
     excerpt: 'İki yöntemin maliyet analizi, avantaj ve dezavantajları. Hangi saha büyüklüğünde hangisi daha kârlı?',
     metaDescription: 'GES panel temizliğinde otonom temizlik robotu ile manuel temizlik arasındaki farklar, maliyet analizi ve hangi saha büyüklüğü için hangisinin doğru seçim olduğu.',
-    coverImage: '/soma-ges-otonom-temizlik-robotu.jpeg',
+    coverImage: '/soma-ges-otonom-temizlik-robotu.webp',
     sortOrder: 3,
     content: `
 <p>Güneş enerji santralinizin temizlik ihtiyacını karşılamanın birden fazla yolu var: sahaya ekip göndermek ya da otonom bir temizlik robotu kullanmak. Doğru kararı vermek için saha büyüklüğü, temizlik sıklığı ve uzun vadeli maliyet hesabı birlikte değerlendirilmelidir.</p>
@@ -300,19 +300,17 @@ const FAQS: Array<{ scope: 'genel' | 'panel-temizlik' | 'panel-bakim' | 'robot-s
 const REFERENCES = [
   { name: 'Albayrak', logo: '/albayrak.png', scale: 1, sortOrder: 0 },
   { name: 'Bizim Yem', logo: '/bizimyem.png', scale: 1.4, sortOrder: 1 },
-  { name: 'Gezgin Enerji', logo: '/gezginenerji.png', scale: 1.4, sortOrder: 2 },
+  { name: 'Gezgin Enerji', logo: '/gezginenerji.webp', scale: 1.4, sortOrder: 2 },
   { name: 'Halkbank', logo: '/halkbank.png', scale: 1, sortOrder: 3 },
   { name: 'La Bella', logo: '/labella.png', scale: 1, sortOrder: 4 },
   { name: 'Mert Civata', logo: '/mert-civata-logo.png', scale: 1, sortOrder: 5 },
   { name: 'Saloni', logo: '/saloni.png', scale: 1, sortOrder: 6 },
   { name: 'Sun Tekstil', logo: '/suntekstil.png', scale: 1, sortOrder: 7 },
-  { name: 'Wolfex', logo: '/wolfex.png', scale: 1, sortOrder: 8 },
+  { name: 'Wolfex', logo: '/wolfex.webp', scale: 1, sortOrder: 8 },
   { name: 'Hasan Atak', logo: '/hasanatak.webp', scale: 1, sortOrder: 9 },
   { name: 'Renel Enerji', logo: '/renel-enerji.png', scale: 1.3, sortOrder: 10 },
   { name: 'Ege Linyitleri İşletmesi Müdürlüğü', logo: '/ege-linyitleri-isletmesi-mudurlugu.png', scale: 1, sortOrder: 11 },
-  // Eski dosya adı "kirkagac-alay-komutanlıgi.png" (Türkçe ı) — Faz 6'da asset
-  // taşınırken ASCII'ye çevrilecek, buradaki isim o hedefi işaret ediyor
-  { name: 'Kırkağaç Alay Komutanlığı', logo: '/kirkagac-alay-komutanligi.png', scale: 1, sortOrder: 12 },
+  { name: 'Kırkağaç Alay Komutanlığı', logo: '/kirkagac-alay-komutanligi.webp', scale: 1, sortOrder: 12 },
 ]
 
 async function seedBlog(): Promise<void> {

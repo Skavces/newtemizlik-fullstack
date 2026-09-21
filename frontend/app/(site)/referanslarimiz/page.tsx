@@ -42,7 +42,7 @@ export default async function ReferanslarPage() {
 
       <PageHero
         title="Referanslarımız"
-        image="solar-panel.png"
+        image="solar-panel.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Referanslarımız' },

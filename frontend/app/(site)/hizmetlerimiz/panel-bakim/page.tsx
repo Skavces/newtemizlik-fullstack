@@ -9,7 +9,7 @@ export const metadata = buildMetadata({
   title: 'GES Panel Bakım ve Onarım İzleme Hizmeti | New Temizlik',
   description: 'GES santrallerinde proaktif bakım, termal analiz ve performans izleme hizmetleri. Hotspot tespiti ve invertör kontrolüyle verim kayıplarını ve arızaları erkenden önlüyoruz.',
   canonical: '/hizmetlerimiz/panel-bakim',
-  image: '/ges-bakim-onarim-termal-analiz.jpeg',
+  image: '/ges-bakim-onarim-termal-analiz.webp',
   imageAlt: 'GES santralinde termal analiz ve bakım onarım izleme çalışması',
   imageWidth: 1200,
   imageHeight: 800,
@@ -54,7 +54,7 @@ export default async function PanelBakimPage() {
 
       <PageHero
         title="Panel Bakım & Onarım İzleme"
-        image="solar-panel.png"
+        image="solar-panel.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Hizmetlerimiz', path: '/hizmetlerimiz' },

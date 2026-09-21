@@ -11,26 +11,26 @@ export const metadata = buildMetadata({
   description: 'GES solar panel temizlik robotu ve makina satışı. Büyük ölçekli güneş enerji santralleri için otonom, IoT destekli, uzaktan yönetilebilen panel yıkama sistemleri.',
   ogTitle: 'GES Solar Panel Temizlik Robotu Satışı | New Temizlik',
   canonical: '/hizmetlerimiz/robot-satisi',
-  image: '/soma-ges-otonom-temizlik-robotu.jpeg',
+  image: '/soma-ges-otonom-temizlik-robotu.webp',
   imageAlt: 'GES sahasında otonom solar panel temizlik robotu çalışma görüntüsü',
   imageWidth: 1200,
   imageHeight: 800,
 })
 
 const productPhotos = [
-  { src: '/ges-panel-temizlik-robotu-saha-uygulamasi.jpeg', alt: 'GES panel temizlik robotu saha uygulaması' },
-  { src: '/ges-panel-temizlik-robotu-saha-calismasi.jpeg', alt: 'GES panel temizlik robotu saha çalışması' },
-  { src: '/ges-otonom-temizlik-robotu-ray-sistemi.jpeg', alt: 'GES otonom temizlik robotu ray sistemi' },
-  { src: '/leopardust-ges-panel-temizlik-robotu-saha.jpeg', alt: 'LeopardDust GES panel temizlik robotu sahada' },
-  { src: '/gunes-enerjisi-santrali-otomatik-ray-temizlik-sistemi.jpeg', alt: 'Güneş enerjisi santrali otomatik ray temizlik sistemi' },
-  { src: '/gunes-paneli-manuel-temizlik-fircasi-makinasi.jpeg', alt: 'Güneş paneli manuel temizlik fırçası makinası' },
-  { src: '/gunes-paneli-cift-diskli-elektrikli-temizlik-fircasi.jpeg', alt: 'Güneş paneli çift diskli elektrikli temizlik fırçası' },
-  { src: '/gunes-paneli-uzatmali-cift-fircali-temizlik-makinasi.jpeg', alt: 'Güneş paneli uzatmalı çift fırçalı temizlik makinası' },
-  { src: '/gunes-paneli-elektrikli-temizlik-fircasi-seri-uretim.jpeg', alt: 'Güneş paneli elektrikli temizlik fırçası seri üretim' },
-  { src: '/ges-panel-temizlik-makinasi-cesitleri.jpeg', alt: 'GES panel temizlik makinası çeşitleri' },
-  { src: '/gunes-paneli-sulama-temizlik-boru-sistemi.jpeg', alt: 'Güneş paneli sulama temizlik boru sistemi' },
-  { src: '/ges-temizlik-robotu-urun-aksesuarlari.jpeg', alt: 'GES temizlik robotu ürün aksesuarları' },
-  { src: '/ges-temizlik-robotu-uzaktan-kumandali-ozellikler.jpeg', alt: 'GES temizlik robotu uzaktan kumandalı özellikler' },
+  { src: '/ges-panel-temizlik-robotu-saha-uygulamasi.webp', alt: 'GES panel temizlik robotu saha uygulaması' },
+  { src: '/ges-panel-temizlik-robotu-saha-calismasi.webp', alt: 'GES panel temizlik robotu saha çalışması' },
+  { src: '/ges-otonom-temizlik-robotu-ray-sistemi.webp', alt: 'GES otonom temizlik robotu ray sistemi' },
+  { src: '/leopardust-ges-panel-temizlik-robotu-saha.webp', alt: 'LeopardDust GES panel temizlik robotu sahada' },
+  { src: '/gunes-enerjisi-santrali-otomatik-ray-temizlik-sistemi.webp', alt: 'Güneş enerjisi santrali otomatik ray temizlik sistemi' },
+  { src: '/gunes-paneli-manuel-temizlik-fircasi-makinasi.webp', alt: 'Güneş paneli manuel temizlik fırçası makinası' },
+  { src: '/gunes-paneli-cift-diskli-elektrikli-temizlik-fircasi.webp', alt: 'Güneş paneli çift diskli elektrikli temizlik fırçası' },
+  { src: '/gunes-paneli-uzatmali-cift-fircali-temizlik-makinasi.webp', alt: 'Güneş paneli uzatmalı çift fırçalı temizlik makinası' },
+  { src: '/gunes-paneli-elektrikli-temizlik-fircasi-seri-uretim.webp', alt: 'Güneş paneli elektrikli temizlik fırçası seri üretim' },
+  { src: '/ges-panel-temizlik-makinasi-cesitleri.webp', alt: 'GES panel temizlik makinası çeşitleri' },
+  { src: '/gunes-paneli-sulama-temizlik-boru-sistemi.webp', alt: 'Güneş paneli sulama temizlik boru sistemi' },
+  { src: '/ges-temizlik-robotu-urun-aksesuarlari.webp', alt: 'GES temizlik robotu ürün aksesuarları' },
+  { src: '/ges-temizlik-robotu-uzaktan-kumandali-ozellikler.webp', alt: 'GES temizlik robotu uzaktan kumandalı özellikler' },
 ]
 
 const features = [
@@ -72,7 +72,7 @@ export default async function RobotSatisPage() {
 
       <PageHero
         title="Temizlik Robot & Makina Satışı"
-        image="solar-panel.png"
+        image="solar-panel.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Hizmetlerimiz', path: '/hizmetlerimiz' },
@@ -86,7 +86,7 @@ export default async function RobotSatisPage() {
 
             <div className="w-full lg:w-1/2 overflow-hidden" style={{ borderRadius: '16px', aspectRatio: '4/3' }}>
               <img
-                src="/soma-ges-otonom-temizlik-robotu.jpeg"
+                src="/soma-ges-otonom-temizlik-robotu.webp"
                 alt="GES sahasında kullanılan otonom panel temizlik robotu"
                 className="w-full h-full object-cover"
               />

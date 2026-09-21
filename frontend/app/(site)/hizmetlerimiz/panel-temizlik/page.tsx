@@ -10,7 +10,7 @@ export const metadata = buildMetadata({
   description: "Soma'da ve Türkiye genelinde profesyonel GES temizliği, güneş paneli yıkama ve solar panel temizlik hizmeti. Soma'nın endüstriyel toz ortamına özel yöntemlerle %30'a kadar verim artışı sağlıyoruz.",
   keywords: 'soma ges temizliği, güneş paneli temizliği, panel temizliği, ges temizliği, solar panel temizliği, türkiye geneli ges temizliği, güneş enerji santrali temizliği, manisa ges temizliği',
   canonical: '/hizmetlerimiz/panel-temizlik',
-  image: '/endustriyel-gunes-paneli-yikama.jpeg',
+  image: '/endustriyel-gunes-paneli-yikama.webp',
   imageAlt: 'GES sahasında profesyonel endüstriyel güneş paneli temizlik çalışması',
   imageWidth: 1200,
   imageHeight: 800,
@@ -119,7 +119,7 @@ export default async function PanelTemizlikPage() {
 
       <PageHero
         title="Panel Temizlik Hizmeti"
-        image="solar-panel.png"
+        image="solar-panel.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Hizmetlerimiz', path: '/hizmetlerimiz' },
@@ -134,7 +134,7 @@ export default async function PanelTemizlikPage() {
 
             <div className="w-full lg:w-1/2 overflow-hidden" style={{ borderRadius: '16px', aspectRatio: '4/3' }}>
               <img
-                src="/endustriyel-gunes-paneli-yikama.jpeg"
+                src="/endustriyel-gunes-paneli-yikama.webp"
                 alt="GES sahasında profesyonel güneş paneli temizlik çalışması"
                 className="w-full h-full object-cover"
               />

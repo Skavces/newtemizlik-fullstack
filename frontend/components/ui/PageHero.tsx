@@ -9,7 +9,7 @@ interface Breadcrumb {
 interface PageHeroProps {
   /** Sayfa başlığı (sol taraf) */
   title: string
-  /** Arka plan resmi (public klasöründen, ör: "ges-temizligi.jpg") */
+  /** Arka plan resmi (public klasöründen, ör: "solar-panel.webp") */
   image: string
   breadcrumbs?: Breadcrumb[]
 }

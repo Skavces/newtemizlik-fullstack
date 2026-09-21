@@ -38,9 +38,9 @@ const values = [
 ]
 
 const collageImages = [
-  { src: '/endustriyel-gunes-paneli-yikama.jpeg', alt: 'Endüstriyel güneş paneli yıkama' },
-  { src: '/soma-ges-otonom-temizlik-robotu.jpeg', alt: 'Otonom temizlik robotu' },
-  { src: '/ges-bakim-onarim-termal-analiz.jpeg', alt: 'Termal analiz ve bakım' },
+  { src: '/endustriyel-gunes-paneli-yikama.webp', alt: 'Endüstriyel güneş paneli yıkama' },
+  { src: '/soma-ges-otonom-temizlik-robotu.webp', alt: 'Otonom temizlik robotu' },
+  { src: '/ges-bakim-onarim-termal-analiz.webp', alt: 'Termal analiz ve bakım' },
   { src: '/soma-gunes-enerjisi-santrali-uzman-bakim.webp', alt: 'Uzman GES bakımı' },
 ]
 
@@ -51,7 +51,7 @@ export default function KurumsalPage() {
 
       <PageHero
         title="Kurumsal"
-        image="solar-panel.png"
+        image="solar-panel.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Kurumsal' },

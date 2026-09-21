@@ -79,7 +79,7 @@ const cards: Card[] = [
       'Yumuşak fırçalar ve otomatik temizlik sistemleri sayesinde panellerin cam yüzeyi ve hücre yapısı korunur.',
       'Temizlik işlemi genellikle sabah erken saatlerde veya akşam serinliğinde yapılır.',
     ],
-    img: '/ges-temizligi.jpg',
+    img: '/ges-temizligi.webp',
     altText: 'Profesyonel GES güneş paneli temizlik uygulaması ve yöntemi',
   },
 ]

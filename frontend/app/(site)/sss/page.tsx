@@ -42,7 +42,7 @@ export default async function SSSPage() {
 
       <PageHero
         title="Sıkça Sorulan Sorular"
-        image="solar-panel.png"
+        image="solar-panel.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'S.S.S' },

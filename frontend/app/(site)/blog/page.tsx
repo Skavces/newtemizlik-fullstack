@@ -67,7 +67,7 @@ export default async function BlogPage() {
 
       <PageHero
         title="Blog"
-        image="solar-panel.png"
+        image="solar-panel.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Blog' },

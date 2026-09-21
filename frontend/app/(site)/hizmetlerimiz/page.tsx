@@ -24,7 +24,7 @@ const services = [
   {
     title: 'Panel Temizlik Hizmeti',
     description: 'Özel ekipmanlar ve uygun temizlik yöntemleri kullanarak güneş panellerinin yüzey temizliğini gerçekleştiriyoruz. Düzenli temizlik, panel veriminin korunmasına ve üretim kayıplarının azaltılmasına yardımcı olur.',
-    img: '/endustriyel-gunes-paneli-yikama.jpeg',
+    img: '/endustriyel-gunes-paneli-yikama.webp',
     alt: 'GES sahasında profesyonel güneş paneli temizlik çalışması',
     path: '/hizmetlerimiz/panel-temizlik',
   },
@@ -38,7 +38,7 @@ const services = [
   {
     title: 'Temizlik Robot Makina Satışı',
     description: 'Büyük ölçekli güneş enerji santralleri için panel temizlik robotları sunuyoruz. Otomatik temizlik sistemleri ile bakım süreçleri hızlanır ve iş gücü ihtiyacı azalır.',
-    img: '/soma-ges-otonom-temizlik-robotu.jpeg',
+    img: '/soma-ges-otonom-temizlik-robotu.webp',
     alt: 'GES sahasında kullanılan panel temizlik robotu',
     path: '/hizmetlerimiz/robot-satisi',
   },
@@ -51,7 +51,7 @@ export default function HizmetlerimizPage() {
 
       <PageHero
         title="Hizmetlerimiz"
-        image="solar-panel.png"
+        image="solar-panel.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Hizmetlerimiz' },
