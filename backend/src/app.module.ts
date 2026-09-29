@@ -19,6 +19,8 @@ import { FaqModule } from './faq/faq.module'
 import { QuoteModule } from './quote/quote.module'
 import { LogsModule } from './logs/logs.module'
 import { HealthController } from './health.controller'
+import { LlmModule } from './llm/llm.module'
+import { ChatModule } from './chat/chat.module'
 
 @Module({
   imports: [
@@ -66,6 +68,9 @@ import { HealthController } from './health.controller'
         // Boşsa Next.js revalidation webhook'u hiç çağrılmaz (bkz. RevalidationService)
         REVALIDATE_URL: Joi.string().uri().allow('').optional(),
         REVALIDATE_SECRET: Joi.string().allow('').optional(),
+        // Boşsa chatbot'un LLM uçları 503 döner, widget hata mesajına düşer (bkz. LlmService)
+        LLM_CHAT_KEYS: Joi.string().allow('').optional(),
+        LLM_DAILY_LIMIT: Joi.number().empty('').default(1000),
       }),
       validationOptions: { allowUnknown: true },
     }),
@@ -104,6 +109,8 @@ import { HealthController } from './health.controller'
     FaqModule,
     QuoteModule,
     LogsModule,
+    LlmModule,
+    ChatModule,
   ],
   controllers: [HealthController],
   providers: [

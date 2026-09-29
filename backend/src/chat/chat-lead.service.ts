@@ -1,0 +1,84 @@
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { FindOptionsWhere, Repository } from 'typeorm'
+import { ChatLead } from './entities/chat-lead.entity'
+import { ChatMessage } from './chat.service'
+import { DateRange, dateRangeOperator } from '../common/date-range'
+
+export interface LeadStats {
+  total: number
+  active: number
+  whatsapp: number
+}
+
+// Bir konuşmanın "lead" sayılması için gereken kullanıcı mesajı sayısı
+// (chatbot'taki WhatsApp butonu eşiğiyle aynı)
+const LEAD_USER_MESSAGE_THRESHOLD = 2
+
+const PAGE_SIZE = 50
+
+@Injectable()
+export class ChatLeadService {
+  constructor(
+    @InjectRepository(ChatLead)
+    private repo: Repository<ChatLead>,
+  ) {}
+
+  async upsertFromChat(sessionId: string | undefined, messages: ChatMessage[], reply: string): Promise<void> {
+    if (!sessionId) return
+    const messageCount = messages.filter(m => m.role === 'user').length
+    if (messageCount < LEAD_USER_MESSAGE_THRESHOLD) return
+
+    const conversation = [...messages, { role: 'assistant' as const, content: reply }]
+    const existing = await this.repo.findOne({ where: { sessionId } })
+    if (existing) {
+      existing.conversation = conversation
+      existing.messageCount = messageCount
+      await this.repo.save(existing)
+    } else {
+      await this.repo.save(this.repo.create({ sessionId, conversation, messageCount }))
+    }
+  }
+
+  async markWhatsapp(sessionId: string | undefined): Promise<void> {
+    if (!sessionId) return
+    await this.repo.update({ sessionId }, { status: 'whatsapp' })
+  }
+
+  async attachRating(sessionId: string | undefined, rating: number): Promise<void> {
+    if (!sessionId) return
+    await this.repo.update({ sessionId }, { rating })
+  }
+
+  async remove(id: string): Promise<void> {
+    const lead = await this.repo.findOne({ where: { id } })
+    if (!lead) throw new NotFoundException('Talep bulunamadı')
+    await this.repo.remove(lead)
+  }
+
+  async findAllWithStats(
+    page = 1,
+    status?: 'active' | 'whatsapp',
+    range: DateRange = {},
+  ): Promise<{ stats: LeadStats; leads: ChatLead[]; page: number; pageCount: number }> {
+    // Tarih filtresi createdAt üzerinden (talebin geldiği tarih); sıralama
+    // updatedAt DESC kalır. Stats her zaman global — logs level deseniyle aynı.
+    const where: FindOptionsWhere<ChatLead> = {}
+    if (status) where.status = status
+    const createdAt = dateRangeOperator(range)
+    if (createdAt) where.createdAt = createdAt
+
+    const [leads, filteredTotal, total, whatsapp] = await Promise.all([
+      this.repo.find({ where, order: { updatedAt: 'DESC' }, take: PAGE_SIZE, skip: (page - 1) * PAGE_SIZE }),
+      this.repo.count({ where }),
+      this.repo.count(),
+      this.repo.count({ where: { status: 'whatsapp' } }),
+    ])
+    return {
+      stats: { total, whatsapp, active: total - whatsapp },
+      leads,
+      page,
+      pageCount: Math.max(1, Math.ceil(filteredTotal / PAGE_SIZE)),
+    }
+  }
+}
