@@ -14,5 +14,5 @@ export const metadata: Metadata = {
 }
 
 export default function PanelLayout({ children }: { children: ReactNode }) {
-  return children
+  return <div className="nt-panel-scope">{children}</div>
 }
