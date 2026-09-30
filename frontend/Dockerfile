@@ -4,6 +4,16 @@ RUN npm install -g npm@11
 COPY package*.json ./
 RUN npm ci
 COPY . .
+# NEXT_PUBLIC_* değerleri next build'in static prerender adımında derlenip HTML'e
+# gömülüyor — compose'un environment: bloğu yalnızca runtime'da geçerli, build
+# sırasında görünmez. Bu yüzden build-arg olarak açıkça geçirilmeleri gerekiyor
+# (bkz. docker-compose.yml next servisinin build.args'ı).
+ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_UMAMI_URL
+ARG NEXT_PUBLIC_UMAMI_WEBSITE_ID
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_UMAMI_URL=$NEXT_PUBLIC_UMAMI_URL
+ENV NEXT_PUBLIC_UMAMI_WEBSITE_ID=$NEXT_PUBLIC_UMAMI_WEBSITE_ID
 RUN npm run build
 
 FROM node:22-alpine AS production
