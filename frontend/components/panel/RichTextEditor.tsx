@@ -375,7 +375,9 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
     // engeller (renel'in Vite/SPA ortamında bu ayara gerek yoktu) — bkz. Faz 4 planı.
     immediatelyRender: false,
     extensions: [
-      StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
+      // Yazı gövdesinde H1 sunulmuyor — sayfa zaten kendi H1'ini basıyor
+      // (bkz. BlogArticleLayout.tsx), ikinci bir H1 SEO açısından zararlı.
+      StarterKit.configure({ heading: { levels: [2, 3] } }),
       Underline,
       TextStyle,
       FontSize,
@@ -403,7 +405,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
         return {
           isBold: false, isItalic: false, isUnderline: false, isStrike: false,
           isLink: false, isBulletList: false, isOrderedList: false,
-          isH1: false, isH2: false, isH3: false,
+          isH2: false, isH3: false,
           isAlignLeft: false, isAlignCenter: false, isAlignRight: false, isAlignJustify: false,
           canUndo: false, canRedo: false,
           fontFamily: '', fontSize: '', textColor: '#000000',
@@ -417,7 +419,6 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
         isLink: ctx.editor.isActive('link'),
         isBulletList: ctx.editor.isActive('bulletList'),
         isOrderedList: ctx.editor.isActive('orderedList'),
-        isH1: ctx.editor.isActive('heading', { level: 1 }),
         isH2: ctx.editor.isActive('heading', { level: 2 }),
         isH3: ctx.editor.isActive('heading', { level: 3 }),
         isAlignLeft: ctx.editor.isActive({ textAlign: 'left' }),
@@ -513,16 +514,15 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
 
           <Dropdown
             label="Normal"
-            selected={state.isH1 ? 'Başlık 1' : state.isH2 ? 'Başlık 2' : state.isH3 ? 'Başlık 3' : undefined}
+            selected={state.isH2 ? 'Başlık 2' : state.isH3 ? 'Başlık 3' : undefined}
             options={[
               { label: 'Normal', value: '0' },
-              { label: 'Başlık 1', value: '1' },
               { label: 'Başlık 2', value: '2' },
               { label: 'Başlık 3', value: '3' },
             ]}
             onSelect={(val) => {
               if (val === '0') editor.chain().focus().setParagraph().run()
-              else editor.chain().focus().toggleHeading({ level: parseInt(val) as 1 | 2 | 3 }).run()
+              else editor.chain().focus().toggleHeading({ level: parseInt(val) as 2 | 3 }).run()
             }}
           />
 

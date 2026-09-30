@@ -28,6 +28,13 @@ async function loadPost(slug: string) {
   }
 }
 
+// metaDescription/excerpt ikisi de boşsa <meta name="description"> boş
+// kalmasın diye gövde HTML'inden düz metin türetilir.
+function fallbackDescription(html: string): string {
+  const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+  return text.length > 160 ? `${text.slice(0, 157)}...` : text
+}
+
 interface PageProps {
   params: Promise<{ slug: string }>
 }
@@ -40,12 +47,12 @@ export async function generateMetadata({ params }: PageProps) {
   return buildMetadata({
     title: `${post.title} | New Temizlik`,
     ogTitle: post.title,
-    description: post.metaDescription || post.excerpt || '',
+    description: post.metaDescription || post.excerpt || fallbackDescription(post.content),
     canonical: `/blog/${post.slug}`,
     image: post.coverImage || '/logo.png',
     imageAlt: post.title,
-    imageWidth: post.coverImage ? 1200 : 512,
-    imageHeight: post.coverImage ? 800 : 512,
+    imageWidth: post.coverImage ? 1200 : 1080,
+    imageHeight: post.coverImage ? 800 : 1015,
     type: 'article',
   })
 }
