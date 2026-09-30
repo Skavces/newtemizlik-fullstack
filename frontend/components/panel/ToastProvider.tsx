@@ -2,8 +2,8 @@
 
 // renel-enerji'deki 9+ elle yazılmış alert() çağrısının yerini alan tek toast
 // sistemi (bkz. Faz 4 planı). Context değeri ayrı export edilmiyor (tek bu
-// dosyada tüketiliyor) — ThemeContext'teki fast-refresh ayrımına burada gerek
-// yok çünkü yalnızca bir hook (useToast) dışa açılıyor, component değil.
+// dosyada tüketiliyor) — context/hook'u ayrı dosyaya bölen fast-refresh
+// ayrımına burada gerek yok çünkü yalnızca bir hook (useToast) dışa açılıyor, component değil.
 import { createContext, useCallback, useContext, useState, type ReactNode } from 'react'
 import { CheckCircle2, XCircle, X } from 'lucide-react'
 

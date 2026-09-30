@@ -4,9 +4,11 @@ import { Inter, Rajdhani, Poppins } from 'next/font/google'
 import { SITE_URL } from '@/lib/seo'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
-const rajdhani = Rajdhani({ subsets: ['latin'], weight: ['500', '600', '700'], variable: '--font-rajdhani' })
-const poppins = Poppins({ subsets: ['latin'], weight: ['300', '400', '500', '600'], variable: '--font-poppins' })
+// latin-ext: Türkçe ğ/ş/ı/İ karakterleri latin subset'inde yok, olmadan
+// bu harfler fallback fonta düşüp layout shift'e (CLS) yol açıyordu.
+const inter = Inter({ subsets: ['latin', 'latin-ext'], variable: '--font-inter' })
+const rajdhani = Rajdhani({ subsets: ['latin', 'latin-ext'], weight: ['500', '600', '700'], variable: '--font-rajdhani' })
+const poppins = Poppins({ subsets: ['latin', 'latin-ext'], weight: ['300', '400', '500', '600'], variable: '--font-poppins' })
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -26,9 +28,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="tr"
-      translate="no"
-      className={`notranslate ${inter.variable} ${rajdhani.variable} ${poppins.variable}`}
-      data-theme="light"
+      className={`${inter.variable} ${rajdhani.variable} ${poppins.variable}`}
     >
       <body>{children}</body>
     </html>
