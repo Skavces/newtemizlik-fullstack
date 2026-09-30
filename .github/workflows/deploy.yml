@@ -1,0 +1,105 @@
+name: Deploy
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+# Art arda push'lar VPS'e aynı anda deploy denemesin diye kuyruğa alınır;
+# yarım kalmış bir deploy'u yarıda kesmemek için iptal değil, bekletme.
+concurrency:
+  group: deploy-master
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    # e2e testleri backend/test/setup-e2e.ts ile aynı portlarda throwaway DB/Redis bekler
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: newtemizlik_test
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6380:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+
+      - name: Backend testleri
+        working-directory: backend
+        run: |
+          npm ci
+          npm run lint
+          npm test
+
+      - name: Backend e2e testleri
+        working-directory: backend
+        run: npm run test:e2e
+
+      - name: Backend build
+        working-directory: backend
+        run: npm run build
+
+      - name: Frontend lint ve build
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run lint
+          npm run build
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            set -e
+            cd /home/deploy/newtemizlik-fullstack
+            git fetch origin master
+            git reset --hard origin/master
+            docker compose up -d --build
+            docker image prune -f
+
+            echo "Sağlık kontrolü yapılıyor..."
+            for i in $(seq 1 10); do
+              if curl -fs http://localhost:8081/api/health > /dev/null; then
+                echo "Backend ayakta, deploy başarılı."
+                exit 0
+              fi
+              echo "Henüz hazır değil, 5sn sonra tekrar denenecek... ($i/10)"
+              sleep 5
+            done
+            echo "HATA: Backend health check'i geçmedi, container loglarına bakılıyor:"
+            docker compose logs --tail=50 backend
+            exit 1
