@@ -13,7 +13,7 @@ export const metadata = buildMetadata({
     'Soma ve Türkiye genelinde endüstriyel GES ve güneş paneli temizliği. Solar panel yıkama, bakım izleme ve otonom temizlik robotu ile verim kaybını önlüyoruz.',
   keywords: 'soma ges temizliği, güneş paneli temizliği, panel temizliği, ges temizliği, solar panel yıkama, türkiye geneli ges temizliği, manisa ges temizliği',
   canonical: '/',
-  imageAlt: 'New Temizlik - GES ve güneş paneli temizlik hizmetleri logosu',
+  imageAlt: 'New Temizlik - GES ve güneş paneli temizlik hizmetleri',
 })
 
 const videoSchema = {

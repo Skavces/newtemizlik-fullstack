@@ -49,10 +49,10 @@ export async function generateMetadata({ params }: PageProps) {
     ogTitle: post.title,
     description: post.metaDescription || post.excerpt || fallbackDescription(post.content),
     canonical: `/blog/${post.slug}`,
-    image: post.coverImage || '/logo.png',
+    image: post.coverImage || '/og.png',
     imageAlt: post.title,
-    imageWidth: post.coverImage ? 1200 : 1080,
-    imageHeight: post.coverImage ? 800 : 1015,
+    imageWidth: 1200,
+    imageHeight: post.coverImage ? 800 : 630,
     type: 'article',
   })
 }
@@ -73,7 +73,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
     '@type': 'Article',
     headline: post.title,
     description: post.metaDescription || post.excerpt,
-    image: post.coverImage ? `${SITE_URL}${post.coverImage}` : `${SITE_URL}/logo.png`,
+    image: post.coverImage ? `${SITE_URL}${post.coverImage}` : `${SITE_URL}/og.png`,
     datePublished: post.publishedAt,
     dateModified: post.updatedAt || post.publishedAt,
     author: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
