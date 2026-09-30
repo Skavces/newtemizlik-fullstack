@@ -1,0 +1,17 @@
+# Sırlar
+.env
+.env.*
+!.env.example
+
+# Host'ta kurulu — builder'ın kendi npm ci çıktısının üzerine yazmasını önler
+node_modules
+
+# Build çıktıları — builder yeniden üretir
+.next
+
+# Araç/geliştirme artıkları
+.git
+.gitignore
+Dockerfile
+.dockerignore
+*.log

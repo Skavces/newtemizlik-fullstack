@@ -6,6 +6,9 @@ const BACKEND_ORIGIN = (process.env.API_URL || 'http://localhost:3001/api').repl
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Docker için minimal, self-contained bir runtime üretir (frontend/Dockerfile
+  // bunu .next/standalone + .next/static + public olarak kopyalar).
+  output: 'standalone',
   images: {
     formats: ['image/avif', 'image/webp'],
   },
