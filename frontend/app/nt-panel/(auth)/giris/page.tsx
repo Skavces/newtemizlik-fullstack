@@ -29,7 +29,6 @@ export default function GirisPage() {
     if (saved) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setUsername(saved)
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setRemember(true)
     }
   }, [])
@@ -64,6 +63,9 @@ export default function GirisPage() {
         setStep('2fa')
       } else {
         persistRememberedUser()
+        // Sert navigasyon kasıtlı: korumalı layout'un server-side auth/me
+        // kontrolü ve tüm client state'i sıfırdan, yeni cookie ile başlasın.
+        // eslint-disable-next-line @next/next/no-location-assign-relative-destination
         window.location.href = '/nt-panel'
       }
     } catch (err) {
@@ -82,6 +84,7 @@ export default function GirisPage() {
     try {
       await verify2fa({ preAuthToken, code: otpCode })
       persistRememberedUser()
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.location.href = '/nt-panel'
     } catch (err) {
       if (isApiError(err) && err.status === 429) handleRateLimit()
@@ -102,7 +105,7 @@ export default function GirisPage() {
         style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}
       >
         <div className="mb-8 flex flex-col items-center">
-          <Image src="/logo.png" alt="New Temizlik" width={1080} height={1015} className="h-16 w-auto object-contain" />
+          <Image src="/logo.png" alt="New Temizlik" width={1080} height={1015} className="h-24 w-auto object-contain" />
           <p className="mt-3 text-sm" style={{ color: 'var(--text-muted)' }}>
             Yönetim Paneli
           </p>

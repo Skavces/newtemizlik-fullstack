@@ -71,6 +71,8 @@ import { ChatModule } from './chat/chat.module'
         // Boşsa chatbot'un LLM uçları 503 döner, widget hata mesajına düşer (bkz. LlmService)
         LLM_CHAT_KEYS: Joi.string().allow('').optional(),
         LLM_DAILY_LIMIT: Joi.number().empty('').default(1000),
+        // Yalnızca yerel geliştirme için — prod'da auth.service.ts zaten reddediyor
+        TOTP_BYPASS: Joi.string().allow('').optional(),
       }),
       validationOptions: { allowUnknown: true },
     }),

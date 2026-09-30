@@ -106,7 +106,6 @@ export default function LoglarPage() {
       .then((result) => { if (!ignore) setData(result) })
       .finally(() => { if (!ignore) setLoading(false) })
     return () => { ignore = true }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [level, page, fromDay, toDay])
 
   function changeLevel(next: string | number) {

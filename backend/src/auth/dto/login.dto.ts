@@ -8,7 +8,7 @@ export class LoginDto {
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(128)
+  @MaxLength(72)
   password: string
 
   @IsBoolean()
