@@ -2,3 +2,6 @@
 # zaten kendi .gitignore'larında hariç tutuluyor; bu sadece Faz 5'te eklenen
 # kök seviyesindeki gerçek dosya için gerekti.
 .env
+
+# Claude Code oturum hafızasından türetilen yerel notlar — commit'e girmez
+.claude-notes.md
