@@ -22,7 +22,7 @@ const videoSchema = {
   name: 'Soma GES Otonom Panel Yıkama Robotu Saha Testi',
   description: 'Soma güneş enerji santralinde otonom panel yıkama robotunun sahada performans testi ve çalışma görüntüleri. New Temizlik GES temizlik robotu uygulaması.',
   thumbnailUrl: `${SITE_URL}/hero-poster.webp`,
-  uploadDate: '2026-01-01',
+  uploadDate: '2026-09-30',
   contentUrl: `${SITE_URL}/otonom-panel-yikama-robotu.mp4`,
   publisher: {
     '@type': 'Organization',
