@@ -1,9 +1,8 @@
 import type { ReactNode } from 'react'
 import Script from 'next/script'
-import { ThemeProvider } from '@/context/ThemeContext'
 import Navbar from '@/components/sections/Navbar'
 import Footer from '@/components/sections/Footer'
-import WhatsAppButton from '@/components/ui/WhatsAppButton'
+import ChatWidget from '@/components/ui/ChatWidget'
 import JsonLd from '@/components/ui/JsonLd'
 import { SITE_URL } from '@/lib/seo'
 
@@ -60,22 +59,17 @@ const organizationSchema = {
       description: 'Soma merkezli, tüm Türkiye genelinde endüstriyel güneş paneli temizliği ve otonom yıkama robotu satışları.',
       publisher: { '@id': `${SITE_URL}/#organization` },
       inLanguage: 'tr-TR',
-      potentialAction: {
-        '@type': 'SearchAction',
-        target: { '@type': 'EntryPoint', urlTemplate: `${SITE_URL}/?q={search_term_string}` },
-        'query-input': 'required name=search_term_string',
-      },
     },
   ],
 }
 
 export default function SiteLayout({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider>
+    <>
       <Navbar />
       {children}
       <Footer />
-      <WhatsAppButton />
+      <ChatWidget />
       <JsonLd data={organizationSchema} />
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-TZDD4EVYEF" strategy="afterInteractive" />
       <Script id="ga4-init" strategy="afterInteractive">
@@ -94,6 +88,6 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
           strategy="afterInteractive"
         />
       )}
-    </ThemeProvider>
+    </>
   )
 }
