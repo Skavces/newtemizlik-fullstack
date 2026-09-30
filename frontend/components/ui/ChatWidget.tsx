@@ -126,6 +126,10 @@ export default function ChatWidget() {
 
   useEffect(() => {
     if (!open) return
+    // Panel açılırken sayfa da en üste alınır — mobilde tam ekran overlay
+    // sayfanın kaydırılmış bir noktasının üzerine açılmasın diye.
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' })
     // Panel her açılışta baştan mount olur (bkz. render'daki `open || closing` şartı) —
     // uzun bir geçmişte önce en son mesaja anında atla, sonra input'a odaklan; smooth
     // scroll yukarıdaki effect'e bırakılırsa yeniden açılışta göze batan bir kaydırma olur.
