@@ -244,3 +244,65 @@ export interface ReorderDto {
 export interface UpdateQuoteStatusDto {
   status: QuoteStatus
 }
+
+// ── Chatbot ───────────────────────────────────────────────────────────────
+
+export type ChatRole = 'user' | 'assistant'
+
+export interface ChatMessage {
+  role: ChatRole
+  content: string
+}
+
+export type ChatLeadStatus = 'active' | 'whatsapp'
+
+export interface ChatLead {
+  id: string
+  sessionId: string
+  // 12 aylık KVKK retention cron'u tarafından null'lanır — bkz. chat-retention.service.ts
+  conversation: ChatMessage[] | null
+  messageCount: number
+  status: ChatLeadStatus
+  rating: number | null
+  createdAt: string
+  updatedAt: string
+}
+
+export interface ChatLeadStats {
+  total: number
+  active: number
+  whatsapp: number
+}
+
+export interface ChatLeadAdminListResponse extends PagedMeta {
+  stats: ChatLeadStats
+  leads: ChatLead[]
+}
+
+export interface ChatRating {
+  id: string
+  rating: number
+  sessionId: string | null
+  messageCount: number
+  conversation: ChatMessage[] | null
+  createdAt: string
+}
+
+export interface ChatRatingStats {
+  total: number
+  average: number
+  counts: Record<1 | 2 | 3 | 4 | 5, number>
+}
+
+export interface ChatRatingAdminListResponse extends PagedMeta {
+  stats: ChatRatingStats
+  ratings: ChatRating[]
+}
+
+export interface ChatFunnel {
+  days: number
+  opened: number
+  messaged: number
+  whatsapp: number
+  rated: number
+}

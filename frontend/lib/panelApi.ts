@@ -13,6 +13,10 @@ import type {
   AuthMe,
   BlogPost,
   ChangeCredentialsDto,
+  ChatFunnel,
+  ChatLeadAdminListResponse,
+  ChatLeadStatus,
+  ChatRatingAdminListResponse,
   ConfirmSetupDto,
   CreateBlogPostDto,
   CreateFaqDto,
@@ -110,6 +114,9 @@ async function panelFetch<T>(path: string, init: PanelFetchInit = {}): Promise<T
     // merkezden girişe at — çağıran sayfa 401'i ayrıca ele almak zorunda kalmaz.
     const shouldRedirect = res.status === 401 && (isSessionExpired(body) || !skipAuthRedirect)
     if (shouldRedirect && typeof window !== 'undefined' && !window.location.pathname.startsWith(LOGIN_PATH)) {
+      // Sert navigasyon kasıtlı: bu paylaşılan API istemcisi React ağacı
+      // dışında da çağrılabiliyor, useRouter() burada mevcut değil.
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.location.href = LOGIN_PATH
     }
     throw new ApiError(message, res.status)
@@ -180,6 +187,26 @@ export interface LogAdminListParams {
 
 export const getLogAdminList = (params: LogAdminListParams = {}) =>
   panelFetch<LogAdminListResponse>(`/logs/admin/all${toQuery(params)}`)
+
+// ── Chatbot ───────────────────────────────────────────────────────────────
+
+export interface ChatLeadAdminListParams {
+  page?: number
+  status?: ChatLeadStatus
+  from?: string
+  to?: string
+}
+
+export const getChatLeadAdminList = (params: ChatLeadAdminListParams = {}) =>
+  panelFetch<ChatLeadAdminListResponse>(`/chat/lead/admin/all${toQuery(params)}`)
+export const deleteChatLead = (id: string) => panelFetch<void>(`/chat/lead/admin/${id}`, { method: 'DELETE' })
+
+export const getChatRatingAdminList = (page?: number) =>
+  panelFetch<ChatRatingAdminListResponse>(`/chat/rating/admin/all${toQuery({ page })}`)
+export const deleteChatRating = (id: string) => panelFetch<void>(`/chat/rating/admin/${id}`, { method: 'DELETE' })
+
+export const getChatFunnel = (days: 7 | 30) =>
+  panelFetch<ChatFunnel>(`/chat/lead/admin/funnel${toQuery({ days })}`)
 
 // ── Analitik ──────────────────────────────────────────────────────────────
 // bkz. backend/src/analytics/analytics.controller.ts (/api/dash/*). Umami

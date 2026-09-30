@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, type ReactNode } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
@@ -12,6 +13,7 @@ import {
   Inbox,
   ScrollText,
   ShieldCheck,
+  Bot,
   Menu,
   X,
   LogOut,
@@ -34,6 +36,7 @@ const NAV: NavItem[] = [
   { href: '/nt-panel/sss', label: 'S.S.S.', icon: HelpCircle, match: (p) => p.startsWith('/nt-panel/sss') },
   { href: '/nt-panel/referanslar', label: 'Referanslar', icon: Images, match: (p) => p.startsWith('/nt-panel/referanslar') },
   { href: '/nt-panel/teklif-talepleri', label: 'Teklif Talepleri', icon: Inbox, match: (p) => p.startsWith('/nt-panel/teklif-talepleri') },
+  { href: '/nt-panel/chatbot', label: 'Chatbot', icon: Bot, match: (p) => p.startsWith('/nt-panel/chatbot') },
   { href: '/nt-panel/loglar', label: 'Loglar', icon: ScrollText, match: (p) => p.startsWith('/nt-panel/loglar') },
   { href: '/nt-panel/guvenlik', label: 'Güvenlik', icon: ShieldCheck, match: (p) => p.startsWith('/nt-panel/guvenlik') },
 ]
@@ -43,6 +46,9 @@ export default function AdminShell({ username, children }: { username: string; c
   const router = useRouter()
   const { showToast } = useToast()
   const [mobileOpen, setMobileOpen] = useState(false)
+  // Ana sayfa (dashboard) tam genişlikte bir hero banner kullanıyor —
+  // burada standart main padding'i uygulanmaz, sayfa kendi iç boşluğunu kendi verir.
+  const isDashboard = pathname === '/nt-panel'
 
   async function handleLogout() {
     try {
@@ -61,8 +67,8 @@ export default function AdminShell({ username, children }: { username: string; c
         style={{ background: 'var(--bg-card)', borderRight: '1px solid var(--border-subtle)' }}
       >
         <div className="p-6" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-          <Link href="/nt-panel" className="text-lg font-bold" style={{ fontFamily: "'Rajdhani', sans-serif", color: 'var(--text-primary)' }}>
-            New Temizlik <span style={{ color: 'var(--color-primary)' }}>Panel</span>
+          <Link href="/nt-panel" className="block">
+            <Image src="/logo.png" alt="New Temizlik" width={1080} height={1015} priority className="h-auto w-full object-contain" />
           </Link>
         </div>
         <nav className="flex-1 overflow-auto p-3">
@@ -104,8 +110,8 @@ export default function AdminShell({ username, children }: { username: string; c
         className="flex h-14 items-center justify-between px-4 lg:hidden"
         style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border-subtle)' }}
       >
-        <Link href="/nt-panel" className="text-base font-bold" style={{ fontFamily: "'Rajdhani', sans-serif", color: 'var(--text-primary)' }}>
-          New Temizlik Panel
+        <Link href="/nt-panel" className="block">
+          <Image src="/logo.png" alt="New Temizlik" width={1080} height={1015} priority className="h-9 w-auto object-contain" />
         </Link>
         <button onClick={() => setMobileOpen((v) => !v)} style={{ color: 'var(--text-muted)' }} aria-label="Menü">
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
@@ -143,8 +149,8 @@ export default function AdminShell({ username, children }: { username: string; c
         </nav>
       )}
 
-      <div className="flex-1 overflow-auto">
-        <main className="mx-auto max-w-6xl px-5 py-8 sm:px-8">{children}</main>
+      <div className="flex-1 overflow-auto" style={{ background: '#fafafa' }}>
+        <main className={isDashboard ? '' : 'mx-auto max-w-6xl px-5 py-8 sm:px-8'}>{children}</main>
       </div>
     </div>
   )
