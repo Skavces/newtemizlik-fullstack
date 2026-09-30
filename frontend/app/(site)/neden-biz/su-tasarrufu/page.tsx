@@ -42,7 +42,7 @@ export default function SuTasarrufuPage() {
 
       <PageHero
         title="Su İsrafı Yapmıyoruz"
-        image="gunes-paneli-sulama-temizlik-boru-sistemi.webp"
+        image="panel-bg.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Su İsrafı Yapmıyoruz' },

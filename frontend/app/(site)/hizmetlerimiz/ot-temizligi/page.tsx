@@ -43,7 +43,7 @@ export default function OtTemizligiPage() {
 
       <PageHero
         title="Ot Temizliği"
-        image="gunes-paneli-manuel-temizlik-fircasi-makinasi.webp"
+        image="panel-bg.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Hizmetlerimiz', path: '/hizmetlerimiz' },

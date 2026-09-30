@@ -60,7 +60,7 @@ export default function IletisimPage() {
 
       <PageHero
         title="İletişim"
-        image="hero-poster.webp"
+        image="panel-bg.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'İletişim' },

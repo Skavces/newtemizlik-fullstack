@@ -122,7 +122,7 @@ export default async function PanelTemizlikPage() {
 
       <PageHero
         title="Panel Temizlik Hizmeti"
-        image="gunes-paneli-elektrikli-temizlik-fircasi-seri-uretim.webp"
+        image="panel-bg.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Hizmetlerimiz', path: '/hizmetlerimiz' },

@@ -43,7 +43,7 @@ export default function SertifikaliUzmanKadroPage() {
 
       <PageHero
         title="Sertifikalı Uzman Kadrosu"
-        image="ges-panel-temizlik-robotu-saha-calismasi.webp"
+        image="panel-bg.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Sertifikalı Uzman Kadrosu' },

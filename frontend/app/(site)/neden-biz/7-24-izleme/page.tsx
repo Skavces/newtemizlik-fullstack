@@ -42,7 +42,7 @@ export default function YirmiDortKesintisizIzlemePage() {
 
       <PageHero
         title="7/24 Kesintisiz İzleme"
-        image="soma-ges-otonom-temizlik-robotu.webp"
+        image="panel-bg.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: '7/24 Kesintisiz İzleme' },

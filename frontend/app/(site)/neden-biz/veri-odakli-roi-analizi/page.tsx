@@ -42,7 +42,7 @@ export default function VeriOdakliRoiAnaliziPage() {
 
       <PageHero
         title="Veri Odaklı ROI Analizi"
-        image="endustriyel-gunes-paneli-yikama.webp"
+        image="panel-bg.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Veri Odaklı ROI Analizi' },

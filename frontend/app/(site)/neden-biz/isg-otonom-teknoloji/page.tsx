@@ -43,7 +43,7 @@ export default function IsgOtonomTeknolojiPage() {
 
       <PageHero
         title="İSG & Otonom Teknoloji"
-        image="ges-temizlik-robotu-uzaktan-kumandali-ozellikler.webp"
+        image="panel-bg.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'İSG & Otonom Teknoloji' },

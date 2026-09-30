@@ -52,7 +52,7 @@ export default function KurumsalPage() {
 
       <PageHero
         title="Kurumsal"
-        image="gunes-paneli-cift-diskli-elektrikli-temizlik-fircasi.webp"
+        image="panel-bg.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Kurumsal' },

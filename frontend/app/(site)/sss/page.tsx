@@ -43,7 +43,7 @@ export default async function SSSPage() {
 
       <PageHero
         title="S.S.S."
-        image="ges-panel-temizlik-robotu-saha-uygulamasi.webp"
+        image="panel-bg.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'S.S.S.' },

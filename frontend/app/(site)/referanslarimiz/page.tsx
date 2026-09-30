@@ -45,7 +45,7 @@ export default async function ReferanslarPage() {
 
       <PageHero
         title="Referanslarımız"
-        image="gunes-paneli-uzatmali-cift-fircali-temizlik-makinasi.webp"
+        image="panel-bg.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Referanslarımız' },

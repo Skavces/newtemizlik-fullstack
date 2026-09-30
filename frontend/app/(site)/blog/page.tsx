@@ -69,7 +69,7 @@ export default async function BlogPage() {
 
       <PageHero
         title="Blog"
-        image="leopardust-ges-panel-temizlik-robotu-saha.webp"
+        image="panel-bg.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Blog' },

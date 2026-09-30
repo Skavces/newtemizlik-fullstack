@@ -75,7 +75,7 @@ export default async function RobotSatisPage() {
 
       <PageHero
         title="Temizlik Robot & Makina Satışı"
-        image="ges-otonom-temizlik-robotu-ray-sistemi.webp"
+        image="panel-bg.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Hizmetlerimiz', path: '/hizmetlerimiz' },

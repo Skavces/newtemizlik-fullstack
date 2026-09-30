@@ -27,7 +27,7 @@ export default function PanelKirlilikRehberiPage() {
       <JsonLd data={breadcrumbSchema} />
       <PageHero
         title="GES Panel Kirlilik Rehberi"
-        image="ges-panel-temizlik-makinasi-cesitleri.webp"
+        image="panel-bg.webp"
         breadcrumbs={[{ label: 'Ana Sayfa', path: '/' }, { label: 'Panel Kirlilik Rehberi' }]}
       />
       <KirProblemleri showHeader={false} />

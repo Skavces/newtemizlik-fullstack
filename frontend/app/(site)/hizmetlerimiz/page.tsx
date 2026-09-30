@@ -60,7 +60,7 @@ export default function HizmetlerimizPage() {
 
       <PageHero
         title="Hizmetlerimiz"
-        image="ges-temizligi.webp"
+        image="panel-bg.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Hizmetlerimiz' },

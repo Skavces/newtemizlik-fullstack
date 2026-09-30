@@ -57,7 +57,7 @@ export default async function PanelBakimPage() {
 
       <PageHero
         title="Panel Bakım & Onarım İzleme"
-        image="ges-bakim-onarim-termal-analiz.webp"
+        image="panel-bg.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Hizmetlerimiz', path: '/hizmetlerimiz' },

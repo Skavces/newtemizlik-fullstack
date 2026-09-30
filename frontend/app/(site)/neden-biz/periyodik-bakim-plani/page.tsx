@@ -42,7 +42,7 @@ export default function PeriyodikBakimPlaniPage() {
 
       <PageHero
         title="Periyodik Bakım Planı"
-        image="soma-gunes-enerjisi-santrali-uzman-bakim.webp"
+        image="panel-bg.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Periyodik Bakım Planı' },
