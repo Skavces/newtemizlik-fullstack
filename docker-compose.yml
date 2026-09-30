@@ -104,9 +104,12 @@ services:
       - ./nginx/nginx.conf.template:/etc/nginx/templates/default.conf.template:ro
       - ./nginx/security-headers.conf:/etc/nginx/snippets/security-headers.conf:ro
     depends_on:
-      - backend
-      - next
-      - umami
+      backend:
+        condition: service_healthy
+      next:
+        condition: service_started
+      umami:
+        condition: service_healthy
 
   umami-db:
     image: postgres:16-alpine
@@ -136,6 +139,13 @@ services:
       DATABASE_URL: postgresql://umami:${UMAMI_DB_PASS}@umami-db:5432/umami
       APP_SECRET: ${UMAMI_APP_SECRET}
       BASE_PATH: /umami
+    healthcheck:
+      # basePath (/umami) yalnızca nginx tarafında rewrite ediliyor; kendi
+      # portundan sorgulanınca app kök path'te yanıt veriyor (bkz. review notu)
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/heartbeat"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     depends_on:
       umami-db:
         condition: service_healthy
