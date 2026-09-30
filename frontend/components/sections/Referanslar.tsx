@@ -3,6 +3,7 @@
 import { useRef, useEffect, type MouseEvent, type TouchEvent } from 'react'
 import Image from 'next/image'
 import type { Reference } from '@/types/api'
+import SectionHeader from '@/components/ui/SectionHeader'
 
 // references artık backend'den geliyor (GET /api/references) — sayfa (server
 // component) veriyi çekip prop olarak geçer, bu bileşen sadece marquee animasyonunu yürütür.
@@ -24,7 +25,16 @@ export default function Referanslar({ references }: { references: Reference[] })
     const track = trackRef.current
     if (!track) return
 
-    singleWidthRef.current = track.scrollWidth / 3
+    // scrollWidth/3 kayan noktalı bir yaklaşım — 3N öğe arasında (3N-1) gap
+    // varken bu, tek bir setin gerçek periyodundan (N öğe + N gap) gap/3
+    // kadar sapar ve her turda görünür bir sıçramaya (kesinti) yol açar.
+    // Gerçek periyot: 2. kopyanın ilk öğesiyle 1. kopyanın ilk öğesi arasındaki mesafe.
+    const singleSetLength = references.length
+    const firstOfSecondSet = track.children[singleSetLength] as HTMLElement | undefined
+    const firstItem = track.children[0] as HTMLElement | undefined
+    singleWidthRef.current = firstOfSecondSet && firstItem
+      ? firstOfSecondSet.offsetLeft - firstItem.offsetLeft
+      : track.scrollWidth / 3
 
     function animate() {
       if (!isPaused.current && track) {
@@ -39,7 +49,7 @@ export default function Referanslar({ references }: { references: Reference[] })
 
     animRef.current = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(animRef.current)
-  }, [])
+  }, [references.length])
 
   // Mouse drag
   function onMouseDown(e: MouseEvent<HTMLDivElement>) {
@@ -93,26 +103,26 @@ export default function Referanslar({ references }: { references: Reference[] })
     <section
       id="referanslar"
       className="scroll-mt-16 md:scroll-mt-20"
-      style={{ background: 'var(--bg-body)', padding: '72px 0' }}
+      style={{ background: 'var(--bg-alt)', padding: '0 0 120px' }}
     >
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 mb-12">
-        {/* Header — referans görseldeki gibi sol hizalı */}
-        <div>
-          <span style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#7FBF3A', display: 'block', marginBottom: '10px' }}>
-            New Temizlik
-          </span>
-          <h2 className="section-heading" style={{ fontSize: 'clamp(24px, 3.5vw, 36px)', marginBottom: '12px' }}>
-            Bizi Tercih Edenler
-          </h2>
-          <p style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '560px' }}>
-            Güneşin olduğu her yerde enerjinin verimli üretimi için teknolojiler sunmaya güçlenerek devam ediyoruz.
-          </p>
+      {/* Top gradient bar — Footer'daki ile aynı, bölümün en üst kenarında */}
+      <div style={{ height: '4px', background: 'linear-gradient(90deg, var(--color-primary), var(--color-secondary))' }} />
+
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 mb-12" style={{ paddingTop: '72px' }}>
+        <div className="text-center">
+          <SectionHeader
+            eyebrow="New Temizlik"
+            title="Bizi Tercih Edenler"
+            titleSize="clamp(26px, 3.8vw, 40px)"
+            lead="Güneşin olduğu her yerde enerjinin verimli üretimi için teknolojiler sunmaya güçlenerek devam ediyoruz."
+            align="center"
+          />
         </div>
       </div>
 
       {/* Scrolling logo track */}
       <div
-        style={{ overflow: 'hidden', cursor: 'grab', userSelect: 'none' }}
+        style={{ overflow: 'hidden', cursor: 'grab', userSelect: 'none', marginTop: '64px' }}
         onMouseDown={(e) => { e.currentTarget.style.cursor = 'grabbing'; onMouseDown(e) }}
         onMouseMove={onMouseMove}
         onMouseUp={(e) => { e.currentTarget.style.cursor = 'grab'; onMouseUp() }}
@@ -123,27 +133,23 @@ export default function Referanslar({ references }: { references: Reference[] })
       >
         <div
           ref={trackRef}
-          style={{ display: 'flex', gap: '16px', width: 'max-content', willChange: 'transform' }}
+          style={{ display: 'flex', gap: '56px', width: 'max-content', willChange: 'transform' }}
         >
           {looped.map((ref, i) => {
             const scale = Number(ref.scale)
             return (
               <div
                 key={i}
-                className="reference-logo-card"
                 style={{
                   position: 'relative',
                   flexShrink: 0,
-                  width: '160px',
-                  height: '88px',
+                  width: '240px',
+                  height: '130px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  border: '1px solid var(--border-subtle)',
-                  borderRadius: '8px',
                   background: 'var(--bg-card)',
-                  padding: '18px 20px',
-                  transition: 'border-color 0.2s',
+                  borderRadius: '12px',
                 }}
               >
                 {ref.logo && (
@@ -152,12 +158,11 @@ export default function Referanslar({ references }: { references: Reference[] })
                     alt={`${ref.name} logosu`}
                     fill
                     draggable={false}
-                    sizes="160px"
+                    sizes="240px"
                     style={{
                       objectFit: 'contain',
-                      filter: 'grayscale(1) opacity(0.5)',
+                      padding: '16px',
                       transform: scale && scale !== 1 ? `scale(${scale})` : undefined,
-                      transition: 'filter 0.3s',
                       pointerEvents: 'none',
                     }}
                   />

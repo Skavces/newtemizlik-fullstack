@@ -29,6 +29,8 @@ const footerLinks: FooterLinkGroup[] = [
       { label: 'Panel Temizlik', path: '/hizmetlerimiz/panel-temizlik' },
       { label: 'Bakım & Onarım', path: '/hizmetlerimiz/panel-bakim' },
       { label: 'Robot & Makina Satışı', path: '/hizmetlerimiz/robot-satisi' },
+      { label: 'Ot Temizliği', path: '/hizmetlerimiz/ot-temizligi' },
+      { label: 'Panel Kirlilik Rehberi', path: '/panel-kirlilik-rehberi' },
     ],
   },
   {
@@ -56,10 +58,19 @@ const socials: SocialItem[] = [
 
 export default function Footer() {
   return (
-    <footer style={{ background: '#12141a' }}>
+    <footer
+      style={{
+        position: 'relative',
+        background: `#12141a url('/footer-banner.webp') center 25%/cover no-repeat`,
+      }}
+    >
+      {/* Koyu kutu — görsel tam opaklıkta, bunun opaklığı ayarlanır */}
+      <div style={{ position: 'absolute', inset: 0, background: '#12141a', opacity: 0.92, pointerEvents: 'none' }} />
 
-      {/* Top green bar */}
-      <div style={{ height: '4px', background: 'linear-gradient(90deg, #7FBF3A, #5a9e1e)' }} />
+      <div style={{ position: 'relative', zIndex: 1 }}>
+
+      {/* Top gradient bar */}
+      <div style={{ height: '4px', background: 'linear-gradient(90deg, var(--color-primary), var(--color-secondary))' }} />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
@@ -124,7 +135,7 @@ export default function Footer() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               {contactItems.map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <item.icon className="w-4 h-4 shrink-0 mt-0.5" style={{ color: '#7FBF3A' }} />
+                  <item.icon className="w-4 h-4 shrink-0 mt-0.5" style={{ color: 'var(--color-secondary)' }} />
                   {item.href && item.trackEvent ? (
                     <TrackedLink
                       href={item.href}
@@ -170,6 +181,7 @@ export default function Footer() {
             Tasarım & Kodlama: Selim Kavaklıçeşme
           </a>
         </div>
+      </div>
       </div>
     </footer>
   )

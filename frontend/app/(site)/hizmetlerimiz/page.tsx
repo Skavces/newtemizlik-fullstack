@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import PageHero from '@/components/ui/PageHero'
+import SectionHeader from '@/components/ui/SectionHeader'
 import JsonLd from '@/components/ui/JsonLd'
 import { buildMetadata, SITE_URL } from '@/lib/seo'
 
@@ -43,6 +44,13 @@ const services = [
     alt: 'GES sahasında kullanılan panel temizlik robotu',
     path: '/hizmetlerimiz/robot-satisi',
   },
+  {
+    title: 'Ot Temizliği',
+    description: 'GES sahalarında panel altı ve aralarında oluşan ot ve bitki örtüsünü düzenli olarak temizliyoruz. Gölgelenmeyi, yangın riskini ve haşere üremesini önleyerek saha güvenliğini koruyoruz.',
+    img: '/gesottemizligi.webp',
+    alt: 'GES sahasında ot temizliği çalışması',
+    path: '/hizmetlerimiz/ot-temizligi',
+  },
 ]
 
 export default function HizmetlerimizPage() {
@@ -52,7 +60,7 @@ export default function HizmetlerimizPage() {
 
       <PageHero
         title="Hizmetlerimiz"
-        image="solar-panel.webp"
+        image="ges-temizligi.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Hizmetlerimiz' },
@@ -60,22 +68,17 @@ export default function HizmetlerimizPage() {
       />
 
       <section style={{ background: 'var(--bg-alt)', padding: '80px 0' }}>
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
+        <div className="max-w-[1680px] mx-auto px-5 sm:px-8 lg:px-12">
 
-          <div className="text-center mb-14">
-            <span style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#7FBF3A', display: 'block', marginBottom: '10px' }}>
-              Hizmetlerimiz
-            </span>
-            <h2 className="section-heading" style={{ fontSize: 'clamp(26px, 4vw, 38px)' }}>
-              GES Bakım ve Panel Temizlik Hizmetleri
-            </h2>
-            <p style={{ fontSize: '15px', color: 'var(--text-secondary)', marginTop: '14px', maxWidth: '560px', margin: '14px auto 0', lineHeight: 1.7 }}>
-              Güneş enerji santrallerinde panel temizliği, bakım ve performans takibi hizmetleri sunuyoruz.
-            </p>
-            <div style={{ width: '50px', height: '3px', background: '#7FBF3A', margin: '16px auto 0' }} />
+          <div className="text-center mb-14 max-w-2xl mx-auto">
+            <SectionHeader
+              eyebrow="Hizmetlerimiz"
+              title="GES Bakım ve Panel Temizlik Hizmetleri"
+              lead="Güneş enerji santrallerinde panel temizliği, bakım ve performans takibi hizmetleri sunuyoruz."
+            />
           </div>
 
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-7">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-7">
             {services.map((service, i) => (
               <div key={i} className="section-card overflow-hidden flex flex-col">
                 <div className="overflow-hidden" style={{ position: 'relative', borderRadius: '10px 10px 0 0', aspectRatio: '16/10' }}>
@@ -98,7 +101,7 @@ export default function HizmetlerimizPage() {
                   <Link
                     href={service.path}
                     className="detay-link inline-flex items-center gap-2 mt-6 font-semibold transition-colors duration-200"
-                    style={{ fontSize: '13px', color: '#7FBF3A' }}
+                    style={{ fontSize: '13px', color: 'var(--color-secondary)' }}
                   >
                     Detaylı Bilgi
                     <ArrowRight className="w-3.5 h-3.5" />

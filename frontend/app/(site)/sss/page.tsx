@@ -1,5 +1,6 @@
 import PageHero from '@/components/ui/PageHero'
 import SSS from '@/components/sections/SSS'
+import CtaBand from '@/components/ui/CtaBand'
 import JsonLd from '@/components/ui/JsonLd'
 import { buildMetadata, SITE_URL } from '@/lib/seo'
 import { getFaqs } from '@/lib/api'
@@ -41,15 +42,22 @@ export default async function SSSPage() {
       <JsonLd data={faqSchema} />
 
       <PageHero
-        title="Sıkça Sorulan Sorular"
-        image="solar-panel.webp"
+        title="S.S.S."
+        image="ges-panel-temizlik-robotu-saha-uygulamasi.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
-          { label: 'S.S.S' },
+          { label: 'S.S.S.' },
         ]}
       />
 
       <SSS faqs={faqs} />
+
+      <CtaBand
+        title="Panellerin neden kirlendiğini ve nasıl temizlendiğini mi merak ediyorsunuz?"
+        href="/panel-kirlilik-rehberi"
+        label="Rehberi İnceleyin"
+        background="var(--bg-alt)"
+      />
     </>
   )
 }

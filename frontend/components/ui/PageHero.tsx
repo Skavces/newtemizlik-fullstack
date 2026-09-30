@@ -18,10 +18,9 @@ interface PageHeroProps {
 export default function PageHero({ title, image, breadcrumbs = [] }: PageHeroProps) {
   return (
     <section
+      className="mt-20 md:mt-28 h-[220px]"
       style={{
         position: 'relative',
-        height: '220px',
-        marginTop: '80px', // navbar yüksekliği kadar (md: 112px ama 80px yeterli)
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
@@ -52,16 +51,7 @@ export default function PageHero({ title, image, breadcrumbs = [] }: PageHeroPro
         style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
       >
         {/* Sol — sayfa adı */}
-        <h1
-          style={{
-            fontFamily: "'Rajdhani', sans-serif",
-            fontSize: 'clamp(28px, 4vw, 42px)',
-            fontWeight: 700,
-            color: '#ffffff',
-            letterSpacing: '0.04em',
-            margin: 0,
-          }}
-        >
+        <h1 className="section-heading" style={{ fontSize: 'clamp(28px, 4vw, 42px)', color: '#ffffff', margin: 0 }}>
           {title}
         </h1>
 
@@ -77,7 +67,7 @@ export default function PageHero({ title, image, breadcrumbs = [] }: PageHeroPro
                     {crumb.path && !isLast ? (
                       <Link
                         href={crumb.path}
-                        className="hover-brand"
+                        className="pagehero-crumb"
                         style={{
                           fontSize: '12px',
                           fontWeight: 600,
@@ -96,7 +86,7 @@ export default function PageHero({ title, image, breadcrumbs = [] }: PageHeroPro
                           fontWeight: 700,
                           letterSpacing: '0.12em',
                           textTransform: 'uppercase',
-                          color: '#7FBF3A',
+                          color: 'var(--color-primary)',
                         }}
                       >
                         {crumb.label}

@@ -4,6 +4,7 @@ import { useState, type FormEvent, type InputEvent } from 'react'
 import { MapPin, Phone, Mail, Clock, ArrowRight, CheckCircle2, type LucideIcon } from 'lucide-react'
 import { trackEvent } from '@/lib/analytics'
 import { API_URL } from '@/lib/apiClient'
+import SectionHeader from '@/components/ui/SectionHeader'
 
 // "+90 5XX XXX XX XX" formatına zorlar; +90'ı silmeye çalışırsa geri ekler.
 function formatTurkishPhone(rawValue: string) {
@@ -26,10 +27,10 @@ interface ContactInfoItem {
 }
 
 const contactInfo: ContactInfoItem[] = [
-  { icon: MapPin, label: 'Adres', value: 'Atatürk Mah. İzgin Sk. No:4 Soma/Manisa', color: '#7FBF3A' },
-  { icon: Phone, label: 'Telefon', value: '+90 530 473 87 93', href: 'tel:+905304738793', event: 'phone_click', params: { location: 'contact_section' }, color: '#1F6EC7' },
-  { icon: Mail, label: 'E-posta', value: 'info@newtemizlik.com.tr', href: 'mailto:info@newtemizlik.com.tr', color: '#7FBF3A' },
-  { icon: Clock, label: 'Çalışma Saatleri', value: 'Pzt – Cmt: 09:00 – 18:00', color: '#1F6EC7' },
+  { icon: MapPin, label: 'Adres', value: 'Atatürk Mah. İzgin Sk. No:4 Soma/Manisa', color: 'var(--color-primary)' },
+  { icon: Phone, label: 'Telefon', value: '+90 530 473 87 93', href: 'tel:+905304738793', event: 'phone_click', params: { location: 'contact_section' }, color: 'var(--color-secondary)' },
+  { icon: Mail, label: 'E-posta', value: 'info@newtemizlik.com.tr', href: 'mailto:info@newtemizlik.com.tr', color: 'var(--color-primary)' },
+  { icon: Clock, label: 'Çalışma Saatleri', value: 'Pzt – Cmt: 09:00 – 18:00', color: 'var(--color-secondary)' },
 ]
 
 type Status = 'idle' | 'submitting' | 'success' | 'error'
@@ -85,16 +86,11 @@ export default function Contact() {
 
         {/* Section header */}
         <div className="text-center mb-14">
-          <span style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#7FBF3A', display: 'block', marginBottom: '10px' }}>
-            İletişim
-          </span>
-          <h2 className="section-heading" style={{ fontSize: 'clamp(26px, 4vw, 38px)' }}>
-            Bize Ulaşın
-          </h2>
-          <p style={{ fontSize: '15px', color: 'var(--text-secondary)', marginTop: '14px', lineHeight: 1.7 }}>
-            Projeleriniz ve detaylı bilgi için iletişim kanallarımızdan bize ulaşabilirsiniz.
-          </p>
-          <div style={{ width: '50px', height: '3px', background: '#7FBF3A', margin: '16px auto 0' }} />
+          <SectionHeader
+            eyebrow="İletişim"
+            title="Bize Ulaşın"
+            lead="Projeleriniz ve detaylı bilgi için iletişim kanallarımızdan bize ulaşabilirsiniz."
+          />
         </div>
 
         <div className="grid md:grid-cols-2 gap-7 mb-10">
@@ -142,7 +138,7 @@ export default function Contact() {
 
             {status === 'success' ? (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '14px', padding: '40px 10px' }}>
-                <CheckCircle2 style={{ width: '48px', height: '48px', color: '#7FBF3A' }} />
+                <CheckCircle2 style={{ width: '48px', height: '48px', color: 'var(--color-primary)' }} />
                 <p style={{ fontSize: '15px', color: 'var(--text-primary)', fontWeight: 600 }}>
                   Talebiniz alındı, en kısa sürede size dönüş yapacağız.
                 </p>
@@ -160,7 +156,7 @@ export default function Contact() {
                     <input
                       type="text" name="adSoyad"
                       className="form-input w-full outline-none transition-all duration-200"
-                      style={{ padding: '11px 14px', background: 'var(--bg-body)', border: '1.5px solid var(--border-subtle)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '14px' }}
+                      style={{ padding: '11px 14px', background: 'var(--bg-body)', border: '1.5px solid var(--border-subtle)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '16px' }}
                       placeholder="Ad Soyad" maxLength={50} required
                     />
                   </div>
@@ -171,7 +167,7 @@ export default function Contact() {
                     <input
                       type="tel" name="telefon"
                       className="form-input w-full outline-none transition-all duration-200"
-                      style={{ padding: '11px 14px', background: 'var(--bg-body)', border: '1.5px solid var(--border-subtle)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '14px' }}
+                      style={{ padding: '11px 14px', background: 'var(--bg-body)', border: '1.5px solid var(--border-subtle)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '16px' }}
                       placeholder="+90 5XX XXX XX XX" defaultValue="+90 " maxLength={17}
                       pattern="^(\+90|0)?\s*5[0-9]{2}\s*[0-9]{3}\s*[0-9]{2}\s*[0-9]{2}$"
                       onInput={(e: InputEvent<HTMLInputElement>) => { e.currentTarget.value = formatTurkishPhone(e.currentTarget.value) }}
@@ -187,7 +183,7 @@ export default function Contact() {
                   <input
                     type="email" name="ePosta"
                     className="form-input w-full outline-none transition-all duration-200"
-                    style={{ padding: '11px 14px', background: 'var(--bg-body)', border: '1.5px solid var(--border-subtle)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '14px' }}
+                    style={{ padding: '11px 14px', background: 'var(--bg-body)', border: '1.5px solid var(--border-subtle)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '16px' }}
                     placeholder="ornek@mail.com" maxLength={100}
                   />
                 </div>
@@ -200,7 +196,7 @@ export default function Contact() {
                     <input
                       type="number" name="panelAdeti" min="0" max="1000"
                       className="form-input w-full outline-none transition-all duration-200"
-                      style={{ padding: '11px 14px', background: 'var(--bg-body)', border: '1.5px solid var(--border-subtle)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '14px' }}
+                      style={{ padding: '11px 14px', background: 'var(--bg-body)', border: '1.5px solid var(--border-subtle)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '16px' }}
                       placeholder="Örn: 1000" required
                     />
                   </div>
@@ -211,7 +207,7 @@ export default function Contact() {
                     <input
                       type="number" name="sahaMegavati" min="0" max="1000" step="0.01"
                       className="form-input w-full outline-none transition-all duration-200"
-                      style={{ padding: '11px 14px', background: 'var(--bg-body)', border: '1.5px solid var(--border-subtle)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '14px' }}
+                      style={{ padding: '11px 14px', background: 'var(--bg-body)', border: '1.5px solid var(--border-subtle)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '16px' }}
                       placeholder="Örn: 2.5" required
                     />
                   </div>
@@ -224,7 +220,7 @@ export default function Contact() {
                   <div className="flex gap-6">
                     {['Evet', 'Hayır'].map((val) => (
                       <label key={val} className="flex items-center gap-2.5 cursor-pointer">
-                        <input type="radio" name="suUlasimi" value={val} style={{ accentColor: '#7FBF3A', width: '16px', height: '16px' }} required={val === 'Evet'} />
+                        <input type="radio" name="suUlasimi" value={val} style={{ accentColor: 'var(--color-primary)', width: '16px', height: '16px' }} required={val === 'Evet'} />
                         <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>{val}</span>
                       </label>
                     ))}
@@ -232,7 +228,7 @@ export default function Contact() {
                 </div>
 
                 <label className="flex items-start gap-2.5 cursor-pointer" style={{ marginTop: '4px' }}>
-                  <input type="checkbox" name="kvkkConsent" style={{ accentColor: '#7FBF3A', width: '16px', height: '16px', marginTop: '2px' }} required />
+                  <input type="checkbox" name="kvkkConsent" style={{ accentColor: 'var(--color-primary)', width: '16px', height: '16px', marginTop: '2px' }} required />
                   <span style={{ fontSize: '12.5px', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
                     KVKK aydınlatma metnini okudum, kişisel verilerimin işlenmesini onaylıyorum. *
                   </span>
@@ -247,8 +243,8 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={status === 'submitting'}
-                  className="cta-button w-full flex items-center justify-center gap-2.5 mt-2 transition-all duration-200 cursor-pointer"
-                  style={{ padding: '14px 28px', background: '#7FBF3A', color: '#fff', fontSize: '14px', fontWeight: 600, letterSpacing: '0.06em', border: 'none', borderRadius: '9999px', boxShadow: '0 4px 20px rgba(127,191,58,0.3)', opacity: status === 'submitting' ? 0.7 : 1 }}
+                  className="cta-button w-full justify-center mt-2 cursor-pointer"
+                  style={{ border: 'none', opacity: status === 'submitting' ? 0.7 : 1 }}
                 >
                   {status === 'submitting' ? 'Gönderiliyor...' : 'Gönder'}
                   <ArrowRight className="w-4 h-4" />

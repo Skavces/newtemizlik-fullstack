@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import { CheckCircle, ArrowRight } from 'lucide-react'
 import PageHero from '@/components/ui/PageHero'
+import SectionHeader from '@/components/ui/SectionHeader'
+import FaqAccordion from '@/components/ui/FaqAccordion'
 import JsonLd from '@/components/ui/JsonLd'
 import TrackedLink from '@/components/ui/TrackedLink'
 import { buildMetadata, SITE_URL } from '@/lib/seo'
@@ -55,7 +57,7 @@ export default async function PanelBakimPage() {
 
       <PageHero
         title="Panel Bakım & Onarım İzleme"
-        image="solar-panel.webp"
+        image="ges-bakim-onarim-termal-analiz.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Hizmetlerimiz', path: '/hizmetlerimiz' },
@@ -78,13 +80,13 @@ export default async function PanelBakimPage() {
             </div>
 
             <div className="w-full lg:w-1/2">
-              <span style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#7FBF3A', display: 'block', marginBottom: '12px' }}>
-                Hizmet Detayı
-              </span>
-              <h2 className="section-heading" style={{ fontSize: 'clamp(26px, 3.5vw, 38px)', marginBottom: '18px' }}>
-                Proaktif Performans Yönetimi
-              </h2>
-              <p style={{ fontSize: '15px', lineHeight: 1.85, color: 'var(--text-secondary)', marginBottom: '16px' }}>
+              <SectionHeader
+                eyebrow="Hizmet Detayı"
+                title="Proaktif Performans Yönetimi"
+                titleSize="clamp(26px, 3.5vw, 38px)"
+                align="left"
+              />
+              <p style={{ fontSize: '15px', lineHeight: 1.85, color: 'var(--text-secondary)', marginTop: '18px', marginBottom: '16px' }}>
                 GES santrallerindeki verim kayıplarının büyük çoğunluğu erken müdahaleyle
                 önlenebilir. Ancak sorunlar gözle görülür hale geldiğinde çoğunlukla
                 aylarca kayıp yaşanmış olur.
@@ -97,16 +99,16 @@ export default async function PanelBakimPage() {
               </p>
 
               <div
-                style={{ padding: '14px 20px', background: 'rgba(127,191,58,0.08)', borderLeft: '3px solid #7FBF3A', borderRadius: '0 8px 8px 0', marginBottom: '28px' }}
+                style={{ padding: '14px 20px', background: 'rgba(1,113,189,0.08)', borderLeft: '3px solid var(--color-secondary)', borderRadius: '0 8px 8px 0', marginBottom: '28px' }}
               >
-                <span style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '22px', fontWeight: 700, color: '#7FBF3A' }}>%15&apos;e kadar</span>
+                <span style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '22px', fontWeight: 700, color: 'var(--color-secondary)' }}>%15&apos;e kadar</span>
                 <span style={{ fontSize: '13px', color: 'var(--text-secondary)', marginLeft: '10px' }}>kayıp önleme sağlıyoruz</span>
               </div>
 
               <ul style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '32px' }}>
                 {features.map((f, i) => (
                   <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                    <CheckCircle size={16} style={{ color: '#7FBF3A', marginTop: '3px', flexShrink: 0 }} />
+                    <CheckCircle size={16} style={{ color: 'var(--color-primary)', marginTop: '3px', flexShrink: 0 }} />
                     <span style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.65 }}>{f}</span>
                   </li>
                 ))}
@@ -116,13 +118,7 @@ export default async function PanelBakimPage() {
                 href="tel:+905304738793"
                 event="phone_click"
                 params={{ location: 'panel_bakim' }}
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '8px',
-                  padding: '13px 28px', background: '#7FBF3A', color: '#fff',
-                  fontSize: '14px', fontWeight: 600, borderRadius: '9999px',
-                  textDecoration: 'none', letterSpacing: '0.04em',
-                  boxShadow: '0 4px 15px rgba(127,191,58,0.3)',
-                }}
+                className="cta-button"
               >
                 Teklif Al <ArrowRight size={16} />
               </TrackedLink>
@@ -135,22 +131,13 @@ export default async function PanelBakimPage() {
       <section style={{ background: 'var(--bg-alt)', padding: '80px 0' }}>
         <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-12">
           <div className="text-center mb-12">
-            <span style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#7FBF3A', display: 'block', marginBottom: '10px' }}>
-              Merak Edilenler
-            </span>
-            <h2 className="section-heading" style={{ fontSize: 'clamp(24px, 3.5vw, 34px)' }}>
-              GES Bakım ve İzleme Hakkında SSS
-            </h2>
-            <div style={{ width: '50px', height: '3px', background: '#7FBF3A', margin: '16px auto 0' }} />
+            <SectionHeader
+              eyebrow="Merak Edilenler"
+              title="GES Bakım ve İzleme Hakkında SSS"
+              titleSize="clamp(24px, 3.5vw, 34px)"
+            />
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {faqs.map((f) => (
-              <div key={f.id} style={{ background: 'var(--bg-card)', borderRadius: '12px', padding: '24px 28px', border: '1px solid var(--border)' }}>
-                <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '10px' }}>{f.question}</h3>
-                <p style={{ fontSize: '14px', lineHeight: 1.8, color: 'var(--text-secondary)', margin: 0 }}>{f.answer}</p>
-              </div>
-            ))}
-          </div>
+          <FaqAccordion faqs={faqs} />
         </div>
       </section>
     </>

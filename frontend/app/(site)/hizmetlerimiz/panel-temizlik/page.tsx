@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import { CheckCircle, ArrowRight, MapPin } from 'lucide-react'
 import PageHero from '@/components/ui/PageHero'
+import SectionHeader from '@/components/ui/SectionHeader'
+import FaqAccordion from '@/components/ui/FaqAccordion'
 import JsonLd from '@/components/ui/JsonLd'
 import TrackedLink from '@/components/ui/TrackedLink'
 import { buildMetadata, SITE_URL } from '@/lib/seo'
@@ -120,7 +122,7 @@ export default async function PanelTemizlikPage() {
 
       <PageHero
         title="Panel Temizlik Hizmeti"
-        image="solar-panel.webp"
+        image="gunes-paneli-elektrikli-temizlik-fircasi-seri-uretim.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Hizmetlerimiz', path: '/hizmetlerimiz' },
@@ -144,13 +146,13 @@ export default async function PanelTemizlikPage() {
             </div>
 
             <div className="w-full lg:w-1/2">
-              <span style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#7FBF3A', display: 'block', marginBottom: '12px' }}>
-                Soma &amp; Türkiye Geneli GES Hizmeti
-              </span>
-              <h2 className="section-heading" style={{ fontSize: 'clamp(26px, 3.5vw, 38px)', marginBottom: '18px' }}>
-                Soma ve Türkiye Genelinde Profesyonel GES Panel Temizliği
-              </h2>
-              <p style={{ fontSize: '15px', lineHeight: 1.85, color: 'var(--text-secondary)', marginBottom: '16px' }}>
+              <SectionHeader
+                eyebrow="Soma & Türkiye Geneli GES Hizmeti"
+                title="Soma ve Türkiye Genelinde Profesyonel GES Panel Temizliği"
+                titleSize="clamp(26px, 3.5vw, 38px)"
+                align="left"
+              />
+              <p style={{ fontSize: '15px', lineHeight: 1.85, color: 'var(--text-secondary)', marginTop: '18px', marginBottom: '16px' }}>
                 <strong style={{ color: 'var(--text-primary)' }}>Soma GES temizliği</strong> konusunda bölgenin en deneyimli ekibiyiz.
                 Termik santraller ve sanayi tesislerine yakın Soma&apos;da güneş panelleri; kömür tozu, silis tozu ve endüstriyel
                 is birikimi nedeniyle ulusal ortalamadan çok daha hızlı kirlenip <strong style={{ color: 'var(--text-primary)' }}>%30&apos;a kadar</strong> verim
@@ -164,16 +166,16 @@ export default async function PanelTemizlikPage() {
               </p>
 
               <div
-                style={{ padding: '14px 20px', background: 'rgba(127,191,58,0.08)', borderLeft: '3px solid #7FBF3A', borderRadius: '0 8px 8px 0', marginBottom: '28px' }}
+                style={{ padding: '14px 20px', background: 'rgba(1,113,189,0.08)', borderLeft: '3px solid var(--color-secondary)', borderRadius: '0 8px 8px 0', marginBottom: '28px' }}
               >
-                <span style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '22px', fontWeight: 700, color: '#7FBF3A' }}>%30&apos;a kadar</span>
+                <span style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '22px', fontWeight: 700, color: 'var(--color-secondary)' }}>%30&apos;a kadar</span>
                 <span style={{ fontSize: '13px', color: 'var(--text-secondary)', marginLeft: '10px' }}>verim artışı sağlıyoruz</span>
               </div>
 
               <ul style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '32px' }}>
                 {features.map((f, i) => (
                   <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                    <CheckCircle size={16} style={{ color: '#7FBF3A', marginTop: '3px', flexShrink: 0 }} />
+                    <CheckCircle size={16} style={{ color: 'var(--color-primary)', marginTop: '3px', flexShrink: 0 }} />
                     <span style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.65 }}>{f}</span>
                   </li>
                 ))}
@@ -183,13 +185,7 @@ export default async function PanelTemizlikPage() {
                 href="tel:+905304738793"
                 event="phone_click"
                 params={{ location: 'panel_temizlik' }}
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '8px',
-                  padding: '13px 28px', background: '#7FBF3A', color: '#fff',
-                  fontSize: '14px', fontWeight: 600, borderRadius: '9999px',
-                  textDecoration: 'none', letterSpacing: '0.04em',
-                  boxShadow: '0 4px 15px rgba(127,191,58,0.3)',
-                }}
+                className="cta-button"
               >
                 Teklif Al <ArrowRight size={16} />
               </TrackedLink>
@@ -202,17 +198,15 @@ export default async function PanelTemizlikPage() {
       <section style={{ background: 'var(--bg-alt)', padding: '72px 0' }}>
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
           <div className="text-center mb-12">
-            <span style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#7FBF3A', display: 'block', marginBottom: '10px' }}>
-              Neden Soma?
-            </span>
-            <h2 className="section-heading" style={{ fontSize: 'clamp(24px, 3.5vw, 34px)' }}>
-              Soma&apos;nın GES Sahalarına Özel Temizlik Zorluğu
-            </h2>
-            <div style={{ width: '50px', height: '3px', background: '#7FBF3A', margin: '16px auto 0' }} />
+            <SectionHeader
+              eyebrow="Neden Soma?"
+              title="Soma'nın GES Sahalarına Özel Temizlik Zorluğu"
+              titleSize="clamp(24px, 3.5vw, 34px)"
+            />
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {nedenSomaCards.map((item, i) => (
-              <div key={i} style={{ background: 'var(--bg-card)', borderRadius: '12px', padding: '28px 24px', border: '1px solid var(--border)', borderTop: '3px solid #7FBF3A' }}>
+              <div key={i} className="section-card" style={{ padding: '28px 24px' }}>
                 <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '12px', fontFamily: "'Rajdhani', sans-serif", letterSpacing: '0.03em' }}>{item.title}</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.8, color: 'var(--text-secondary)', margin: 0 }}>{item.text}</p>
               </div>
@@ -225,22 +219,18 @@ export default async function PanelTemizlikPage() {
       <section style={{ background: 'var(--bg-body)', padding: '72px 0' }}>
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
           <div className="text-center mb-12">
-            <span style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#7FBF3A', display: 'block', marginBottom: '10px' }}>
-              Türkiye Geneli Hizmet
-            </span>
-            <h2 className="section-heading" style={{ fontSize: 'clamp(24px, 3.5vw, 34px)' }}>
-              GES Temizliği Hizmet Verilen Bölgeler
-            </h2>
-            <p style={{ fontSize: '15px', color: 'var(--text-secondary)', marginTop: '12px', maxWidth: '600px', margin: '12px auto 0', lineHeight: 1.7 }}>
-              Soma merkezli saha ekiplerimiz Türkiye genelindeki güneş enerji santrallerine ulaşır. Aşağıdaki il ve ilçelerde aktif GES temizlik hizmeti veriyoruz.
-            </p>
-            <div style={{ width: '50px', height: '3px', background: '#7FBF3A', margin: '16px auto 0' }} />
+            <SectionHeader
+              eyebrow="Türkiye Geneli Hizmet"
+              title="GES Temizliği Hizmet Verilen Bölgeler"
+              titleSize="clamp(24px, 3.5vw, 34px)"
+              lead="Soma merkezli saha ekiplerimiz Türkiye genelindeki güneş enerji santrallerine ulaşır. Aşağıdaki il ve ilçelerde aktif GES temizlik hizmeti veriyoruz."
+            />
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {serviceAreas.map((area, i) => (
-              <div key={i} style={{ background: 'var(--bg-card)', borderRadius: '12px', padding: '22px 24px', border: '1px solid var(--border)' }}>
+              <div key={i} className="section-card" style={{ padding: '22px 24px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                  <MapPin size={15} style={{ color: '#7FBF3A', flexShrink: 0 }} />
+                  <MapPin size={15} style={{ color: 'var(--color-primary)', flexShrink: 0 }} />
                   <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)', margin: 0, fontFamily: "'Rajdhani', sans-serif", letterSpacing: '0.03em' }}>{area.il}</h3>
                 </div>
                 <p style={{ fontSize: '13.5px', lineHeight: 1.7, color: 'var(--text-secondary)', margin: 0, paddingLeft: '23px' }}>{area.ilceler}</p>
@@ -249,7 +239,7 @@ export default async function PanelTemizlikPage() {
           </div>
           <p style={{ textAlign: 'center', marginTop: '32px', fontSize: '14px', color: 'var(--text-secondary)' }}>
             Listede yer almayan bölgeler için{' '}
-            <TrackedLink href="tel:+905304738793" event="phone_click" params={{ location: 'panel_temizlik_bolge' }} style={{ color: '#7FBF3A', fontWeight: 600, textDecoration: 'none' }}>bizi arayın</TrackedLink>
+            <TrackedLink href="tel:+905304738793" event="phone_click" params={{ location: 'panel_temizlik_bolge' }} style={{ color: 'var(--color-primary)', fontWeight: 600, textDecoration: 'none' }}>bizi arayın</TrackedLink>
             {' '}— Türkiye&apos;nin her bölgesindeki GES sahalarına saha keşfi yaparak hizmet sunabiliyoruz.
           </p>
         </div>
@@ -259,22 +249,13 @@ export default async function PanelTemizlikPage() {
       <section style={{ background: 'var(--bg-alt)', padding: '80px 0' }}>
         <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-12">
           <div className="text-center mb-12">
-            <span style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#7FBF3A', display: 'block', marginBottom: '10px' }}>
-              Merak Edilenler
-            </span>
-            <h2 className="section-heading" style={{ fontSize: 'clamp(24px, 3.5vw, 34px)' }}>
-              Güneş Paneli Temizliği Hakkında SSS
-            </h2>
-            <div style={{ width: '50px', height: '3px', background: '#7FBF3A', margin: '16px auto 0' }} />
+            <SectionHeader
+              eyebrow="Merak Edilenler"
+              title="Güneş Paneli Temizliği Hakkında SSS"
+              titleSize="clamp(24px, 3.5vw, 34px)"
+            />
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {faqs.map((f) => (
-              <div key={f.id} style={{ background: 'var(--bg-card)', borderRadius: '12px', padding: '24px 28px', border: '1px solid var(--border)' }}>
-                <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '10px' }}>{f.question}</h3>
-                <p style={{ fontSize: '14px', lineHeight: 1.8, color: 'var(--text-secondary)', margin: 0 }}>{f.answer}</p>
-              </div>
-            ))}
-          </div>
+          <FaqAccordion faqs={faqs} />
         </div>
       </section>
     </>

@@ -24,7 +24,7 @@ interface BlogArticleLayoutProps {
 const SANITIZE_OPTIONS = {
   ALLOWED_TAGS: [
     'p', 'br', 'hr',
-    'h1', 'h2', 'h3',
+    'h2', 'h3',
     'strong', 'b', 'em', 'i', 'u', 's', 'strike',
     'a', 'span',
     'ul', 'ol', 'li',
@@ -40,7 +40,7 @@ const SANITIZE_OPTIONS = {
   ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto|tel):|\/uploads\/)/i,
 }
 
-// Sayfa Navbar/Footer/WhatsAppButton'ı (site) layout'undan alır — burada
+// Sayfa Navbar/Footer/ChatWidget'ı (site) layout'undan alır — burada
 // yalnızca makale gövdesi var. content = backend'in sanitize edip döndürdüğü
 // güvenli HTML (bkz. backend/src/common/html-sanitize.ts).
 export default function BlogArticleLayout({ title, publishedAt, content, relatedPosts = [] }: BlogArticleLayoutProps) {
@@ -53,7 +53,7 @@ export default function BlogArticleLayout({ title, publishedAt, content, related
   return (
     <>
       {/* Header band */}
-      <div style={{ background: 'var(--bg-alt)', marginTop: '80px', padding: '32px 0 28px', borderBottom: '1px solid var(--border-subtle)' }}>
+      <div className="mt-20 md:mt-28" style={{ background: 'var(--bg-alt)', padding: '32px 0 28px', borderBottom: '1px solid var(--border-subtle)' }}>
         <div className="max-w-3xl mx-auto px-5 sm:px-8 lg:px-12">
           <Link
             href="/blog"
@@ -62,9 +62,7 @@ export default function BlogArticleLayout({ title, publishedAt, content, related
           >
             <ArrowLeft size={14} /> Blog
           </Link>
-          <h1
-            style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: 'clamp(26px, 4vw, 38px)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2, margin: '0 0 14px' }}
-          >
+          <h1 className="section-heading" style={{ fontSize: 'clamp(26px, 4vw, 38px)', lineHeight: 1.2, margin: '0 0 14px' }}>
             {title}
           </h1>
           <div className="flex items-center gap-4" style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
@@ -96,8 +94,8 @@ export default function BlogArticleLayout({ title, publishedAt, content, related
             href="tel:+905304738793"
             event="phone_click"
             params={{ location: 'blog_article_cta' }}
-            className="cta-button inline-flex items-center gap-2"
-            style={{ background: '#7FBF3A', color: '#fff', fontSize: '14px', fontWeight: 600, padding: '11px 22px', borderRadius: '9999px', textDecoration: 'none' }}
+            className="cta-button"
+            style={{ padding: '11px 22px' }}
           >
             0530 473 87 93
           </TrackedLink>

@@ -4,8 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, Sun, Moon, ChevronDown, ChevronRight } from 'lucide-react'
-import { useTheme } from '@/context/useTheme'
+import { Menu, X, ChevronDown, ChevronRight } from 'lucide-react'
 
 interface NavChild {
   label: string
@@ -28,6 +27,7 @@ const navLinks: NavLink[] = [
       { label: 'Panel Temizlik Hizmeti', path: '/hizmetlerimiz/panel-temizlik' },
       { label: 'Panel Bakım & Onarım İzleme', path: '/hizmetlerimiz/panel-bakim' },
       { label: 'Robot & Makina Satışı', path: '/hizmetlerimiz/robot-satisi' },
+      { label: 'Ot Temizliği', path: '/hizmetlerimiz/ot-temizligi' },
     ],
   },
   { label: 'Referanslarımız', path: '/referanslarimiz' },
@@ -41,7 +41,6 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [dropdown, setDropdown] = useState<string | null>(null) // label of open dropdown
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
-  const { theme, toggle } = useTheme()
   const pathname = usePathname()
   const isHome = pathname === '/'
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -63,6 +62,22 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
+  // Mobil menü açıkken arkadaki sayfanın scroll etmesini engelle
+  useEffect(() => {
+    if (!open) return
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = prevOverflow }
+  }, [open])
+
+  // Escape ile mobil menüyü kapat
+  useEffect(() => {
+    if (!open) return
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [open])
+
   // Sayfa değişince dropdown/mobil menüyü kapat — render sırasında state
   // ayarlama (React'in "adjusting state during render" deseni), effect içinde
   // setState'i tetikleyip react-hooks/set-state-in-effect'i ihlal etmez
@@ -79,7 +94,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-400"
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       style={{
         backgroundColor: isSolid ? 'var(--bg-nav)' : 'transparent',
         boxShadow: isSolid ? '0 2px 20px rgba(0,0,0,0.08)' : 'none',
@@ -87,7 +102,7 @@ export default function Navbar() {
       }}
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
-        <div className="flex items-center justify-between h-20 md:h-28">
+        <div className="relative flex items-center justify-between h-20 md:h-28">
 
           {/* Logo */}
           <Link href="/" className="shrink-0 cursor-pointer bg-transparent border-none p-0">
@@ -101,8 +116,10 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Desktop links */}
-          <div className="hidden lg:flex items-center gap-7" ref={dropdownRef}>
+          {/* Desktop links — bar üzerinde mutlak ortalanır (sağ tarafta tema
+              butonu kalmadığından artık logoya göre değil, barın kendisine
+              göre ortalanması gerekiyor) */}
+          <div className="hidden lg:flex items-center gap-7 absolute left-1/2 -translate-x-1/2" ref={dropdownRef}>
             {navLinks.map((link) => {
               const hasChildren = (link.children?.length ?? 0) > 0
               const isOpen = dropdown === link.label
@@ -167,7 +184,7 @@ export default function Navbar() {
                           border: 'none', cursor: 'pointer',
                           fontSize: '12px', fontWeight: 700,
                           letterSpacing: '0.1em', textTransform: 'uppercase',
-                          color: '#7FBF3A',
+                          color: 'var(--color-primary)',
                           fontFamily: "'Poppins', sans-serif",
                         }}
                       >
@@ -195,7 +212,7 @@ export default function Navbar() {
                           }}
                         >
                           <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <span style={{ color: '#7FBF3A', fontSize: '16px', lineHeight: 1 }}>»</span>
+                            <span style={{ color: 'var(--color-primary)', fontSize: '16px', lineHeight: 1 }}>»</span>
                             {child.label}
                           </span>
                           <ChevronRight size={13} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
@@ -208,39 +225,14 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Right: theme toggle */}
-          <div className="hidden lg:flex items-center gap-3">
-            <button
-              onClick={toggle}
-              className="w-9 h-9 flex items-center justify-center transition-colors duration-200 cursor-pointer"
-              style={{
-                borderRadius: '50%',
-                border: '1px solid',
-                borderColor: isSolid ? 'var(--border-subtle)' : 'rgba(255,255,255,0.3)',
-                background: 'transparent',
-                color: isSolid ? 'var(--text-muted)' : 'rgba(255,255,255,0.8)',
-              }}
-              aria-label="Tema değiştir"
-            >
-              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
-          </div>
-
           {/* Mobile hamburger */}
           <div className="lg:hidden flex items-center gap-2">
-            <button
-              onClick={toggle}
-              className="p-2 cursor-pointer"
-              style={{ color: isSolid ? 'var(--text-muted)' : '#ffffff', background: 'none', border: 'none' }}
-              aria-label="Tema değiştir"
-            >
-              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
             <button
               onClick={() => setOpen(!open)}
               className="p-2 cursor-pointer"
               style={{ color: isSolid ? 'var(--text-muted)' : '#ffffff', background: 'none', border: 'none' }}
               aria-label="Menü"
+              aria-expanded={open}
             >
               {open ? <X size={22} /> : <Menu size={22} />}
             </button>
@@ -272,7 +264,9 @@ export default function Navbar() {
                   {hasChildren && (
                     <button
                       onClick={() => setMobileExpanded(isExpanded ? null : link.label)}
-                      style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px', color: 'var(--text-muted)' }}
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '11px', color: 'var(--text-muted)' }}
+                      aria-label={`${link.label} alt menüsü`}
+                      aria-expanded={isExpanded}
                     >
                       <ChevronDown
                         size={16}
@@ -283,7 +277,7 @@ export default function Navbar() {
                 </div>
 
                 {hasChildren && isExpanded && (
-                  <div style={{ paddingLeft: '14px', paddingBottom: '6px', borderLeft: '2px solid #7FBF3A', marginLeft: '8px', marginBottom: '4px' }}>
+                  <div style={{ paddingLeft: '14px', paddingBottom: '6px', borderLeft: '2px solid var(--color-primary)', marginLeft: '8px', marginBottom: '4px' }}>
                     {link.children?.map((child) => (
                       <Link
                         key={child.path}
@@ -292,7 +286,7 @@ export default function Navbar() {
                         className="w-full py-2.5 text-sm text-left cursor-pointer bg-transparent border-none"
                         style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '8px' }}
                       >
-                        <span style={{ color: '#7FBF3A' }}>»</span>
+                        <span style={{ color: 'var(--color-primary)' }}>»</span>
                         {child.label}
                       </Link>
                     ))}

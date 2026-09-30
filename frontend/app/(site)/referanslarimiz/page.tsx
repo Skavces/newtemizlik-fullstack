@@ -1,5 +1,7 @@
 import Image from 'next/image'
 import PageHero from '@/components/ui/PageHero'
+import SectionHeader from '@/components/ui/SectionHeader'
+import CtaBand from '@/components/ui/CtaBand'
 import JsonLd from '@/components/ui/JsonLd'
 import { buildMetadata, SITE_URL } from '@/lib/seo'
 import { getReferences } from '@/lib/api'
@@ -43,7 +45,7 @@ export default async function ReferanslarPage() {
 
       <PageHero
         title="Referanslarımız"
-        image="solar-panel.webp"
+        image="gunes-paneli-uzatmali-cift-fircali-temizlik-makinasi.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Referanslarımız' },
@@ -53,25 +55,21 @@ export default async function ReferanslarPage() {
       <section style={{ background: 'var(--bg-body)', padding: '80px 0' }}>
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
           <div className="text-center mb-14">
-            <span style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#7FBF3A', display: 'block', marginBottom: '10px' }}>
-              Referanslar
-            </span>
-            <h2 className="section-heading" style={{ fontSize: 'clamp(26px, 4vw, 38px)' }}>
-              Bize Güvenen Markalar
-            </h2>
-            <p style={{ fontSize: '15px', color: 'var(--text-secondary)', marginTop: '14px', maxWidth: '480px', margin: '14px auto 0', lineHeight: 1.7 }}>
-              Sektörün öncü firmalarıyla birlikte çalışarak güvenilir hizmet anlayışımızı kanıtlıyoruz.
-            </p>
-            <div style={{ width: '50px', height: '3px', background: '#7FBF3A', margin: '16px auto 0' }} />
+            <SectionHeader
+              eyebrow="Referanslar"
+              title="Bize Güvenen Markalar"
+              lead="Sektörün öncü firmalarıyla birlikte çalışarak güvenilir hizmet anlayışımızı kanıtlıyoruz."
+            />
           </div>
         </div>
 
         <div
           className="max-w-screen-xl mx-auto px-5 sm:px-8"
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
-            gap: '20px',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '24px',
           }}
         >
           {references.map((ref) => {
@@ -79,22 +77,22 @@ export default async function ReferanslarPage() {
             return (
               <div
                 key={ref.id}
-                className="section-card flex flex-col items-center justify-center p-4 gap-3"
-                style={{ aspectRatio: '4/3' }}
+                className="section-card flex flex-col items-center justify-center p-6 gap-4"
+                style={{ width: '220px', aspectRatio: '4/3', flexShrink: 0 }}
               >
                 {ref.logo && (
-                  <div style={{ position: 'relative', width: '80%', height: '65%' }}>
+                  <div style={{ position: 'relative', width: '82%', height: '68%' }}>
                     <Image
                       src={ref.logo}
                       alt={`${ref.name} Logosu`}
                       fill
-                      sizes="160px"
+                      sizes="220px"
                       className="object-contain transition-all duration-300"
                       style={{ transform: scale && scale !== 1 ? `scale(${scale})` : undefined }}
                     />
                   </div>
                 )}
-                <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', textAlign: 'center', lineHeight: 1.3 }}>
+                <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-secondary)', textAlign: 'center', lineHeight: 1.3 }}>
                   {ref.name}
                 </span>
               </div>
@@ -102,6 +100,13 @@ export default async function ReferanslarPage() {
           })}
         </div>
       </section>
+
+      <CtaBand
+        title="Sizin santralinizde de aynı sonucu almak ister misiniz?"
+        href="/iletisim"
+        label="Ücretsiz Keşif Talep Edin"
+        background="var(--bg-alt)"
+      />
     </>
   )
 }

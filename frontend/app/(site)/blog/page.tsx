@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Calendar } from 'lucide-react'
 import PageHero from '@/components/ui/PageHero'
+import SectionHeader from '@/components/ui/SectionHeader'
 import JsonLd from '@/components/ui/JsonLd'
 import { buildMetadata, SITE_URL } from '@/lib/seo'
 import { getBlogPosts } from '@/lib/api'
@@ -68,7 +69,7 @@ export default async function BlogPage() {
 
       <PageHero
         title="Blog"
-        image="solar-panel.webp"
+        image="leopardust-ges-panel-temizlik-robotu-saha.webp"
         breadcrumbs={[
           { label: 'Ana Sayfa', path: '/' },
           { label: 'Blog' },
@@ -78,16 +79,12 @@ export default async function BlogPage() {
       <section style={{ background: 'var(--bg-body)', padding: '72px 0 96px' }}>
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
           <div className="text-center mb-14">
-            <span style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#7FBF3A', display: 'block', marginBottom: '10px' }}>
-              Teknik Rehberler
-            </span>
-            <h2 className="section-heading" style={{ fontSize: 'clamp(24px, 3.5vw, 36px)' }}>
-              GES Temizlik ve Bakım Makaleleri
-            </h2>
-            <p style={{ fontSize: '15px', color: 'var(--text-secondary)', marginTop: '12px', maxWidth: '560px', margin: '12px auto 0', lineHeight: 1.7 }}>
-              Güneş enerji santralinizin verimini korumak için bilmeniz gereken her şey.
-            </p>
-            <div style={{ width: '50px', height: '3px', background: '#7FBF3A', margin: '16px auto 0' }} />
+            <SectionHeader
+              eyebrow="Teknik Rehberler"
+              title="GES Temizlik ve Bakım Makaleleri"
+              titleSize="clamp(24px, 3.5vw, 36px)"
+              lead="Güneş enerji santralinizin verimini korumak için bilmeniz gereken her şey."
+            />
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
@@ -97,7 +94,7 @@ export default async function BlogPage() {
                 href={`/blog/${post.slug}`}
                 style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
               >
-                <article className="blog-card">
+                <article className="section-card overflow-hidden h-full">
                   {post.coverImage && (
                     <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden' }}>
                       <Image
@@ -128,7 +125,7 @@ export default async function BlogPage() {
                     </p>
                     <span style={{
                       display: 'inline-flex', alignItems: 'center', gap: '5px',
-                      fontSize: '13px', fontWeight: 600, color: '#7FBF3A',
+                      fontSize: '13px', fontWeight: 600, color: 'var(--color-secondary)',
                     }}>
                       Devamını Oku <ArrowRight size={13} />
                     </span>

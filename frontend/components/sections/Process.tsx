@@ -1,11 +1,12 @@
 import { Fragment } from 'react'
 import Image from 'next/image'
 import { Search, ClipboardList, Play, CheckCircle2, type LucideIcon } from 'lucide-react'
+import SectionHeader from '@/components/ui/SectionHeader'
 
-const CARD_H = 400   // fixed card height (px)
-const STAGGER = 90   // vertical offset for low cards (px)
-const ARROW_W = 150   // arrow connector width (px)
-const ROW_H = CARD_H + STAGGER  // total flex row height = 490
+const CARD_H = 380   // fixed card height (px)
+const STAGGER = 100   // vertical offset for low cards (px)
+const ARROW_W = 100   // arrow connector width (px)
+const ROW_H = CARD_H + STAGGER  // total flex row height
 
 // Card centers relative to flex-row top:
 const CENTER_TOP = CARD_H / 2              // = 200 (cards 01, 03)
@@ -27,7 +28,7 @@ const steps: Step[] = [
     num: '01',
     title: 'Keşif',
     description: 'Sahaya giderek detaylı analiz ve ihtiyaç tespiti yapıyoruz. Sorunlu paneller ve gölgelenme noktaları belirlenir.',
-    color: '#7FBF3A',
+    color: 'var(--color-primary)',
     img: '/alankesif.jpg',
     alt: 'GES sahasında termal analiz ve keşif çalışması',
   },
@@ -36,7 +37,7 @@ const steps: Step[] = [
     num: '02',
     title: 'Planlama',
     description: 'Keşif verilerine dayanarak size özel temizlik ve bakım planı hazırlıyoruz. Ekip büyüklüğü, ekipman ve maliyet analizi net biçimde ortaya konur.',
-    color: '#1F6EC7',
+    color: 'var(--color-secondary)',
     img: '/planlama.jpg',
     alt: 'Güneş enerjisi santralinde uzman bakım planlaması',
   },
@@ -45,7 +46,7 @@ const steps: Step[] = [
     num: '03',
     title: 'Uygulama',
     description: 'Sertifikalı ekibimiz ve otonom robotlarımızla planı sahada hayata geçiriyoruz. Su israfı yapmadan, panellere zarar vermeden profesyonel temizlik gerçekleştirilir.',
-    color: '#7FBF3A',
+    color: 'var(--color-primary)',
     img: '/uygulama.jpg',
     alt: 'Otonom panel temizlik robotu uygulaması',
   },
@@ -54,24 +55,21 @@ const steps: Step[] = [
     num: '04',
     title: 'Kontrol',
     description: 'Temizlik öncesi/sonrası veriler karşılaştırılır, invertör verileriyle kalite doğrulanır. Detaylı rapor ve garanti belgesi teslim edilir.',
-    color: '#1F6EC7',
+    color: 'var(--color-secondary)',
     img: '/kontrol.jpg',
     alt: 'Güneş paneli temizlik kalite kontrol çalışması',
   },
 ]
 
+const CONNECTOR_COLOR = 'var(--color-primary)'
+
 /**
- * S-curve arrow connecting two staggered cards.
+ * S-curve dashed connector between two staggered cards.
  * startY / endY are relative to the flex-row top (y=0).
- * The bezier's last control point shares X with the endpoint → horizontal tangent at end.
- * This guarantees the arrowhead is always a clean rightward >.
  */
-function StepArrow({ color, startY, endY }: { color: string; startY: number; endY: number }) {
+function StepArrow({ startY, endY }: { startY: number; endY: number }) {
   const mid = ARROW_W / 2
-  const tipX = ARROW_W
-  const curveEndX = tipX - 14
-  const armLen = 9
-  const curvePath = `M0,${startY} C${mid},${startY} ${mid},${endY} ${curveEndX},${endY}`
+  const curvePath = `M0,${startY} C${mid},${startY} ${mid},${endY} ${ARROW_W},${endY}`
   return (
     <svg
       width={ARROW_W}
@@ -81,24 +79,51 @@ function StepArrow({ color, startY, endY }: { color: string; startY: number; end
       aria-hidden="true"
       style={{ flexShrink: 0, display: 'block' }}
     >
-      {/* Dashed S-curve body */}
       <path
         d={curvePath}
-        stroke={color}
+        stroke={CONNECTOR_COLOR}
         strokeWidth="2"
         strokeLinecap="round"
         strokeDasharray="6 5"
-        opacity="0.6"
+        opacity="0.55"
+      />
+    </svg>
+  )
+}
+
+/** Small decorative arrow trailing off after the final card, curving upward. */
+function TrailingArrow({ y }: { y: number }) {
+  const w = 50
+  const tipX = w
+  const tipY = y - 34
+  const curveEndX = tipX - 14
+  const armLen = 8
+  return (
+    <svg
+      width={w}
+      height={ROW_H}
+      viewBox={`0 0 ${w} ${ROW_H}`}
+      fill="none"
+      aria-hidden="true"
+      style={{ flexShrink: 0, display: 'block' }}
+    >
+      <path
+        d={`M0,${y} C${w * 0.5},${y} ${w * 0.5},${tipY} ${curveEndX},${tipY}`}
+        stroke={CONNECTOR_COLOR}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeDasharray="6 5"
+        opacity="0.55"
       />
       {/* > chevron tip */}
       <polyline
-        points={`${tipX - 12},${endY - armLen} ${tipX},${endY} ${tipX - 12},${endY + armLen}`}
-        stroke={color}
+        points={`${tipX - 12},${tipY - armLen} ${tipX},${tipY} ${tipX - 12},${tipY + armLen}`}
+        stroke={CONNECTOR_COLOR}
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="miter"
         fill="none"
-        opacity="0.9"
+        opacity="0.85"
       />
     </svg>
   )
@@ -106,10 +131,14 @@ function StepArrow({ color, startY, endY }: { color: string; startY: number; end
 
 function StepCard({ step }: { step: Step }) {
   return (
-    <div style={{ height: `${CARD_H}px`, display: 'flex', flexDirection: 'column' }}>
-      {/* Image */}
-      <div style={{ position: 'relative', flexShrink: 0, height: '195px' }}>
-        <div style={{ position: 'relative', borderRadius: '10px', overflow: 'hidden', height: '100%' }}>
+    <div style={{ height: `${CARD_H}px`, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+      {/* Photo card */}
+      <div style={{
+        position: 'relative', flexShrink: 0, width: '100%',
+        background: 'var(--bg-card)', borderRadius: '18px', padding: '10px',
+        boxShadow: '0 10px 30px rgba(0,0,0,0.10)',
+      }}>
+        <div style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', aspectRatio: '1 / 1' }}>
           <Image
             src={step.img}
             alt={step.alt}
@@ -118,13 +147,13 @@ function StepCard({ step }: { step: Step }) {
             style={{ objectFit: 'cover' }}
           />
         </div>
-        {/* Step number badge — overflows image corner */}
+        {/* Step number badge — overflows card corner */}
         <div style={{
-          position: 'absolute', top: '-18px', left: '-18px',
-          width: '52px', height: '52px', borderRadius: '50%',
-          background: '#F4C430',
+          position: 'absolute', top: '-20px', left: '-20px',
+          width: '58px', height: '58px', borderRadius: '50%',
+          background: 'var(--color-accent)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontFamily: "'Rajdhani', sans-serif", fontWeight: 700, fontSize: '18px',
+          fontFamily: "'Rajdhani', sans-serif", fontWeight: 700, fontSize: '20px',
           color: '#1a1a1a',
           boxShadow: '0 4px 14px rgba(0,0,0,0.22)',
           zIndex: 1,
@@ -133,26 +162,15 @@ function StepCard({ step }: { step: Step }) {
         </div>
       </div>
 
-      {/* Content — no card bg, just bare text */}
-      <div style={{ paddingTop: '18px', flex: 1 }}>
-        {/* Step label */}
-        <span style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: step.color, display: 'block', marginBottom: '6px' }}>
-          Adım {step.num}
-        </span>
-
-        {/* Title */}
+      {/* Content */}
+      <div style={{ paddingTop: '20px' }}>
         <h3
           className="section-heading"
-          style={{ fontSize: 'clamp(18px, 1.6vw, 22px)', color: 'var(--text-primary)', marginBottom: '8px' }}
+          style={{ fontSize: 'clamp(19px, 1.8vw, 24px)', color: 'var(--text-primary)', marginBottom: '8px' }}
         >
           {step.title}
         </h3>
-
-        {/* Accent bar */}
-        <div style={{ width: '32px', height: '3px', background: step.color, borderRadius: '2px', marginBottom: '10px' }} />
-
-        {/* Description */}
-        <p style={{ fontSize: '14px', lineHeight: 1.75, color: 'var(--text-secondary)', margin: 0 }}>
+        <p style={{ fontSize: '15px', lineHeight: 1.75, color: 'var(--text-secondary)', margin: 0 }}>
           {step.description}
         </p>
       </div>
@@ -164,31 +182,36 @@ export default function Process() {
   return (
     <section
       id="surec"
-      className="scroll-mt-16 md:scroll-mt-20 py-20 md:py-28"
-      style={{ background: 'var(--bg-alt)' }}
+      className="scroll-mt-16 md:scroll-mt-20 pt-8 pb-20 md:pt-10 md:pb-28"
+      style={{ background: 'var(--bg-body)', position: 'relative', overflow: 'hidden' }}
     >
 
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
+      {/* Decorative background — solar/wind line art */}
+      <div aria-hidden="true" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+        <Image
+          src="/bg001.png"
+          alt=""
+          fill
+          style={{ objectFit: 'cover', objectPosition: 'left bottom', opacity: 0.8 }}
+        />
+      </div>
+
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12" style={{ position: 'relative', zIndex: 1 }}>
 
         {/* Section header */}
         <div className="text-center mb-16 md:mb-20">
-          <span style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#7FBF3A', display: 'block', marginBottom: '10px' }}>
-            Süreç
-          </span>
-          <h2 className="section-heading" style={{ fontSize: 'clamp(26px, 4vw, 38px)' }}>
-            Çalışma Sürecimiz
-          </h2>
-          <p style={{ fontSize: '15px', color: 'var(--text-secondary)', marginTop: '14px', lineHeight: 1.7 }}>
-            Sahadan rapora 4 adımda profesyonel hizmet.
-          </p>
-          <div style={{ width: '50px', height: '3px', background: '#7FBF3A', margin: '16px auto 0' }} />
+          <SectionHeader
+            eyebrow="Süreç"
+            title="Çalışma Sürecimiz"
+            lead="Sahadan rapora 4 adımda profesyonel hizmet."
+          />
         </div>
 
         {/* ── Desktop: staggered horizontal flow ── */}
         <div
           className="hidden md:grid"
           style={{
-            gridTemplateColumns: `1fr ${ARROW_W}px 1fr ${ARROW_W}px 1fr ${ARROW_W}px 1fr`,
+            gridTemplateColumns: `1fr ${ARROW_W}px 1fr ${ARROW_W}px 1fr ${ARROW_W}px 1fr 50px`,
             alignItems: 'flex-start',
             height: `${ROW_H}px`,
           }}
@@ -205,13 +228,9 @@ export default function Process() {
                 <div style={{ marginTop: isLow ? `${STAGGER}px` : '0', minWidth: 0 }}>
                   <StepCard step={step} />
                 </div>
-                {!isLast && (
-                  <StepArrow
-                    color={step.color}
-                    startY={thisCenter}
-                    endY={nextCenter}
-                  />
-                )}
+                {!isLast
+                  ? <StepArrow startY={thisCenter} endY={nextCenter} />
+                  : <TrailingArrow y={thisCenter} />}
               </Fragment>
             )
           })}
@@ -223,7 +242,7 @@ export default function Process() {
             style={{
               position: 'absolute', left: '18px', top: '24px', bottom: '24px',
               width: '2px',
-              background: 'linear-gradient(to bottom, #7FBF3A, #1F6EC7, #7FBF3A, #1F6EC7)',
+              background: 'linear-gradient(to bottom, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-secondary))',
               opacity: 0.3,
             }}
           />

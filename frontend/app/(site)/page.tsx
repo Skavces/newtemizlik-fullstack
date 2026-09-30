@@ -1,5 +1,5 @@
 import Hero from '@/components/sections/Hero'
-import KirProblemleri from '@/components/sections/KirProblemleri'
+import Services from '@/components/sections/Services'
 import WhyUs from '@/components/sections/WhyUs'
 import Process from '@/components/sections/Process'
 import Referanslar from '@/components/sections/Referanslar'
@@ -34,6 +34,7 @@ const videoSchema = {
 const localBusinessSchema = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
+  '@id': `${SITE_URL}/#organization`,
   name: 'New Temizlik',
   description: 'Soma ve Türkiye genelinde profesyonel GES panel temizliği, güneş paneli yıkama, solar panel bakım ve otonom temizlik robotu hizmetleri.',
   url: SITE_URL,
@@ -84,7 +85,7 @@ export default async function HomePage() {
       <JsonLd data={videoSchema} />
       <JsonLd data={localBusinessSchema} />
       <Hero />
-      <KirProblemleri />
+      <Services />
       <WhyUs />
       <Process />
       <Referanslar references={references} />

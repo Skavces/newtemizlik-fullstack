@@ -1,39 +1,42 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { Zap, ShieldCheck, Wrench, CalendarCheck, Award, HeadphonesIcon, ArrowRight, type LucideIcon } from 'lucide-react'
+import SectionHeader from '@/components/ui/SectionHeader'
 
 interface Feature {
   icon: LucideIcon
   title: string
   desc: string
+  href: string
 }
 
 const features: Feature[] = [
-  { icon: Zap,             title: 'Veri Odaklı ROI Analizi',     desc: 'GES yıllık temizlik öncesi ve sonrası üretim artışını inverter verileriyle raporluyoruz.' },
-  { icon: ShieldCheck,     title: 'ISG & Otonom Teknoloji',       desc: 'Sahada riskleri sıfıra indiren otonom temizlik robotlarımızla uluslararası İş Güvenliği standartlarındayız.' },
-  { icon: Wrench,          title: 'Su İsrafı Yapmıyoruz',         desc: 'Minimum su tüketimiyle maksimum temizlik sağlayan yöntemlerimizle çevreye duyarlı hizmet veriyoruz.' },
-  { icon: CalendarCheck,   title: 'Periyodik Bakım Planı',        desc: 'Mevsimsel tozlanma verilerine göre optimize edilmiş yıllık bakım sözleşmeleri sunuyoruz.' },
-  { icon: Award,           title: 'Sertifikalı Uzman Kadrosu',    desc: 'Sadece temizlik değil, GES performans analizi. Her projede detaylı verim raporu teslim edilir.' },
-  { icon: HeadphonesIcon,  title: '7/24 Kesintisiz İzleme',       desc: 'Olası arıza veya verim düşüklüğünde anında müdahale için sistemlerinizi sürekli izliyoruz.' },
+  { icon: Zap,             title: 'Veri Odaklı ROI Analizi',     desc: 'GES yıllık temizlik öncesi ve sonrası üretim artışını inverter verileriyle raporluyoruz.', href: '/neden-biz/veri-odakli-roi-analizi' },
+  { icon: ShieldCheck,     title: 'ISG & Otonom Teknoloji',       desc: 'Sahada riskleri sıfıra indiren otonom temizlik robotlarımızla uluslararası İş Güvenliği standartlarındayız.', href: '/neden-biz/isg-otonom-teknoloji' },
+  { icon: Wrench,          title: 'Su İsrafı Yapmıyoruz',         desc: 'Minimum su tüketimiyle maksimum temizlik sağlayan yöntemlerimizle çevreye duyarlı hizmet veriyoruz.', href: '/neden-biz/su-tasarrufu' },
+  { icon: CalendarCheck,   title: 'Periyodik Bakım Planı',        desc: 'Mevsimsel tozlanma verilerine göre optimize edilmiş yıllık bakım sözleşmeleri sunuyoruz.', href: '/neden-biz/periyodik-bakim-plani' },
+  { icon: Award,           title: 'Sertifikalı Uzman Kadrosu',    desc: 'Sadece temizlik değil, GES performans analizi. Her projede detaylı verim raporu teslim edilir.', href: '/neden-biz/sertifikali-uzman-kadro' },
+  { icon: HeadphonesIcon,  title: '7/24 Kesintisiz İzleme',       desc: 'Olası arıza veya verim düşüklüğünde anında müdahale için sistemlerinizi sürekli izliyoruz.', href: '/neden-biz/7-24-izleme' },
 ]
 
 function ServiceCard({ f }: { f: Feature }) {
   return (
     <div className="service-card" style={{ cursor: 'default' }}>
       {/* Icon */}
-      <f.icon style={{ width: '36px', height: '36px', color: '#7FBF3A', marginBottom: '16px', flexShrink: 0 }} />
+      <f.icon style={{ width: '42px', height: '42px', color: 'var(--color-secondary)', marginBottom: '18px', flexShrink: 0 }} />
 
-      <h3 style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '19px', fontWeight: 700, letterSpacing: '0.03em', color: 'var(--text-primary)', marginBottom: '8px' }}>
+      <h3 style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '21px', fontWeight: 700, letterSpacing: '0.03em', color: 'var(--text-primary)', marginBottom: '10px' }}>
         {f.title}
       </h3>
 
-      <p style={{ fontSize: '13.5px', lineHeight: 1.7, color: 'var(--text-secondary)', margin: '0 0 16px', flex: 1 }}>
+      <p style={{ fontSize: '14.5px', lineHeight: 1.7, color: 'var(--text-secondary)', margin: '0 0 16px', flex: 1 }}>
         {f.desc}
       </p>
 
       <Link
-        href="/iletisim"
+        href={f.href}
         className="whyus-link"
-        style={{ fontSize: '13.5px', fontWeight: 600, color: '#7FBF3A', textDecoration: 'none' }}
+        style={{ fontSize: '14px', fontWeight: 600, color: 'var(--color-secondary)', textDecoration: 'none' }}
       >
         Detaylı Bilgi »
       </Link>
@@ -43,25 +46,42 @@ function ServiceCard({ f }: { f: Feature }) {
 
 export default function WhyUs() {
   return (
-    <section id="hakkimizda" className="scroll-mt-16 md:scroll-mt-20 py-20 md:py-28" style={{ background: 'var(--bg-body)' }}>
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
+    <section id="hakkimizda" className="scroll-mt-16 md:scroll-mt-20 py-20 md:py-28" style={{ background: 'var(--bg-alt)', position: 'relative', overflow: 'hidden' }}>
+      {/* Decorative background — solar/wind line art, sağ altta */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute', bottom: 0, right: 0,
+          width: 'min(52vw, 620px)',
+          pointerEvents: 'none', zIndex: 0,
+        }}
+      >
+        <Image
+          src="/aboutbg002.png"
+          alt=""
+          width={472}
+          height={418}
+          style={{ width: '100%', height: 'auto', opacity: 0.45 }}
+        />
+      </div>
+
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12" style={{ position: 'relative', zIndex: 1 }}>
 
         {/* ── Desktop: 4-col grid ── */}
         <div
           className="hidden md:grid"
-          style={{ gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}
+          style={{ gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px' }}
         >
           {/* Intro cell — row 1 col 1 */}
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingRight: '16px' }}>
-            <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#7FBF3A', display: 'block', marginBottom: '8px' }}>
-              New Temizlik
-            </span>
-            <h2 className="section-heading" style={{ fontSize: 'clamp(22px, 2.5vw, 32px)', lineHeight: 1.2, marginBottom: '16px' }}>
-              Neden Sıradan Bir Temizlik Firması Değiliz?
-            </h2>
-            <p style={{ fontSize: '14px', lineHeight: 1.75, color: 'var(--text-secondary)', marginBottom: '0' }}>
-              GES santrallerinde enerji verimliliğini artırmak ve sürdürülebilirliği sağlamak adına profesyonel temizlik ve bakım çözümleri sunuyoruz.
-            </p>
+            <SectionHeader
+              eyebrow="New Temizlik"
+              title="Neden Sıradan Bir Temizlik Firması Değiliz?"
+              titleSize="clamp(24px, 2.8vw, 36px)"
+              lead="GES santrallerinde enerji verimliliğini artırmak ve sürdürülebilirliği sağlamak adına profesyonel temizlik ve bakım çözümleri sunuyoruz."
+              align="left"
+              eyebrowWeight={700}
+            />
           </div>
 
           {/* Cards 1–3 */}
@@ -84,23 +104,13 @@ export default function WhyUs() {
               gap: '20px',
             }}
           >
-            <h3 className="section-heading" style={{ fontSize: 'clamp(20px, 2vw, 28px)', color: 'var(--text-primary)', lineHeight: 1.2 }}>
+            <h3 className="section-heading" style={{ fontSize: 'clamp(22px, 2.3vw, 30px)', color: 'var(--text-primary)', lineHeight: 1.2 }}>
               Veriminizin Olduğu Her Yerdeyiz
             </h3>
             <Link
               href="/hizmetlerimiz"
-              className="cta-button inline-flex items-center gap-2"
-              style={{
-                background: '#7FBF3A',
-                color: '#fff',
-                fontSize: '13px',
-                fontWeight: 600,
-                padding: '11px 20px',
-                borderRadius: '9999px',
-                textDecoration: 'none',
-                alignSelf: 'flex-start',
-                letterSpacing: '0.04em',
-              }}
+              className="cta-button"
+              style={{ fontSize: '14px', padding: '12px 22px', alignSelf: 'flex-start' }}
             >
               <ArrowRight size={14} /> Hizmetlerimiz
             </Link>
@@ -110,15 +120,14 @@ export default function WhyUs() {
         {/* ── Mobile ── */}
         <div className="md:hidden">
           <div style={{ marginBottom: '32px' }}>
-            <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#7FBF3A', display: 'block', marginBottom: '8px' }}>
-              New Temizlik
-            </span>
-            <h2 className="section-heading" style={{ fontSize: '28px', lineHeight: 1.2, marginBottom: '12px' }}>
-              Neden Sıradan Bir Temizlik Firması Değiliz?
-            </h2>
-            <p style={{ fontSize: '14px', lineHeight: 1.75, color: 'var(--text-secondary)' }}>
-              GES santrallerinde enerji verimliliğini artırmak adına profesyonel temizlik ve bakım çözümleri sunuyoruz.
-            </p>
+            <SectionHeader
+              eyebrow="New Temizlik"
+              title="Neden Sıradan Bir Temizlik Firması Değiliz?"
+              titleSize="28px"
+              lead="GES santrallerinde enerji verimliliğini artırmak adına profesyonel temizlik ve bakım çözümleri sunuyoruz."
+              align="left"
+              eyebrowWeight={700}
+            />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {features.map((f, i) => <ServiceCard key={i} f={f} />)}
