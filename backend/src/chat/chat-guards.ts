@@ -42,6 +42,11 @@ const NON_LATIN_THRESHOLD = 0.3
 // Türkçe metinde geçmesi normal olan Latin kökenli terimler (marka/birim/jargon)
 const ALLOWED_FOREIGN_WORDS = new Set([
   'whatsapp', 'web', 'www', 'wp', 'kw', 'kwp', 'kwh', 'mw', 'mwp', 'mwh', 'watt', 'wi', 'fi', 'off', 'grid', 'on',
+  // "new" firmanın kendi marka adının ("New Temizlik") parçası — sistem promptu
+  // botu bu isimle tanıttığı için neredeyse her yanıtta geçiyor ve allowlist'te
+  // olmadan "w" içerdiği için sızıntı sanılıp yanıt sürekli reddediliyordu (mw'de
+  // yaşanan aynı hata sınıfı, bkz. yukarıdaki yorum)
+  'new',
 ])
 
 // Sadece q/w/x içermeyen yaygın İngilizce kelimeler; Türkçe eş yazılışlılar
