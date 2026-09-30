@@ -71,26 +71,9 @@ server {
     # proxy_hide_header ile bastırılıyor (renel'deki "single source of truth" deseni)
     include /etc/nginx/snippets/security-headers.conf;
 
-    location ^~ /umami/ {
-        set $umami_upstream http://umami:3000;
-        rewrite ^/umami/(.*)$ /$1 break;
-        proxy_pass $umami_upstream;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_redirect / /umami/;
-        proxy_hide_header Content-Security-Policy;
-
-        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
-        add_header X-Content-Type-Options "nosniff" always;
-        add_header X-Frame-Options "DENY" always;
-        add_header Cross-Origin-Opener-Policy "same-origin" always;
-        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
-        add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
-        # Umami'nin kendi Next.js'i unsafe-inline/unsafe-eval istiyor — bu yüzden
-        # ana site CSP'sinden ayrı, gevşetilmiş bir CSP
-        add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob: https:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self';" always;
-    }
+    # Umami artık ayrı bir subdomain'de (analytics.*), host nginx'in kendi site
+    # config'i üzerinden doğrudan sunuluyor — bu compose nginx'inin işi değil
+    # (bkz. review notu: /umami subpath'i asset/API path çakışması yüzünden terk edildi)
 
     location = /favicon.ico { return 204; access_log off; }
     location = /site.webmanifest { return 204; access_log off; }

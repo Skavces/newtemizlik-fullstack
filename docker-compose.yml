@@ -138,10 +138,11 @@ services:
     environment:
       DATABASE_URL: postgresql://umami:${UMAMI_DB_PASS}@umami-db:5432/umami
       APP_SECRET: ${UMAMI_APP_SECRET}
-      BASE_PATH: /umami
     healthcheck:
-      # basePath (/umami) yalnızca nginx tarafında rewrite ediliyor; kendi
-      # portundan sorgulanınca app kök path'te yanıt veriyor (bkz. review notu)
+      # Umami host nginx'te ayrı bir subdomain (analytics.*) üzerinden sunulur,
+      # kendi kök path'inde — BASE_PATH ile subpath (/umami) denendi ama bu
+      # imaj'da asset/API path'leri prefix'siz üretiliyor (BASE_PATH etkisiz
+      # çıktı), subdomain'e geçildi (bkz. review notu)
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/heartbeat"]
       interval: 5s
       timeout: 5s
