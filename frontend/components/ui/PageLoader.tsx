@@ -18,8 +18,8 @@ type PageLoaderProps = {
 
 export default function PageLoader({ label = '', fullScreen = false, overlay = false, show = true }: PageLoaderProps) {
   const ringSize = fullScreen ? 'w-24 h-24' : 'w-14 h-14'
-  const logoSize = fullScreen ? 'w-16 h-16' : 'w-9 h-9'
-  const logoPx = fullScreen ? 64 : 36
+  const logoSize = fullScreen ? 'w-28 h-28' : 'w-9 h-9'
+  const logoPx = fullScreen ? 112 : 36
 
   const spinner = (
     <div className={`flex flex-col items-center justify-center gap-5 ${fullScreen ? 'min-h-screen' : 'py-24'}`}>
