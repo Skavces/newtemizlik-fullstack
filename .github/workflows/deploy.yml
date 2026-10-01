@@ -92,14 +92,38 @@ jobs:
             docker image prune -f
 
             echo "Sağlık kontrolü yapılıyor..."
+            healthy=0
             for i in $(seq 1 10); do
               if curl -fs http://localhost:8081/api/health > /dev/null; then
                 echo "Backend ayakta, deploy başarılı."
-                exit 0
+                healthy=1
+                break
               fi
               echo "Henüz hazır değil, 5sn sonra tekrar denenecek... ($i/10)"
               sleep 5
             done
-            echo "HATA: Backend health check'i geçmedi, container loglarına bakılıyor:"
-            docker compose logs --tail=50 backend
-            exit 1
+
+            if [ "$healthy" -ne 1 ]; then
+              echo "HATA: Backend health check'i geçmedi, container loglarına bakılıyor:"
+              docker compose logs --tail=50 backend
+              exit 1
+            fi
+
+            # next build sırasında backend henüz ayakta olmadığından blog/faq/references
+            # sayfaları boş diziyle statik üretilir (bkz. frontend/lib/api.ts
+            # withBuildFallback); bu süpürme olmadan o boş hal 3600sn'lik zaman-bazlı
+            # revalidation'a kadar (en kötü ihtimalle 1 saat) canlıda kalır.
+            echo "ISR cache'i tazeleniyor..."
+            set -a; source .env 2>/dev/null; set +a
+            if [ -n "$REVALIDATE_SECRET" ]; then
+              if curl -fs -X POST http://localhost:8081/revalidate \
+                -H "Content-Type: application/json" \
+                -H "x-revalidate-secret: $REVALIDATE_SECRET" \
+                -d '{"tags":["all"]}' > /dev/null; then
+                echo "Revalidation tetiklendi, önbellek güncel."
+              else
+                echo "UYARI: Revalidation isteği başarısız — site 1 saate kadar eski içerik gösterebilir."
+              fi
+            else
+              echo "UYARI: REVALIDATE_SECRET .env'de boş — set edilmeden içerik deploy sonrası 1 saate kadar eski kalabilir."
+            fi
