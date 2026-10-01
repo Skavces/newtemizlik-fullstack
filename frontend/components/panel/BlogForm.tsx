@@ -1,12 +1,30 @@
 'use client'
 
 import { useEffect, useRef, useState, type FormEvent } from 'react'
+import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, Upload, X } from 'lucide-react'
 import { getAllBlogPostsAdmin, createBlogPost, updateBlogPost, uploadBlogCover } from '@/lib/panelApi'
 import { SITE_URL } from '@/lib/seo'
 import { useToast } from './ToastProvider'
-import RichTextEditor from './RichTextEditor'
+
+// TipTap/ProseMirror tek başına ~420KB (ham) — panelin geri kalanından 10x+
+// daha ağır tek bağımlılık. Statik import, bu formu açan herkese (başlık/SEO
+// alanları gibi hiç ihtiyaç duymayan kısımlar dahil) bu paketi indirmeden
+// sayfanın etkileşime geçmesini engelliyordu. next/dynamic + ssr:false: form
+// kabuğu hemen boyanır, editör arkadan akar — toplam indirilen veri aynı
+// kalır ama algılanan ağırlık (TTI) düşer.
+const RichTextEditor = dynamic(() => import('./RichTextEditor'), {
+  ssr: false,
+  loading: () => (
+    <div
+      className="flex min-h-[380px] items-center justify-center rounded-xl text-sm"
+      style={{ border: '1px solid var(--border-subtle)', color: 'var(--text-faint)' }}
+    >
+      Editör yükleniyor...
+    </div>
+  ),
+})
 
 // Backend `toSlug()`/`uniqueSlug()` ile aynı karakter çevirisi (bkz.
 // backend/src/blog/blog.service.ts) — burada yalnızca canlı önizleme için,
