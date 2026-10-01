@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import Redis from 'ioredis'
-import { LlmService, LLM_MODEL, LLM_FALLBACK_MODEL } from '../llm/llm.service'
+import { LlmService, LLM_MODEL } from '../llm/llm.service'
 import { REDIS_CLIENT } from '../redis/redis.module'
 import { extractTlAmounts, hasNonLatinLeak, hasPriceLeak, isContaminated, sanitizeContent } from './chat-guards'
 import {
@@ -106,9 +106,21 @@ export class ChatService {
   // LLM judge: heuristiklerin göremediği Latin alfabeli sızıntıları ucuz bir
   // çağrıyla yakalar. Judge erişilemez/anlaşılmaz ise fail-open — bütçe
   // sayacıyla aynı felsefe: dil saflığı uğruna chatbot susturulmaz.
+  //
+  // Ana model (LLM_MODEL) kullanılıyor, yedek (LLM_FALLBACK_MODEL) DEĞİL:
+  // 2026-10-01'de prod'da chatbot'un neredeyse her isteği "Üzgünüm, yanıt
+  // oluşturulurken bir sorun yaşandı"ya düşürdüğü görüldü — kök neden burasıydı.
+  // gpt-oss-20b, birden fazla virgüllü madde içeren TAMAMEN Türkçe cümlelerde
+  // (ör. "Panel temizliği, bakım ve onarım izleme, ot temizliği veya temizlik
+  // robotu satışı...") tutarlı biçimde yanlış HAYIR veriyordu — Groq'a canlı
+  // istekle doğrulandı, max_tokens'ı 500'e çıkarmak da düzeltmedi (bütçe/kesilme
+  // sorunu değil, modelin kendisi). Aynı cümlelerde gpt-oss-120b her seferinde
+  // doğru EVET verdi. Bütçe sayacına girmiyor (callLlm() değil, doğrudan
+  // llm.call() çağrılıyor) — bu değişiklik günlük limiti etkilemez, yalnızca
+  // Groq tarafında biraz daha pahalı bir modele judge işini taşır.
   private async isTurkishByJudge(text: string): Promise<boolean> {
     const { res, data } = await this.llm.call(this.llm.getKeys(), {
-      model: LLM_FALLBACK_MODEL,
+      model: LLM_MODEL,
       messages: [
         { role: 'system', content: JUDGE_SYSTEM_PROMPT },
         { role: 'user', content: judgeUserMessage(text) },
