@@ -29,13 +29,17 @@ describe('buildMetadata', () => {
       type: 'article',
       keywords: 'ges, panel temizliği',
     })
-    expect(meta.openGraph?.type).toBe('article')
+    // openGraph/twitter alanları Next'in Metadata tipinde OG alt-türlerinin
+    // (website/article/...) birleşimi olarak tanımlı; 'type'/'card' yalnızca
+    // belirli alt-türlerde var olduğundan TS bunu union genelinde görmüyor —
+    // buildMetadata'nın ürettiği gerçek nesnede ikisi de her zaman mevcut.
+    expect((meta.openGraph as { type?: string } | null)?.type).toBe('article')
     expect(meta.keywords).toBe('ges, panel temizliği')
   })
 
   it('twitter kartı summary_large_image olarak sabitlenir ve görseli paylaşır', () => {
     const meta = buildMetadata({ title: 'Başlık', description: 'Açıklama', canonical: '/test', image: '/custom.png' })
-    expect(meta.twitter?.card).toBe('summary_large_image')
+    expect((meta.twitter as { card?: string } | null)?.card).toBe('summary_large_image')
     expect(meta.twitter?.images).toEqual(['/custom.png'])
   })
 })
