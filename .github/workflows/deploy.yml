@@ -66,11 +66,12 @@ jobs:
         working-directory: backend
         run: npm run build
 
-      - name: Frontend lint ve build
+      - name: Frontend testleri ve build
         working-directory: frontend
         run: |
           npm ci
           npm run lint
+          npm test
           npm run build
 
   deploy:
