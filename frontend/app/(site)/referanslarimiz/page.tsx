@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import PageHero from '@/components/ui/PageHero'
 import SectionHeader from '@/components/ui/SectionHeader'
-import CtaBand from '@/components/ui/CtaBand'
 import JsonLd from '@/components/ui/JsonLd'
 import { buildMetadata, SITE_URL } from '@/lib/seo'
 import { getReferences } from '@/lib/api'
@@ -100,13 +99,6 @@ export default async function ReferanslarPage() {
           })}
         </div>
       </section>
-
-      <CtaBand
-        title="Sizin santralinizde de aynı sonucu almak ister misiniz?"
-        href="/iletisim"
-        label="Ücretsiz Keşif Talep Edin"
-        background="var(--bg-alt)"
-      />
     </>
   )
 }
