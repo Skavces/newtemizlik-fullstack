@@ -4,6 +4,7 @@ import Navbar from '@/components/sections/Navbar'
 import Footer from '@/components/sections/Footer'
 import ChatWidget from '@/components/ui/ChatWidget'
 import JsonLd from '@/components/ui/JsonLd'
+import PageTransitionOverlay from '@/components/ui/PageTransitionOverlay'
 import { SITE_URL } from '@/lib/seo'
 
 // GA4 ve kurumsal @graph JSON-LD burada (root layout'ta değil) yaşar ki
@@ -66,6 +67,7 @@ const organizationSchema = {
 export default function SiteLayout({ children }: { children: ReactNode }) {
   return (
     <>
+      <PageTransitionOverlay />
       <Navbar />
       {children}
       <Footer />

@@ -94,6 +94,25 @@
   100% { transform: translateX(-50%); }
 }
 
+/* PageLoader'ın dönen halkası — renel-enerji/frontend/src/index.css'teki
+   .brand-loader-ring ile birebir aynı mantık, marka renklerimizle. */
+@property --border-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes border-spin {
+  to { --border-angle: 360deg; }
+}
+@keyframes loader-pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.08); }
+}
+.brand-loader-ring {
+  background: conic-gradient(from var(--border-angle), var(--color-primary), var(--color-secondary), var(--color-accent), var(--color-primary));
+  animation: border-spin 1s linear infinite, loader-pulse 1.6s ease-in-out infinite;
+}
+
 @layer components {
   /* Admin panel bileşenleri hep inline style={{ background: 'var(--bg-card)' }} /
      'var(--color-primary)' kalıbını kullanıyor (bkz. AdminStatCard, AdminShell,
