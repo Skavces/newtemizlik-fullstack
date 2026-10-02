@@ -113,6 +113,60 @@
   animation: border-spin 1s linear infinite, loader-pulse 1.6s ease-in-out infinite;
 }
 
+/* Sohbet başlatma butonunun halkası — .brand-loader-ring ile aynı degrade,
+   bekleyen bir buton olduğu için çok daha yavaş döner (renel-enerji'deki
+   .ai-button-ring ile aynı mantık). */
+.chat-fab-ring {
+  background: conic-gradient(from var(--border-angle), var(--color-primary), var(--color-secondary), var(--color-accent), var(--color-primary));
+  animation: border-spin 5s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .chat-fab-ring {
+    animation: none;
+  }
+}
+
+/* Sohbet butonu: masaüstünde her zaman ikon+etiket; mobilde 3sn sonra
+   ikon-only daireye küçülür (renel-enerji'deki .fab/.fab-label deseni ile
+   birebir aynı — bkz. App.jsx fabExpanded) */
+.chat-fab {
+  padding-inline: 20px;
+}
+.chat-fab-label {
+  white-space: nowrap;
+  margin-inline-start: 9px;
+}
+@media (max-width: 639px) {
+  .chat-fab {
+    padding-inline: 14px;
+    transition: all 150ms ease, padding-inline 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .chat-fab-expanded {
+    padding-inline: 20px;
+  }
+  .chat-fab-label {
+    display: inline-block;
+    overflow: hidden;
+    max-width: 0;
+    opacity: 0;
+    margin-inline-start: 0;
+    transition: max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.25s ease,
+                margin-inline-start 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .chat-fab-expanded .chat-fab-label {
+    max-width: 18rem;
+    opacity: 1;
+    margin-inline-start: 9px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chat-fab,
+  .chat-fab-label {
+    transition: none;
+  }
+}
+
 @layer components {
   /* Admin panel bileşenleri hep inline style={{ background: 'var(--bg-card)' }} /
      'var(--color-primary)' kalıbını kullanıyor (bkz. AdminStatCard, AdminShell,

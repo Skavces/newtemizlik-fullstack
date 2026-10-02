@@ -96,6 +96,9 @@ export default function ChatWidget() {
   const [ratingView, setRatingView] = useState<false | 'rate' | 'thanks'>(false)
   const [hoverStar, setHoverStar] = useState(0)
   const [selectedStar, setSelectedStar] = useState(0)
+  // Mobilde buton 3sn etiketli açılır, sonra ikon-only daireye küçülür
+  // (renel-enerji'deki .fab-expanded deseni) — masaüstünde her zaman etiketli kalır
+  const [fabExpanded, setFabExpanded] = useState(true)
 
   const messagesRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -152,6 +155,11 @@ export default function ChatWidget() {
   useEffect(() => () => {
     clearTimeout(closeTimerRef.current)
     clearTimeout(closeAnimTimerRef.current)
+  }, [])
+
+  useEffect(() => {
+    const timer = setTimeout(() => setFabExpanded(false), 3000)
+    return () => clearTimeout(timer)
   }, [])
 
   // Panel mobilde tam ekran açılıyor (sm altı, bkz. render'daki fixed inset-0
@@ -470,31 +478,33 @@ export default function ChatWidget() {
         </>
       )}
 
-      <button
-        onClick={() => (open ? requestClose() : setOpen(true))}
-        className="flex items-center justify-center cursor-pointer transition-transform hover:scale-105"
-        style={{
-          height: '50px',
-          borderRadius: '9999px',
-          border: 'none',
-          background: '#1aad50',
-          color: '#fff',
-          boxShadow: '0 4px 20px rgba(26,173,80,0.35)',
-          ...(open ? { width: '50px' } : { gap: '9px', padding: '0 20px 0 16px' }),
-        }}
-        aria-label={open ? 'Sohbeti kapat' : 'Sohbeti aç'}
-      >
-        {open ? (
-          <X size={22} />
-        ) : (
-          <>
-            <Bot size={20} style={{ flexShrink: 0 }} />
-            <span style={{ fontSize: '13px', fontWeight: 600, whiteSpace: 'nowrap' }}>
-              Size nasıl yardımcı olabiliriz?
-            </span>
-          </>
-        )}
-      </button>
+      <div className="chat-fab-ring" style={{ borderRadius: '9999px', padding: '3px' }}>
+        <button
+          onClick={() => (open ? requestClose() : setOpen(true))}
+          className={`chat-fab ${fabExpanded ? 'chat-fab-expanded' : ''} flex items-center justify-center cursor-pointer transition-transform hover:scale-105`}
+          style={{
+            height: '50px',
+            borderRadius: '9999px',
+            border: 'none',
+            background: 'var(--color-primary-dark)',
+            color: '#fff',
+            boxShadow: '0 4px 20px rgba(106,170,46,0.4)',
+            ...(open ? { width: '50px', paddingInline: 0 } : {}),
+          }}
+          aria-label={open ? 'Sohbeti kapat' : 'Size nasıl yardımcı olabiliriz?'}
+        >
+          {open ? (
+            <X size={22} />
+          ) : (
+            <>
+              <Bot size={20} style={{ flexShrink: 0 }} />
+              <span className="chat-fab-label" style={{ fontSize: '13px', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                Size nasıl yardımcı olabiliriz?
+              </span>
+            </>
+          )}
+        </button>
+      </div>
     </div>
   )
 }
