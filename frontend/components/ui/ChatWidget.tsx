@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Bot, X, Send, Loader2, MessageCircle, Star, Droplets, Wrench, Cpu } from 'lucide-react'
 import {
   sendChatMessage,
@@ -133,12 +134,19 @@ export default function ChatWidget() {
     // Panel her açılışta baştan mount olur (bkz. render'daki `open || closing` şartı) —
     // uzun bir geçmişte önce en son mesaja anında atla, sonra input'a odaklan; smooth
     // scroll yukarıdaki effect'e bırakılırsa yeniden açılışta göze batan bir kaydırma olur.
-    if (messagesRef.current) messagesRef.current.scrollTop = messagesRef.current.scrollHeight
+    // İlk açılışta (henüz sadece karşılama mesajı varken) en alta değil en üste
+    // kaydırılır — karşılama mesajının avatarı/ilk satırı kırpılmasın diye.
+    if (messagesRef.current) {
+      messagesRef.current.scrollTop = messages.length > 1 ? messagesRef.current.scrollHeight : 0
+    }
     inputRef.current?.focus()
     if (!openTracked) {
       openTracked = true
       trackChatOpen()
     }
+    // Bilinçli: yalnızca panel AÇILDIĞI andaki mesaj sayısına bakılmalı,
+    // sonraki mesaj değişimlerinde tekrar koşmamalı
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
 
   useEffect(() => () => {
@@ -452,7 +460,10 @@ export default function ChatWidget() {
                 </button>
               </div>
               <p className="text-center mt-1.5" style={{ fontSize: '10px', color: 'var(--text-faint)' }}>
-                Görüşme kayıtları hizmet kalitesi için saklanır
+                Görüşme kayıtları hizmet kalitesi için saklanır —{' '}
+                <Link href="/kvkk" target="_blank" rel="noopener noreferrer" className="hover-brand" style={{ textDecoration: 'underline', color: 'inherit' }}>
+                  KVKK Aydınlatma Metni
+                </Link>
               </p>
             </div>
           </div>
