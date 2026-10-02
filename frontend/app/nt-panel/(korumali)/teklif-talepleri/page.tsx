@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { ChevronDown, Clock, Inbox, PhoneCall, Trash2, Trophy, XCircle, Phone, Droplets } from 'lucide-react'
+import { ChevronDown, Clock, Inbox, PhoneCall, Trash2, Trophy, XCircle, Phone, Droplets, MapPin } from 'lucide-react'
 import { getQuoteAdminList, updateQuoteStatus, deleteQuoteRequest, type QuoteAdminListParams } from '@/lib/panelApi'
 import { dayRangeToIso, formatDateTime } from '@/lib/date'
 import { formatStoredPhone } from '@/lib/phone'
@@ -59,10 +59,15 @@ function RequestRow({
             )}
             {request.ePosta && <span>{request.ePosta}</span>}
             <span>{request.panelAdeti} panel</span>
-            <span>{Number(request.sahaMegavati)} MW</span>
+            {request.sahaMegavati != null && <span>{Number(request.sahaMegavati)} MW</span>}
             <span className="flex items-center gap-1.5">
               <Droplets size={13} /> Su {request.suUlasimi ? 'Var' : 'Yok'}
             </span>
+            {request.lokasyon && (
+              <span className="flex items-center gap-1.5">
+                <MapPin size={13} /> {request.lokasyon}
+              </span>
+            )}
           </div>
           <p className="mt-2 text-xs" style={{ color: 'var(--text-faint)' }}>{formatDateTime(request.createdAt)}</p>
         </div>

@@ -62,9 +62,10 @@ export interface QuoteRequest {
   telefon: string | null
   ePosta: string | null
   panelAdeti: number
-  // pg numeric(8,2) JSON'da string döner (ör. "12.50")
-  sahaMegavati: string
+  // pg numeric(8,2) JSON'da string döner (ör. "12.50"); artık toplanmıyor, eski kayıtlarda olabilir
+  sahaMegavati: string | null
   suUlasimi: boolean
+  lokasyon: string | null
   kvkkConsent: boolean
   consentAt: string
   status: QuoteStatus

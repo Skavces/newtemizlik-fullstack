@@ -23,11 +23,17 @@ export class QuoteRequest {
   @Column({ type: 'integer' })
   panelAdeti: number
 
-  @Column({ type: 'numeric', precision: 8, scale: 2 })
-  sahaMegavati: number
+  // Artık hiçbir formda toplanmıyor (hero formu sadeleştirildi) — eski kayıtlarla
+  // uyumluluk için kolon kalıyor, yeni kayıtlarda null
+  @Column({ type: 'numeric', precision: 8, scale: 2, nullable: true })
+  sahaMegavati: number | null
 
   @Column({ type: 'boolean' })
   suUlasimi: boolean
+
+  // KVKK temizliğinde null'lanır — bkz. adSoyad yorumu
+  @Column({ type: 'varchar', length: 160, nullable: true })
+  lokasyon: string | null
 
   @Column({ default: false })
   kvkkConsent: boolean

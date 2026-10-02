@@ -31,13 +31,19 @@ export class CreateQuoteRequestDto {
   @Max(1000000)
   panelAdeti: number
 
+  @IsOptional()
   @Type(() => Number)
   @Min(0)
   @Max(1000000)
-  sahaMegavati: number
+  sahaMegavati?: number
 
   @IsBoolean()
   suUlasimi: boolean
+
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(160)
+  lokasyon: string
 
   @Equals(true, { message: 'KVKK aydınlatma metnini onaylamanız gerekiyor' })
   kvkkConsent: boolean

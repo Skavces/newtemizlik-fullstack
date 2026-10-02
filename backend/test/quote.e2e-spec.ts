@@ -10,8 +10,8 @@ const VALID_BODY = {
   telefon: '0554 379 60 04',
   ePosta: 'mert@example.com',
   panelAdeti: 120,
-  sahaMegavati: 1.5,
   suUlasimi: true,
+  lokasyon: 'Soma, Manisa',
   kvkkConsent: true,
 }
 

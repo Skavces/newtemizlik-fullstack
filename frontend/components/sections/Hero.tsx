@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { ArrowRight, ChevronDown, FolderCheck, CalendarDays, ThumbsUp, Users, Sun, type LucideIcon } from 'lucide-react'
 import { trackEvent } from '@/lib/analytics'
 import { TEAM_SIZE } from '@/lib/companyStats'
+import HeroQuoteForm from './HeroQuoteForm'
 
 interface InfoStat {
   icon: LucideIcon
@@ -55,81 +56,89 @@ export default function Hero() {
         {/* Main content */}
         <div className="relative z-[2] flex-1 flex flex-col justify-center">
           <div className="relative z-[2] max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-28 md:py-36 w-full">
-            <div style={{ maxWidth: '620px', marginTop: '40px' }}>
+            <div className="flex flex-col lg:flex-row lg:items-center gap-10 lg:gap-14">
+              <div style={{ maxWidth: '620px', marginTop: '40px', flexShrink: 0 }}>
 
-              {/* H1 */}
-              <h1
-                style={{
-                  fontFamily: "'Rajdhani', sans-serif",
-                  fontSize: 'clamp(36px, 7vw, 88px)',
-                  fontWeight: 700,
-                  lineHeight: 1.05,
-                  letterSpacing: '0.03em',
-                  color: '#ffffff',
-                  margin: '0 0 20px',
-                }}
-              >
-                Profesyonel<br />
-                <span style={{ color: '#7FBF3A' }}>Güneş Paneli</span><br />
-                Temizliği
-              </h1>
-
-              {/* Subtitle */}
-              <p
-                style={{
-                  fontSize: 'clamp(14px, 1.2vw, 16px)',
-                  fontWeight: 400,
-                  lineHeight: 1.75,
-                  color: 'rgba(255,255,255,0.65)',
-                  maxWidth: '480px',
-                  margin: 0,
-                }}
-              >
-                Soma merkezli, Türkiye geneli GES temizliği. Otonom robotlar ve
-                veri odaklı solar panel yıkama hizmetleri ile güneş enerji santrallerinizde
-                maksimum verim. Kirli panel kayıplarını sıfıra indirin.
-              </p>
-
-              {/* CTAs */}
-              <div className="flex items-center gap-4 flex-wrap" style={{ marginTop: '36px' }}>
-                <Link
-                  href="/iletisim"
-                  onClick={() => trackEvent('cta_click', { location: 'hero', text: 'Ücretsiz Keşif Talep Et' })}
-                  className="hero-cta-primary inline-flex items-center gap-2.5 transition-all duration-200"
+                {/* H1 */}
+                <h1
                   style={{
-                    padding: '13px 28px',
-                    background: '#7FBF3A',
-                    color: '#fff',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    letterSpacing: '0.05em',
-                    textDecoration: 'none',
-                    borderRadius: '9999px',
-                    boxShadow: '0 4px 20px rgba(127,191,58,0.4)',
+                    fontFamily: "'Rajdhani', sans-serif",
+                    fontSize: 'clamp(36px, 7vw, 88px)',
+                    fontWeight: 700,
+                    lineHeight: 1.05,
+                    letterSpacing: '0.03em',
+                    color: '#ffffff',
+                    margin: '0 0 20px',
                   }}
                 >
-                  Ücretsiz Keşif Talep Et
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+                  Profesyonel<br />
+                  <span style={{ color: '#7FBF3A' }}>Güneş Paneli</span><br />
+                  Temizliği
+                </h1>
 
-                <Link
-                  href="/hizmetlerimiz"
-                  className="hero-cta-secondary inline-flex items-center gap-2 transition-all duration-200"
+                {/* Subtitle */}
+                <p
                   style={{
-                    padding: '13px 24px',
-                    background: 'rgba(255,255,255,0.1)',
-                    color: 'rgba(255,255,255,0.85)',
-                    fontSize: '14px',
-                    fontWeight: 500,
-                    textDecoration: 'none',
-                    borderRadius: '9999px',
-                    border: '1px solid rgba(255,255,255,0.25)',
-                    backdropFilter: 'blur(4px)',
+                    fontSize: 'clamp(14px, 1.2vw, 16px)',
+                    fontWeight: 400,
+                    lineHeight: 1.75,
+                    color: 'rgba(255,255,255,0.65)',
+                    maxWidth: '480px',
+                    margin: 0,
                   }}
                 >
-                  Hizmetleri Keşfet
-                  <ChevronDown className="w-4 h-4" />
-                </Link>
+                  Soma merkezli, Türkiye geneli GES temizliği. Otonom robotlar ve
+                  veri odaklı solar panel yıkama hizmetleri ile güneş enerji santrallerinizde
+                  maksimum verim. Kirli panel kayıplarını sıfıra indirin.
+                </p>
+
+                {/* CTAs */}
+                <div className="flex items-center gap-4 flex-wrap" style={{ marginTop: '36px' }}>
+                  <Link
+                    href="#teklif-form"
+                    onClick={() => trackEvent('cta_click', { location: 'hero', text: 'Ücretsiz Keşif Talep Et' })}
+                    className="hero-cta-primary inline-flex items-center gap-2.5 transition-all duration-200"
+                    style={{
+                      padding: '13px 28px',
+                      background: '#7FBF3A',
+                      color: '#fff',
+                      fontSize: '14px',
+                      fontWeight: 600,
+                      letterSpacing: '0.05em',
+                      textDecoration: 'none',
+                      borderRadius: '9999px',
+                      boxShadow: '0 4px 20px rgba(127,191,58,0.4)',
+                    }}
+                  >
+                    Ücretsiz Keşif Talep Et
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+
+                  <Link
+                    href="/hizmetlerimiz"
+                    className="hero-cta-secondary inline-flex items-center gap-2 transition-all duration-200"
+                    style={{
+                      padding: '13px 24px',
+                      background: 'rgba(255,255,255,0.1)',
+                      color: 'rgba(255,255,255,0.85)',
+                      fontSize: '14px',
+                      fontWeight: 500,
+                      textDecoration: 'none',
+                      borderRadius: '9999px',
+                      border: '1px solid rgba(255,255,255,0.25)',
+                      backdropFilter: 'blur(4px)',
+                    }}
+                  >
+                    Hizmetleri Keşfet
+                    <ChevronDown className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+
+              {/* Right side quote form — sahadaki "Ücretsiz Keşif Talep Et" talebini
+                  doğrudan hero'da toplar, aynı /quote uç noktasına gider (bkz. HeroQuoteForm) */}
+              <div id="teklif-form" className="w-full lg:ml-auto scroll-mt-24" style={{ maxWidth: '420px' }}>
+                <HeroQuoteForm />
               </div>
             </div>
           </div>

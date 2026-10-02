@@ -26,7 +26,7 @@ export class QuoteRetentionService {
       const result = await this.repo
         .createQueryBuilder()
         .update()
-        .set({ adSoyad: null, telefon: null, ePosta: null })
+        .set({ adSoyad: null, telefon: null, ePosta: null, lokasyon: null })
         .where('"createdAt" < now() - :retention::interval', { retention: RETENTION_INTERVAL })
         .andWhere('"adSoyad" IS NOT NULL')
         .execute()
