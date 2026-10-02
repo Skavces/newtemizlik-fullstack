@@ -230,7 +230,17 @@ export default function Contact() {
                 <label className="flex items-start gap-2.5 cursor-pointer" style={{ marginTop: '4px' }}>
                   <input type="checkbox" name="kvkkConsent" style={{ accentColor: 'var(--color-primary)', width: '16px', height: '16px', marginTop: '2px' }} required />
                   <span style={{ fontSize: '12.5px', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-                    KVKK aydınlatma metnini okudum, kişisel verilerimin işlenmesini onaylıyorum. *
+                    <a
+                      href="/kvkk"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover-brand"
+                      style={{ textDecoration: 'underline', color: 'inherit' }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      KVKK aydınlatma metnini
+                    </a>{' '}
+                    okudum, kişisel verilerimin işlenmesini onaylıyorum. *
                   </span>
                 </label>
 

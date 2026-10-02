@@ -27,6 +27,7 @@ const STATIC_ROUTES: StaticRoute[] = [
   { url: '/sss', changeFrequency: 'monthly', priority: 0.7 },
   { url: '/iletisim', changeFrequency: 'monthly', priority: 0.7 },
   { url: '/blog', changeFrequency: 'weekly', priority: 0.8 },
+  { url: '/kvkk', changeFrequency: 'yearly', priority: 0.3 },
 ]
 
 // Elle güncellenen eski public/sitemap.xml'in yerini alır — blog slug'ları
