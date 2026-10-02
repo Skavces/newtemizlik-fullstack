@@ -95,6 +95,12 @@ services:
       NEXT_PUBLIC_UMAMI_URL: ${NEXT_PUBLIC_UMAMI_URL:-}
       NEXT_PUBLIC_UMAMI_WEBSITE_ID: ${UMAMI_WEBSITE_ID:-}
       REVALIDATE_SECRET: ${REVALIDATE_SECRET:-}
+    volumes:
+      # Next'in image-optimizer (sharp) ve ISR çıktı cache'i — volume olmadan
+      # her deploy'da container'ın yazılabilir katmanıyla birlikte sıfırlanıyor,
+      # bu da deploy sonrası ilk ziyaretçilerde soğuk-cache resize'ların nginx'in
+      # proxy_read_timeout'unu aşıp 504 vermesine (görsellerin boş kalmasına) yol açıyordu.
+      - next_cache:/app/.next/cache
     depends_on:
       - backend
 
@@ -160,3 +166,4 @@ volumes:
   redisdata:
   uploads:
   umami_pgdata:
+  next_cache:

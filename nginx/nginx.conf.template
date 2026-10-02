@@ -122,6 +122,11 @@ server {
         expires 1y;
         add_header Cache-Control "public, immutable";
         include /etc/nginx/snippets/security-headers.conf;
+        # /_next/image soğuk cache'te sharp ile resize yapıyor — varsayılan 60s
+        # bazen yetmiyor (bkz. next_cache volume eklenmeden önce 504'e düşen
+        # Çalışma Süreci/Referanslar görselleri); volume kalıcı cache sağlasa da
+        # ilk-deploy veya volume sıfırlanması senaryosu için ek pay bırakılıyor
+        proxy_read_timeout 120s;
     }
 
     # public/ altındaki statik dosyalar — Next.js kendi sunucusundan servis eder

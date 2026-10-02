@@ -25,6 +25,11 @@ ENV HOSTNAME=0.0.0.0
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=app:app /app/.next/standalone ./
 COPY --from=builder --chown=app:app /app/.next/static ./.next/static
+# docker-compose'da buraya kalıcı bir volume mount edilir (image-optimizer/ISR
+# cache'i deploy'lar arası hayatta kalsın diye); dizin önceden app:app sahipliğiyle
+# var olmazsa, volume ilk oluşturulduğunda root sahipliğinde kalır ve non-root
+# "app" kullanıcısı yazamaz
+RUN mkdir -p ./.next/cache && chown -R app:app ./.next/cache
 USER app
 EXPOSE 3000
 CMD ["node", "server.js"]
