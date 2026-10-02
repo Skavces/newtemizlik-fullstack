@@ -97,6 +97,13 @@ jobs:
             docker compose up -d --build
             docker image prune -f
 
+            # nginx.conf.template/security-headers.conf bind-mount; compose servis
+            # tanımı değişmediği için içerik değişse de container otomatik
+            # recreate/restart olmaz — nginx eski config'i bellekte tutar.
+            # Her deploy'da restart ederek bu dosyalardaki değişikliklerin
+            # garanti yansımasını sağlıyoruz (maliyeti: nginx için birkaç saniyelik kesinti).
+            docker compose restart nginx
+
             echo "Sağlık kontrolü yapılıyor..."
             healthy=0
             for i in $(seq 1 10); do
