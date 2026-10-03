@@ -27,6 +27,17 @@ const features = [
   'Yıllık bakım sözleşmesiyle öncelikli müdahale garantisi',
 ]
 
+const areaServedSchema = [
+  { '@type': 'City', name: 'Soma' },
+  { '@type': 'City', name: 'Akhisar' },
+  { '@type': 'City', name: 'Kırkağaç' },
+  { '@type': 'AdministrativeArea', name: 'Manisa' },
+  { '@type': 'AdministrativeArea', name: 'İzmir' },
+  { '@type': 'AdministrativeArea', name: 'Balıkesir' },
+  { '@type': 'AdministrativeArea', name: 'Kütahya' },
+  { '@type': 'Country', name: 'Türkiye' },
+]
+
 export default async function PanelBakimPage() {
   const faqs = await getFaqs('panel-bakim')
 
@@ -50,9 +61,38 @@ export default async function PanelBakimPage() {
     })),
   }
 
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'GES Panel Bakım ve Onarım İzleme',
+    alternateName: ['GES Bakım Hizmeti', 'Panel Bakım İzleme', 'Hotspot Tespiti', 'GES Performans İzleme'],
+    description: 'GES santrallerinde proaktif bakım, termal analiz ve performans izleme hizmetleri. Hotspot tespiti ve invertör kontrolüyle verim kayıplarını ve arızaları erkenden önlüyoruz.',
+    serviceType: 'GES Panel Bakım ve Onarım İzleme',
+    url: `${SITE_URL}/hizmetlerimiz/panel-bakim`,
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'New Temizlik',
+      url: SITE_URL,
+      telephone: '+905304738793',
+      image: `${SITE_URL}/logo.png`,
+      address: { '@type': 'PostalAddress', addressLocality: 'Soma', addressRegion: 'Manisa', addressCountry: 'TR' },
+    },
+    areaServed: areaServedSchema,
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'GES Bakım Hizmetleri',
+      itemListElement: [
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Termal Analiz ve Hotspot Tespiti' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'İnvertör ve DC Hat Kontrolü' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Periyodik Bakım Sözleşmesi' } },
+      ],
+    },
+  }
+
   return (
     <>
       <JsonLd data={breadcrumbSchema} />
+      <JsonLd data={serviceSchema} />
       <JsonLd data={faqSchema} />
 
       <PageHero

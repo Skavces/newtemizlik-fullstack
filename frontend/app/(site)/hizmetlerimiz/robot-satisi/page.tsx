@@ -45,6 +45,17 @@ const features = [
   'Büyük ölçekli sahalar için maliyet-etkin otomasyon çözümü',
 ]
 
+const areaServedSchema = [
+  { '@type': 'City', name: 'Soma' },
+  { '@type': 'City', name: 'Akhisar' },
+  { '@type': 'City', name: 'Kırkağaç' },
+  { '@type': 'AdministrativeArea', name: 'Manisa' },
+  { '@type': 'AdministrativeArea', name: 'İzmir' },
+  { '@type': 'AdministrativeArea', name: 'Balıkesir' },
+  { '@type': 'AdministrativeArea', name: 'Kütahya' },
+  { '@type': 'Country', name: 'Türkiye' },
+]
+
 export default async function RobotSatisPage() {
   const faqs = await getFaqs('robot-satisi')
 
@@ -68,9 +79,38 @@ export default async function RobotSatisPage() {
     })),
   }
 
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'GES Panel Temizlik Robotu Satışı',
+    alternateName: ['GES Robot Satışı', 'Solar Panel Temizlik Robotu', 'Otonom Panel Yıkama Makinası'],
+    description: 'GES solar panel temizlik robotu ve makina satışı. Büyük ölçekli güneş enerji santralleri için otonom, IoT destekli, uzaktan yönetilebilen panel yıkama sistemleri.',
+    serviceType: 'GES Panel Temizlik Robotu Satışı',
+    url: `${SITE_URL}/hizmetlerimiz/robot-satisi`,
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'New Temizlik',
+      url: SITE_URL,
+      telephone: '+905304738793',
+      image: `${SITE_URL}/logo.png`,
+      address: { '@type': 'PostalAddress', addressLocality: 'Soma', addressRegion: 'Manisa', addressCountry: 'TR' },
+    },
+    areaServed: areaServedSchema,
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'GES Robot Satış ve Kurulum Hizmetleri',
+      itemListElement: [
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Otonom Temizlik Robotu Satışı' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Ray Sistemi Kurulumu' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Operatör Eğitimi ve Teknik Destek' } },
+      ],
+    },
+  }
+
   return (
     <>
       <JsonLd data={breadcrumbSchema} />
+      <JsonLd data={serviceSchema} />
       <JsonLd data={faqSchema} />
 
       <PageHero

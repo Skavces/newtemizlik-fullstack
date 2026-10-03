@@ -5,7 +5,7 @@ describe('buildMetadata', () => {
   it('varsayılan og görseli ve boyutlarını kullanır', () => {
     const meta = buildMetadata({ title: 'Başlık', description: 'Açıklama', canonical: '/test' })
     expect(meta.alternates).toEqual({ canonical: '/test' })
-    expect(meta.openGraph?.images).toEqual([{ url: '/og.png', width: 1200, height: 630, alt: 'Başlık' }])
+    expect(meta.openGraph?.images).toEqual([{ url: '/og.jpg', width: 1200, height: 630, alt: 'Başlık' }])
     expect(meta.openGraph?.siteName).toBe(SITE_NAME)
   })
 

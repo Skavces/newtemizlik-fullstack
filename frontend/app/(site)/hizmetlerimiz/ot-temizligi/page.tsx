@@ -26,6 +26,17 @@ const features = [
   'Mevsimsel bitki büyüme hızına göre planlı temizlik takvimi',
 ]
 
+const areaServedSchema = [
+  { '@type': 'City', name: 'Soma' },
+  { '@type': 'City', name: 'Akhisar' },
+  { '@type': 'City', name: 'Kırkağaç' },
+  { '@type': 'AdministrativeArea', name: 'Manisa' },
+  { '@type': 'AdministrativeArea', name: 'İzmir' },
+  { '@type': 'AdministrativeArea', name: 'Balıkesir' },
+  { '@type': 'AdministrativeArea', name: 'Kütahya' },
+  { '@type': 'Country', name: 'Türkiye' },
+]
+
 export default function OtTemizligiPage() {
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -37,9 +48,38 @@ export default function OtTemizligiPage() {
     ],
   }
 
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'GES Sahası Ot Temizliği',
+    alternateName: ['GES Ot Temizliği', 'Panel Altı Bitki Temizliği', 'GES Saha Bakımı'],
+    description: 'Güneş enerji santrali sahalarında panel altı ve aralarındaki ot ve bitki örtüsünün düzenli temizliği. Gölgelenme, yangın riski ve haşere üremesini önlüyoruz.',
+    serviceType: 'GES Sahası Ot Temizliği',
+    url: `${SITE_URL}/hizmetlerimiz/ot-temizligi`,
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'New Temizlik',
+      url: SITE_URL,
+      telephone: '+905304738793',
+      image: `${SITE_URL}/logo.png`,
+      address: { '@type': 'PostalAddress', addressLocality: 'Soma', addressRegion: 'Manisa', addressCountry: 'TR' },
+    },
+    areaServed: areaServedSchema,
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'GES Saha Ot Temizliği Hizmetleri',
+      itemListElement: [
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Panel Altı ve Arası Ot Temizliği' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Yangın Riski Azaltma' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Mevsimsel Bakım Takvimi' } },
+      ],
+    },
+  }
+
   return (
     <>
       <JsonLd data={breadcrumbSchema} />
+      <JsonLd data={serviceSchema} />
 
       <PageHero
         title="Ot Temizliği"

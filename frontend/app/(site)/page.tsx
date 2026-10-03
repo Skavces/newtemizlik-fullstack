@@ -8,7 +8,7 @@ import { buildMetadata, SITE_URL } from '@/lib/seo'
 import { getReferences } from '@/lib/api'
 
 export const metadata = buildMetadata({
-  title: 'Soma GES Temizliği | Güneş Paneli ve Solar Panel Yıkama | New Temizlik',
+  title: 'New Temizlik | Soma GES Temizlik ve Bakım Çözümleri',
   description:
     'Soma ve Türkiye genelinde endüstriyel GES ve güneş paneli temizliği. Solar panel yıkama, bakım izleme ve otonom temizlik robotu ile verim kaybını önlüyoruz.',
   keywords: 'soma ges temizliği, güneş paneli temizliği, panel temizliği, ges temizliği, solar panel yıkama, türkiye geneli ges temizliği, manisa ges temizliği',

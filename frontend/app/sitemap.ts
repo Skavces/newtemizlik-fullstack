@@ -35,9 +35,11 @@ const STATIC_ROUTES: StaticRoute[] = [
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getBlogPosts()
 
+  // lastModified kasıtlı olarak basılmıyor: içeriğin gerçek değişim tarihi
+  // tutulmuyor, her build'de "new Date()" basmak arama motoruna sahte bir
+  // "az önce değişti" sinyali verirdi (bkz. SEO raporu).
   const staticEntries: MetadataRoute.Sitemap = STATIC_ROUTES.map((r) => ({
     url: `${SITE_URL}${r.url}`,
-    lastModified: new Date(),
     changeFrequency: r.changeFrequency,
     priority: r.priority,
   }))

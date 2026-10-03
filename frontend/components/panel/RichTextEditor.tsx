@@ -463,7 +463,8 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
     setUploadingImage(true)
     try {
       const { url } = await uploadBlogContentImage(file)
-      editor.chain().focus().setImage({ src: url }).run()
+      const alt = window.prompt('Görsel için alt metni (SEO/erişilebilirlik için önerilir):') || undefined
+      editor.chain().focus().setImage({ src: url, alt }).run()
     } catch {
       showToast('error', 'Görsel yüklenemedi. Lütfen tekrar deneyin.')
     } finally {

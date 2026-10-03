@@ -25,7 +25,7 @@ export function buildMetadata({
   title,
   description,
   canonical,
-  image = '/og.png',
+  image = '/og.jpg',
   imageAlt,
   imageWidth = 1200,
   imageHeight = 630,
