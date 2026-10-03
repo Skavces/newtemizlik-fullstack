@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { FileText, Images, Inbox, Plus, FolderOpen, Zap } from 'lucide-react'
+import { FileText, Images, Inbox, Plus, FolderOpen, Zap, HelpCircle, AlertCircle } from 'lucide-react'
 import { getAllBlogPostsAdmin, getAllFaqsAdmin, getAllReferencesAdmin, getQuoteAdminList, getLogAdminList } from '@/lib/panelApi'
 
-interface DashboardStats {
+interface DashboardData {
   blogCount: number
   faqCount: number
   referenceCount: number
@@ -16,18 +16,33 @@ interface DashboardStats {
 
 const dividerBorder = { borderColor: 'var(--border-subtle)' }
 
+function getGreeting(hour: number): string {
+  if (hour >= 5 && hour < 12) return 'Günaydın'
+  if (hour >= 12 && hour < 18) return 'İyi günler'
+  return 'İyi akşamlar'
+}
+
 export default function DashboardPage() {
-  const [stats, setStats] = useState<DashboardStats | null>(null)
+  const [data, setData] = useState<DashboardData | null>(null)
+  const [greeting, setGreeting] = useState('Hoş geldiniz')
+  const [dateLabel, setDateLabel] = useState('')
+
+  useEffect(() => {
+    const now = new Date()
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setGreeting(getGreeting(now.getHours()))
+    setDateLabel(now.toLocaleDateString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }))
+  }, [])
 
   useEffect(() => {
     Promise.all([
       getAllBlogPostsAdmin(),
       getAllFaqsAdmin(),
       getAllReferencesAdmin(),
-      getQuoteAdminList({ status: 'new' }),
+      getQuoteAdminList(),
       getLogAdminList(),
     ]).then(([posts, faqs, references, quotes, logs]) => {
-      setStats({
+      setData({
         blogCount: posts.length,
         faqCount: faqs.length,
         referenceCount: references.length,
@@ -47,7 +62,7 @@ export default function DashboardPage() {
         width={1080}
         height={1015}
         aria-hidden
-        className="pointer-events-none fixed right-0 bottom-0 hidden w-80 -z-10 select-none opacity-5 sm:block lg:w-96"
+        className="pointer-events-none fixed right-0 -bottom-16 hidden w-[28rem] select-none opacity-5 sm:block lg:w-[36rem]"
       />
 
       {/* Hero banner — tam genişlik, boşluksuz */}
@@ -65,13 +80,19 @@ export default function DashboardPage() {
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 text-center">
           <p className="mb-2 text-sm tracking-widest text-white/70 uppercase drop-shadow-md sm:text-base">Yönetim Paneli</p>
           <h1 className="text-4xl font-bold text-white drop-shadow-lg sm:text-6xl" style={{ fontFamily: "'Rajdhani', sans-serif" }}>
-            Hoş geldiniz
+            {greeting}
           </h1>
-          <p className="mt-3 text-base text-white/60 drop-shadow-md sm:text-xl">New Temizlik Hizmetleri</p>
+          <p className="mt-3 text-base text-white/60 drop-shadow-md sm:text-xl">
+            New Temizlik Hizmetleri{dateLabel ? ` · ${dateLabel}` : ''}
+          </p>
         </div>
+        <div
+          className="absolute inset-x-0 bottom-0 h-[3px]"
+          style={{ background: 'linear-gradient(90deg, var(--color-primary), var(--color-secondary))' }}
+        />
       </div>
 
-      {stats && (
+      {data && (
         <div className="mx-auto max-w-6xl space-y-8 px-5 py-8 sm:px-8">
           {/* Genel istatistikler */}
           <div>
@@ -80,45 +101,74 @@ export default function DashboardPage() {
               Genel İstatistikler
             </p>
             <div
-              className="flex flex-col overflow-hidden rounded-2xl shadow-md sm:flex-row"
+              className="relative flex flex-col overflow-hidden rounded-2xl shadow-md sm:flex-row"
               style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}
             >
-              <div className="flex-1 border-b px-6 py-5 sm:border-r sm:border-b-0 sm:px-7 sm:py-6" style={dividerBorder}>
+              <Link
+                href="/nt-panel/blog"
+                className="flex-1 border-b px-6 py-5 transition-colors hover:bg-[rgba(127,191,58,0.06)] sm:border-r sm:border-b-0 sm:px-7 sm:py-6"
+                style={dividerBorder}
+              >
                 <p className="text-5xl font-bold" style={{ color: 'var(--color-primary)', fontFamily: "'Rajdhani', sans-serif" }}>
-                  {stats.blogCount}
+                  {data.blogCount}
                 </p>
-                <p className="mt-0.5 text-base" style={{ color: 'var(--text-muted)' }}>Blog Yazısı</p>
-              </div>
+                <p className="mt-0.5 flex items-center gap-1.5 text-base" style={{ color: 'var(--text-muted)' }}>
+                  <FileText size={14} style={{ color: 'var(--color-secondary-dark)' }} /> Blog Yazısı
+                </p>
+              </Link>
 
-              <div className="flex-1 border-b px-6 py-5 sm:border-r sm:border-b-0 sm:px-7 sm:py-6" style={dividerBorder}>
+              <Link
+                href="/nt-panel/sss"
+                className="flex-1 border-b px-6 py-5 transition-colors hover:bg-[rgba(127,191,58,0.06)] sm:border-r sm:border-b-0 sm:px-7 sm:py-6"
+                style={dividerBorder}
+              >
                 <p className="text-5xl font-bold" style={{ color: 'var(--color-primary)', fontFamily: "'Rajdhani', sans-serif" }}>
-                  {stats.faqCount}
+                  {data.faqCount}
                 </p>
-                <p className="mt-0.5 text-base" style={{ color: 'var(--text-muted)' }}>S.S.S.</p>
-              </div>
+                <p className="mt-0.5 flex items-center gap-1.5 text-base" style={{ color: 'var(--text-muted)' }}>
+                  <HelpCircle size={14} style={{ color: 'var(--color-secondary-dark)' }} /> S.S.S.
+                </p>
+              </Link>
 
-              <div className="flex-1 border-b px-6 py-5 sm:border-r sm:border-b-0 sm:px-7 sm:py-6" style={dividerBorder}>
+              <Link
+                href="/nt-panel/referanslar"
+                className="flex-1 border-b px-6 py-5 transition-colors hover:bg-[rgba(127,191,58,0.06)] sm:border-r sm:border-b-0 sm:px-7 sm:py-6"
+                style={dividerBorder}
+              >
                 <p className="text-5xl font-bold" style={{ color: 'var(--color-primary)', fontFamily: "'Rajdhani', sans-serif" }}>
-                  {stats.referenceCount}
+                  {data.referenceCount}
                 </p>
-                <p className="mt-0.5 text-base" style={{ color: 'var(--text-muted)' }}>Referans</p>
-              </div>
+                <p className="mt-0.5 flex items-center gap-1.5 text-base" style={{ color: 'var(--text-muted)' }}>
+                  <Images size={14} style={{ color: 'var(--color-secondary-dark)' }} /> Referans
+                </p>
+              </Link>
 
-              <div className="flex-1 border-b px-6 py-5 sm:border-r sm:border-b-0 sm:px-7 sm:py-6" style={dividerBorder}>
+              <Link
+                href="/nt-panel/teklif-talepleri"
+                className="flex-1 border-b px-6 py-5 transition-colors hover:bg-[rgba(127,191,58,0.06)] sm:border-r sm:border-b-0 sm:px-7 sm:py-6"
+                style={dividerBorder}
+              >
                 <p className="text-5xl font-bold" style={{ color: 'var(--color-primary)', fontFamily: "'Rajdhani', sans-serif" }}>
-                  {stats.pendingQuotes}
+                  {data.pendingQuotes}
                 </p>
-                <p className="mt-0.5 text-base" style={{ color: 'var(--text-muted)' }}>Bekleyen Teklif</p>
-              </div>
+                <p className="mt-0.5 flex items-center gap-1.5 text-base" style={{ color: 'var(--text-muted)' }}>
+                  <Inbox size={14} style={{ color: 'var(--color-secondary-dark)' }} /> Bekleyen Teklif
+                </p>
+              </Link>
 
-              <Link href="/nt-panel/loglar" className="flex-1 px-6 py-5 transition-colors hover:bg-black/2 sm:px-7 sm:py-6">
+              <Link
+                href="/nt-panel/loglar"
+                className="flex-1 px-6 py-5 transition-colors hover:bg-[rgba(127,191,58,0.06)] sm:px-7 sm:py-6"
+              >
                 <p
                   className="text-5xl font-bold"
-                  style={{ color: stats.errors24h > 0 ? '#e74c3c' : 'var(--color-primary)', fontFamily: "'Rajdhani', sans-serif" }}
+                  style={{ color: data.errors24h > 0 ? '#e74c3c' : 'var(--color-primary)', fontFamily: "'Rajdhani', sans-serif" }}
                 >
-                  {stats.errors24h}
+                  {data.errors24h}
                 </p>
-                <p className="mt-0.5 text-base" style={{ color: 'var(--text-muted)' }}>Son 24s Hata</p>
+                <p className="mt-0.5 flex items-center gap-1.5 text-base" style={{ color: 'var(--text-muted)' }}>
+                  <AlertCircle size={14} style={{ color: data.errors24h > 0 ? '#e74c3c' : 'var(--color-secondary-dark)' }} /> Son 24s Hata
+                </p>
               </Link>
             </div>
           </div>

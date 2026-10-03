@@ -32,13 +32,13 @@ export default function AdminTabs({ items, value, onChange, size = 'md', wrap = 
           <button
             key={item.id}
             onClick={() => onChange(item.id)}
-            className="rounded-full font-medium transition-colors"
+            className={`panel-tab rounded-full font-medium transition-colors ${active ? 'panel-tab--active' : ''}`}
             style={{
               padding: PADDING[size],
               fontSize: FONT_SIZE[size],
-              background: active ? 'var(--color-primary)' : 'var(--bg-card)',
+              background: active ? 'linear-gradient(135deg, var(--color-primary), var(--color-secondary))' : 'var(--bg-card)',
               color: active ? '#fff' : 'var(--text-muted)',
-              border: `1px solid ${active ? 'var(--color-primary)' : 'var(--border-subtle)'}`,
+              border: `1px solid ${active ? 'transparent' : 'var(--border-subtle)'}`,
             }}
           >
             {item.label}

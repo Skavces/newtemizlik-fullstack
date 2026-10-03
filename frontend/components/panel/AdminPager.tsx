@@ -15,7 +15,7 @@ export default function AdminPager({ page, pageCount, onChange, disabled = false
       <button
         onClick={() => onChange(page - 1)}
         disabled={disabled || page <= 1}
-        className="flex h-8 w-8 items-center justify-center rounded-full disabled:opacity-30"
+        className="panel-pager-btn flex h-8 w-8 items-center justify-center rounded-full disabled:opacity-30"
         style={{ border: '1px solid var(--border-subtle)', color: 'var(--text-muted)' }}
         aria-label="Önceki sayfa"
       >
@@ -27,7 +27,7 @@ export default function AdminPager({ page, pageCount, onChange, disabled = false
       <button
         onClick={() => onChange(page + 1)}
         disabled={disabled || page >= pageCount}
-        className="flex h-8 w-8 items-center justify-center rounded-full disabled:opacity-30"
+        className="panel-pager-btn flex h-8 w-8 items-center justify-center rounded-full disabled:opacity-30"
         style={{ border: '1px solid var(--border-subtle)', color: 'var(--text-muted)' }}
         aria-label="Sonraki sayfa"
       >

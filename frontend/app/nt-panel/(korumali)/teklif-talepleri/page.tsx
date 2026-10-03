@@ -7,6 +7,7 @@ import { dayRangeToIso, formatDateTime } from '@/lib/date'
 import { formatStoredPhone } from '@/lib/phone'
 import { applyPagedResult } from '@/lib/adminPaging'
 import { useLatestFetch } from '@/lib/useLatestFetch'
+import { STATUS_META } from '@/lib/quoteStatus'
 import { useToast } from '@/components/panel/ToastProvider'
 import { useConfirm } from '@/components/panel/ConfirmProvider'
 import AdminStatCard from '@/components/panel/AdminStatCard'
@@ -14,13 +15,6 @@ import AdminTabs from '@/components/panel/AdminTabs'
 import AdminDateRange from '@/components/panel/AdminDateRange'
 import AdminPager from '@/components/panel/AdminPager'
 import type { QuoteAdminListResponse, QuoteRequest, QuoteStatus } from '@/types/api'
-
-const STATUS_META: Record<QuoteStatus, { label: string; icon: typeof Clock; color: string }> = {
-  new: { label: 'Yeni', icon: Clock, color: '#d97706' },
-  contacted: { label: 'İletişime Geçildi', icon: PhoneCall, color: '#2563eb' },
-  won: { label: 'Kazanıldı', icon: Trophy, color: 'var(--color-primary)' },
-  lost: { label: 'Kaybedildi', icon: XCircle, color: 'var(--text-faint)' },
-}
 
 const STATUS_TABS = [
   { id: 'all', label: 'Tümü' },

@@ -139,11 +139,11 @@ export default function SSSListPage() {
                         </button>
                         <div className="flex shrink-0 items-center gap-1">
                           {faq.published ? (
-                            <span className="hidden items-center gap-1 rounded-full px-2 py-1 text-xs sm:flex" style={{ color: 'var(--color-primary)', background: 'rgba(127,191,58,0.1)' }}>
+                            <span className="hidden items-center gap-1 px-2 py-1 text-xs sm:flex" style={{ color: 'var(--color-primary)' }}>
                               <Eye size={12} /> Yayında
                             </span>
                           ) : (
-                            <span className="hidden items-center gap-1 rounded-full px-2 py-1 text-xs sm:flex" style={{ color: 'var(--text-faint)', background: 'var(--bg-alt)' }}>
+                            <span className="hidden items-center gap-1 px-2 py-1 text-xs sm:flex" style={{ color: 'var(--text-faint)' }}>
                               <EyeOff size={12} /> Gizli
                             </span>
                           )}

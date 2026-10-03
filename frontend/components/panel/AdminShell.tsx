@@ -17,6 +17,7 @@ import {
   Menu,
   X,
   LogOut,
+  ExternalLink,
   type LucideIcon,
 } from 'lucide-react'
 import { logout } from '@/lib/panelApi'
@@ -62,11 +63,8 @@ export default function AdminShell({ username, children }: { username: string; c
   return (
     <div className="flex h-screen flex-col overflow-hidden lg:flex-row" style={{ background: 'var(--bg-alt)' }}>
       {/* Desktop sidebar */}
-      <aside
-        className="hidden w-64 shrink-0 flex-col lg:flex"
-        style={{ background: 'var(--bg-card)', borderRight: '1px solid var(--border-subtle)' }}
-      >
-        <div className="p-6" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+      <aside className="panel-sidebar hidden w-64 shrink-0 flex-col lg:flex" style={{ background: 'var(--bg-card)' }}>
+        <div className="panel-sidebar-brand p-6">
           <Link href="/nt-panel" className="block">
             <Image src="/logo.png" alt="New Temizlik" width={1080} height={1015} priority className="h-auto w-full object-contain" />
           </Link>
@@ -78,11 +76,7 @@ export default function AdminShell({ username, children }: { username: string; c
               <Link
                 key={item.href}
                 href={item.href}
-                className="mb-1 flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium"
-                style={{
-                  background: active ? 'var(--color-primary)' : 'transparent',
-                  color: active ? '#fff' : 'var(--text-secondary)',
-                }}
+                className={`panel-nav-link mb-1 flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium ${active ? 'panel-nav-link--active' : ''}`}
               >
                 <item.icon size={16} />
                 {item.label}
@@ -91,16 +85,29 @@ export default function AdminShell({ username, children }: { username: string; c
           })}
         </nav>
         <div className="p-3" style={{ borderTop: '1px solid var(--border-subtle)' }}>
-          <a href="/" target="_blank" rel="noopener noreferrer" className="mb-1 block rounded-lg px-3 py-2.5 text-sm" style={{ color: 'var(--text-muted)' }}>
-            Siteyi Gör ↗
+          <a
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="panel-nav-link mb-1 flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm"
+            style={{ color: 'var(--text-muted)' }}
+          >
+            <ExternalLink size={16} />
+            Siteyi Gör
           </a>
+          <div className="mb-1 flex items-center gap-2.5 px-3 py-2">
+            <span className="panel-user-avatar">{username.slice(0, 1).toUpperCase()}</span>
+            <span className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>
+              {username}
+            </span>
+          </div>
           <button
             onClick={handleLogout}
-            className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium"
+            className="panel-nav-link flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium"
             style={{ color: '#e74c3c' }}
           >
             <LogOut size={16} />
-            Çıkış ({username})
+            Çıkış
           </button>
         </div>
       </aside>
@@ -126,8 +133,7 @@ export default function AdminShell({ username, children }: { username: string; c
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className="mb-1 flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium"
-                style={{ background: active ? 'var(--color-primary)' : 'transparent', color: active ? '#fff' : 'var(--text-secondary)' }}
+                className={`panel-nav-link mb-1 flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium ${active ? 'panel-nav-link--active' : ''}`}
               >
                 <item.icon size={16} />
                 {item.label}
@@ -140,7 +146,7 @@ export default function AdminShell({ username, children }: { username: string; c
               handleLogout()
               showToast('success', 'Çıkış yapıldı')
             }}
-            className="mt-1 flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium"
+            className="panel-nav-link mt-1 flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium"
             style={{ color: '#e74c3c' }}
           >
             <LogOut size={16} />
@@ -149,7 +155,7 @@ export default function AdminShell({ username, children }: { username: string; c
         </nav>
       )}
 
-      <div className="flex-1 overflow-auto" style={{ background: '#fafafa' }}>
+      <div className="flex-1 overflow-auto" style={{ background: 'var(--bg-body)' }}>
         <main className={isDashboard ? '' : 'mx-auto max-w-6xl px-5 py-8 sm:px-8'}>{children}</main>
       </div>
     </div>
