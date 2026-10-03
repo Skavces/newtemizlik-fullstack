@@ -95,12 +95,6 @@ export default function AdminShell({ username, children }: { username: string; c
             <ExternalLink size={16} />
             Siteyi Gör
           </a>
-          <div className="mb-1 flex items-center gap-2.5 px-3 py-2">
-            <span className="panel-user-avatar">{username.slice(0, 1).toUpperCase()}</span>
-            <span className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>
-              {username}
-            </span>
-          </div>
           <button
             onClick={handleLogout}
             className="panel-nav-link flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium"
