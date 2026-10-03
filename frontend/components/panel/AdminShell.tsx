@@ -64,9 +64,9 @@ export default function AdminShell({ username, children }: { username: string; c
     <div className="flex h-screen flex-col overflow-hidden lg:flex-row" style={{ background: 'var(--bg-alt)' }}>
       {/* Desktop sidebar */}
       <aside className="panel-sidebar hidden w-64 shrink-0 flex-col lg:flex" style={{ background: 'var(--bg-card)' }}>
-        <div className="panel-sidebar-brand p-6">
+        <div className="panel-sidebar-brand flex items-center justify-center px-6 py-4 sm:h-52">
           <Link href="/nt-panel" className="block">
-            <Image src="/logo.png" alt="New Temizlik" width={1080} height={1015} priority className="h-auto w-full object-contain" />
+            <Image src="/logo.png" alt="New Temizlik" width={1080} height={1015} priority className="h-44 w-auto object-contain" />
           </Link>
         </div>
         <nav className="flex-1 overflow-auto p-3">
