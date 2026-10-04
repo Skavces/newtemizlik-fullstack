@@ -23,6 +23,13 @@ geo $cloudflare {
     2c0f:f248::/32 1;
 }
 
+# Nest ThrottlerGuard (backend/src/app.module.ts) IP bazlı zaten calisiyor;
+# bu zone'lar istekler Node'a ulasmadan once kaba bir sel/flood korumasi
+# ekliyor, ikinci bir savunma katmani olarak.
+limit_req_zone $binary_remote_addr zone=api_auth:10m rate=10r/m;
+limit_req_zone $binary_remote_addr zone=api_general:10m rate=10r/s;
+limit_req_status 429;
+
 server {
     listen 8080;
     server_name _;
@@ -50,7 +57,16 @@ server {
     set_real_ip_from 2405:8100::/32;
     set_real_ip_from 2a06:98c0::/29;
     set_real_ip_from 2c0f:f248::/32;
-    real_ip_header CF-Connecting-IP;
+
+    # Host nginx (bu container'in onunde, VPS'te) localhost:8081 uzerinden
+    # buraya baglaniyor; host-to-container baglantilarda Docker SNAT uyguladigi
+    # icin $remote_addr burada CF degil, Docker bridge gateway'i olarak gorunur
+    # (dogrulandi: 2026-10-04, erisim logunda 172.19.0.1). Host nginx de
+    # CF-Connecting-IP'yi iletmiyor, sadece X-Forwarded-For ekliyor
+    # ($proxy_add_x_forwarded_for) — bu yuzden header'i da degistiriyoruz.
+    set_real_ip_from 172.16.0.0/12;
+    real_ip_header X-Forwarded-For;
+    real_ip_recursive on;
 
     # proxy_pass'te degisken kullanildiginda (DNS onbellek tuzagini onlemek
     # icin, asagida) Docker'in gomulu DNS'i resolver olarak gerekiyor
@@ -96,6 +112,17 @@ server {
         include /etc/nginx/snippets/security-headers.conf;
     }
 
+    location ^~ /api/auth/ {
+        set $backend_api http://backend:3001;
+        proxy_pass $backend_api;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        client_max_body_size 12m;
+        limit_req zone=api_auth burst=5 nodelay;
+    }
+
     location ^~ /api/ {
         set $backend_api http://backend:3001;
         proxy_pass $backend_api;
@@ -103,7 +130,8 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
-        client_max_body_size 100m;
+        client_max_body_size 12m;
+        limit_req zone=api_general burst=30 nodelay;
     }
 
     location ^~ /uploads/ {
