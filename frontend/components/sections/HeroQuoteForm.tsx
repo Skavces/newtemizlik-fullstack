@@ -116,7 +116,22 @@ export default function HeroQuoteForm() {
                   style={inputStyle}
                   placeholder="+90 5XX XXX XX XX" defaultValue="+90 " maxLength={17}
                   pattern="^(\+90|0)?\s*5[0-9]{2}\s*[0-9]{3}\s*[0-9]{2}\s*[0-9]{2}$"
-                  onInput={(e: InputEvent<HTMLInputElement>) => { e.currentTarget.value = formatTurkishPhone(e.currentTarget.value) }}
+                  onInput={(e: InputEvent<HTMLInputElement>) => {
+                    const input = e.currentTarget
+                    // Formatlama imleci sona atmasın diye, imleçten önceki rakam
+                    // sayısını say, formatladıktan sonra aynı sayıda rakamın
+                    // bittiği noktaya geri koy (ortada düzenleme yapılabilsin).
+                    const digitsBeforeCursor = input.value.slice(0, input.selectionStart ?? input.value.length).replace(/\D/g, '').length
+                    const formatted = formatTurkishPhone(input.value)
+                    input.value = formatted
+                    let seen = 0
+                    let pos = formatted.length
+                    for (let i = 0; i < formatted.length; i++) {
+                      if (/\d/.test(formatted[i])) seen++
+                      if (seen === digitsBeforeCursor) { pos = i + 1; break }
+                    }
+                    input.setSelectionRange(pos, pos)
+                  }}
                   required
                 />
               </div>
