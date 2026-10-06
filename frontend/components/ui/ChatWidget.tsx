@@ -478,10 +478,10 @@ export default function ChatWidget() {
         </>
       )}
 
-      <div className="chat-fab-ring" style={{ borderRadius: '9999px', padding: '3px' }}>
+      <div className="chat-fab-ring transition-transform hover:scale-105" style={{ borderRadius: '9999px', padding: '3px' }}>
         <button
           onClick={() => (open ? requestClose() : setOpen(true))}
-          className={`chat-fab ${fabExpanded ? 'chat-fab-expanded' : ''} flex items-center justify-center cursor-pointer transition-transform hover:scale-105`}
+          className={`chat-fab ${fabExpanded ? 'chat-fab-expanded' : ''} flex items-center justify-center cursor-pointer`}
           style={{
             height: '50px',
             borderRadius: '9999px',
