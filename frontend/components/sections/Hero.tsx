@@ -55,7 +55,7 @@ export default function Hero() {
 
         {/* Main content */}
         <div className="relative z-[2] flex-1 flex flex-col justify-center">
-          <div className="relative z-[2] max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-28 md:py-36 w-full">
+          <div className="relative z-[2] max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 pt-28 pb-44 md:py-36 w-full">
             <div className="flex flex-col lg:flex-row lg:items-center gap-10 lg:gap-14">
               <div style={{ maxWidth: '620px', marginTop: '40px', flexShrink: 0 }}>
 
