@@ -146,7 +146,7 @@ export default function Hero() {
 
         {/* Bottom wave — renel-enerji/frontend/src/components/Hero.jsx ile birebir aynı
             desen ve zamanlama, yalnızca renk var(--bg-body)'ye uyarlandı. */}
-        <div className="absolute bottom-0 left-0 right-0 overflow-hidden leading-none h-20 z-[2]" aria-hidden="true">
+        <div className="absolute -bottom-px left-0 right-0 overflow-hidden leading-none h-20 z-[2]" aria-hidden="true">
           <svg className="absolute bottom-0 w-[200%] h-full animate-[hero-wave_8s_linear_infinite]" viewBox="0 0 2880 80" preserveAspectRatio="none" fill="none">
             <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 C1680,80 1920,0 2160,40 C2400,80 2640,0 2880,40 L2880,80 L0,80 Z" fill="var(--bg-body)" fillOpacity="0.4" />
           </svg>
