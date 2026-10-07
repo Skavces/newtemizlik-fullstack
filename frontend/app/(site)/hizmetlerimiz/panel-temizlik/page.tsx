@@ -10,7 +10,7 @@ import { getFaqs } from '@/lib/api'
 
 export const metadata = buildMetadata({
   title: 'Soma GES Temizliği ve Güneş Paneli Yıkama | New Temizlik',
-  description: "Soma'da ve Türkiye genelinde profesyonel GES temizliği, güneş paneli yıkama ve solar panel temizlik hizmeti. Soma'nın endüstriyel toz ortamına özel yöntemlerle %30'a kadar verim artışı sağlıyoruz.",
+  description: "Soma ve Türkiye genelinde profesyonel GES temizliği ve güneş paneli yıkama. Endüstriyel toz ortamına özel yöntemlerle %30'a kadar verim artışı sağlıyoruz.",
   keywords: 'soma ges temizliği, güneş paneli temizliği, panel temizliği, ges temizliği, solar panel temizliği, türkiye geneli ges temizliği, güneş enerji santrali temizliği, manisa ges temizliği',
   canonical: '/hizmetlerimiz/panel-temizlik',
   image: '/endustriyel-gunes-paneli-yikama.webp',

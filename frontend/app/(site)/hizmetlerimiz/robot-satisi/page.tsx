@@ -11,7 +11,7 @@ import { getFaqs } from '@/lib/api'
 
 export const metadata = buildMetadata({
   title: 'GES Panel Temizlik Robotu ve Makina Satışı | New Temizlik',
-  description: 'GES solar panel temizlik robotu ve makina satışı. Büyük ölçekli güneş enerji santralleri için otonom, IoT destekli, uzaktan yönetilebilen panel yıkama sistemleri.',
+  description: 'GES solar panel temizlik robotu ve makina satışı. Büyük santraller için otonom, IoT destekli, uzaktan yönetilebilen panel yıkama sistemleri.',
   ogTitle: 'GES Solar Panel Temizlik Robotu Satışı | New Temizlik',
   canonical: '/hizmetlerimiz/robot-satisi',
   image: '/soma-ges-otonom-temizlik-robotu.webp',

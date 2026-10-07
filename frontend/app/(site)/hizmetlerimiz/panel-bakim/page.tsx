@@ -10,7 +10,7 @@ import { getFaqs } from '@/lib/api'
 
 export const metadata = buildMetadata({
   title: 'GES Panel Bakım ve Onarım İzleme Hizmeti | New Temizlik',
-  description: 'GES santrallerinde proaktif bakım, termal analiz ve performans izleme hizmetleri. Hotspot tespiti ve invertör kontrolüyle verim kayıplarını ve arızaları erkenden önlüyoruz.',
+  description: 'GES santrallerinde proaktif bakım, termal analiz ve performans izleme. Hotspot tespiti ve invertör kontrolüyle arızaları erkenden önlüyoruz.',
   canonical: '/hizmetlerimiz/panel-bakim',
   image: '/ges-bakim-onarim-termal-analiz.webp',
   imageAlt: 'GES santralinde termal analiz ve bakım onarım izleme çalışması',

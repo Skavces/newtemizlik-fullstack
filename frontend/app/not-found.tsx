@@ -1,6 +1,9 @@
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
+
+export const metadata: Metadata = { title: 'Sayfa Bulunamadı | New Temizlik' }
 
 // Kök seviyede yaşar (app/(site)/ değil) ki tamamen eşleşmeyen her URL için
 // (nt-panel altındaki yanlış yazımlar dahil) Next.js bunu global fallback

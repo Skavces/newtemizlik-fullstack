@@ -8,7 +8,7 @@ import { buildMetadata, SITE_URL } from '@/lib/seo'
 export const metadata = buildMetadata({
   title: 'Kurumsal - GES Temizlik ve Bakım Çözümleri | New Temizlik',
   description:
-    "New Temizlik hakkında: misyon, vizyon, değerlerimiz ve kurumsal kimliğimiz. Soma merkezli, tüm Türkiye'ye hizmet veren endüstriyel GES temizlik ve bakım firması.",
+    "New Temizlik hakkında: misyon, vizyon ve değerlerimiz. Soma merkezli, tüm Türkiye'ye hizmet veren endüstriyel GES temizlik ve bakım firması.",
   canonical: '/kurumsal',
   imageAlt: 'New Temizlik - GES temizlik ve bakım çözümleri kurumsal logosu',
 })
