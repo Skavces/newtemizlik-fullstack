@@ -30,8 +30,19 @@ limit_req_zone $binary_remote_addr zone=api_auth:10m rate=10r/m;
 limit_req_zone $binary_remote_addr zone=api_general:10m rate=10r/s;
 limit_req_status 429;
 
+# apex → www (asıl yönlendirme Cloudflare Redirect Rule'da; bu, kural
+# kaldırılırsa diye yedek katman). Canonical host lib/seo.ts SITE_URL ile aynı.
+# Yalnızca host nginx orijinal Host header'ını iletiyorsa eşleşir; iletmiyorsa
+# zararsızca atlanır ve aşağıdaki default server devreye girer.
 server {
     listen 8080;
+    server_name newtemizlik.com;
+    server_tokens off;
+    return 301 https://www.newtemizlik.com$request_uri;
+}
+
+server {
+    listen 8080 default_server;
     server_name _;
 
     # Yukaridaki geo $cloudflare blogu ile ayni liste — birlikte guncellenmeli
