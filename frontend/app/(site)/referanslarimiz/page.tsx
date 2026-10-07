@@ -6,7 +6,7 @@ import { buildMetadata, SITE_URL } from '@/lib/seo'
 import { getReferences } from '@/lib/api'
 
 export const metadata = buildMetadata({
-  title: 'Referanslarımız | Güvenilir GES Temizlik Hizmeti | New Temizlik',
+  title: 'Referanslarımız | GES Temizlik Hizmeti | New Temizlik',
   description: 'New Temizlik olarak hizmet verdiğimiz kurumsal referanslarımız. Halkbank, Albayrak, Gezgin Enerji ve daha birçok sektör lideri firma ile çalışıyoruz.',
   canonical: '/referanslarimiz',
   imageAlt: 'New Temizlik GES temizlik hizmetleri kurumsal logosu',

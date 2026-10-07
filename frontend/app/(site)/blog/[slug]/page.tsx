@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import BlogArticleLayout from '@/components/ui/BlogArticleLayout'
 import JsonLd from '@/components/ui/JsonLd'
-import { buildMetadata, SITE_URL, SITE_NAME } from '@/lib/seo'
+import { buildMetadata, ORGANIZATION_ID, SITE_URL, SITE_NAME } from '@/lib/seo'
 import { getBlogPost, getBlogPosts } from '@/lib/api'
 import { isApiError } from '@/lib/errors'
 
@@ -76,9 +76,10 @@ export default async function BlogArticlePage({ params }: PageProps) {
     image: post.coverImage ? `${SITE_URL}${post.coverImage}` : `${SITE_URL}/og.jpg`,
     datePublished: post.publishedAt,
     dateModified: post.updatedAt || post.publishedAt,
-    author: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+    author: { '@type': 'Organization', '@id': ORGANIZATION_ID, name: SITE_NAME, url: SITE_URL },
     publisher: {
       '@type': 'Organization',
+      '@id': ORGANIZATION_ID,
       name: SITE_NAME,
       logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.png` },
     },

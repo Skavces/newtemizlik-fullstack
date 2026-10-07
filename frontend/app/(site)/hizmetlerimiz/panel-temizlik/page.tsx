@@ -5,7 +5,7 @@ import SectionHeader from '@/components/ui/SectionHeader'
 import FaqAccordion from '@/components/ui/FaqAccordion'
 import JsonLd from '@/components/ui/JsonLd'
 import TrackedLink from '@/components/ui/TrackedLink'
-import { buildMetadata, SITE_URL } from '@/lib/seo'
+import { buildMetadata, ORGANIZATION_ID, SITE_URL } from '@/lib/seo'
 import { getFaqs } from '@/lib/api'
 
 export const metadata = buildMetadata({
@@ -84,14 +84,7 @@ export default async function PanelTemizlikPage() {
     description: "Soma ve Türkiye genelinde profesyonel güneş enerji santrali (GES) panel temizliği, solar panel yıkama ve bakım hizmetleri. Yumuşak fırça sistemleri ve kontrollü su kullanımıyla panellerinizde %30'a kadar verim artışı.",
     serviceType: 'GES Panel Temizliği',
     url: `${SITE_URL}/hizmetlerimiz/panel-temizlik`,
-    provider: {
-      '@type': 'LocalBusiness',
-      name: 'New Temizlik',
-      url: SITE_URL,
-      telephone: '+905304738793',
-      image: `${SITE_URL}/logo.png`,
-      address: { '@type': 'PostalAddress', addressLocality: 'Soma', addressRegion: 'Manisa', addressCountry: 'TR' },
-    },
+    provider: { '@id': ORGANIZATION_ID },
     areaServed: areaServedSchema,
     hasOfferCatalog: {
       '@type': 'OfferCatalog',

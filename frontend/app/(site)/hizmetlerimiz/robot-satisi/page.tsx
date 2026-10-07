@@ -6,7 +6,7 @@ import FaqAccordion from '@/components/ui/FaqAccordion'
 import JsonLd from '@/components/ui/JsonLd'
 import TrackedLink from '@/components/ui/TrackedLink'
 import ProductGallery from '@/components/sections/ProductGallery'
-import { buildMetadata, SITE_URL } from '@/lib/seo'
+import { buildMetadata, ORGANIZATION_ID, SITE_URL } from '@/lib/seo'
 import { getFaqs } from '@/lib/api'
 
 export const metadata = buildMetadata({
@@ -87,14 +87,7 @@ export default async function RobotSatisPage() {
     description: 'GES solar panel temizlik robotu ve makina satışı. Büyük ölçekli güneş enerji santralleri için otonom, IoT destekli, uzaktan yönetilebilen panel yıkama sistemleri.',
     serviceType: 'GES Panel Temizlik Robotu Satışı',
     url: `${SITE_URL}/hizmetlerimiz/robot-satisi`,
-    provider: {
-      '@type': 'LocalBusiness',
-      name: 'New Temizlik',
-      url: SITE_URL,
-      telephone: '+905304738793',
-      image: `${SITE_URL}/logo.png`,
-      address: { '@type': 'PostalAddress', addressLocality: 'Soma', addressRegion: 'Manisa', addressCountry: 'TR' },
-    },
+    provider: { '@id': ORGANIZATION_ID },
     areaServed: areaServedSchema,
     hasOfferCatalog: {
       '@type': 'OfferCatalog',

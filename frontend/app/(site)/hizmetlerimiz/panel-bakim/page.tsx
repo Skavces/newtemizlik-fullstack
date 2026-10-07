@@ -5,7 +5,7 @@ import SectionHeader from '@/components/ui/SectionHeader'
 import FaqAccordion from '@/components/ui/FaqAccordion'
 import JsonLd from '@/components/ui/JsonLd'
 import TrackedLink from '@/components/ui/TrackedLink'
-import { buildMetadata, SITE_URL } from '@/lib/seo'
+import { buildMetadata, ORGANIZATION_ID, SITE_URL } from '@/lib/seo'
 import { getFaqs } from '@/lib/api'
 
 export const metadata = buildMetadata({
@@ -69,14 +69,7 @@ export default async function PanelBakimPage() {
     description: 'GES santrallerinde proaktif bakım, termal analiz ve performans izleme hizmetleri. Hotspot tespiti ve invertör kontrolüyle verim kayıplarını ve arızaları erkenden önlüyoruz.',
     serviceType: 'GES Panel Bakım ve Onarım İzleme',
     url: `${SITE_URL}/hizmetlerimiz/panel-bakim`,
-    provider: {
-      '@type': 'LocalBusiness',
-      name: 'New Temizlik',
-      url: SITE_URL,
-      telephone: '+905304738793',
-      image: `${SITE_URL}/logo.png`,
-      address: { '@type': 'PostalAddress', addressLocality: 'Soma', addressRegion: 'Manisa', addressCountry: 'TR' },
-    },
+    provider: { '@id': ORGANIZATION_ID },
     areaServed: areaServedSchema,
     hasOfferCatalog: {
       '@type': 'OfferCatalog',

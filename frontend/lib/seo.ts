@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 
 export const SITE_URL = 'https://www.newtemizlik.com'
 export const SITE_NAME = 'New Temizlik'
+// Sitewide JSON-LD organizasyon düğümünün @id'si (bkz. app/(site)/layout.tsx);
+// diğer şemalar provider/publisher/author'ı bu id'ye referansla bağlar.
+export const ORGANIZATION_ID = `${SITE_URL}/#organization`
 
 interface BuildMetadataOptions {
   title: string

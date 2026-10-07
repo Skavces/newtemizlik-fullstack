@@ -5,7 +5,7 @@ import JsonLd from '@/components/ui/JsonLd'
 import { buildMetadata, SITE_URL } from '@/lib/seo'
 
 export const metadata = buildMetadata({
-  title: 'GES Panel Kirlilik Rehberi | Neden Kirlenir, Nasıl Temizlenir | New Temizlik',
+  title: 'GES Paneli Neden Kirlenir? Kirlilik Rehberi | New Temizlik',
   description: 'GES panellerinde kirlenmenin nedenleri, yol açtığı verim kaybı ve doğru temizlik yöntemleri. Panel kirliliğine karşı uzman rehberi.',
   keywords: 'panel kirliliği, ges panel kirlenmesi, güneş paneli neden kirlenir, panel verim kaybı, solar panel temizlik rehberi',
   canonical: '/panel-kirlilik-rehberi',

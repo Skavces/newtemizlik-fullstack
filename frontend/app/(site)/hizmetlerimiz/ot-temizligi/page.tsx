@@ -5,7 +5,7 @@ import SectionHeader from '@/components/ui/SectionHeader'
 import JsonLd from '@/components/ui/JsonLd'
 import TrackedLink from '@/components/ui/TrackedLink'
 import CtaBand from '@/components/ui/CtaBand'
-import { buildMetadata, SITE_URL } from '@/lib/seo'
+import { buildMetadata, ORGANIZATION_ID, SITE_URL } from '@/lib/seo'
 
 export const metadata = buildMetadata({
   title: 'GES Sahası Ot Temizliği Hizmeti | New Temizlik',
@@ -56,14 +56,7 @@ export default function OtTemizligiPage() {
     description: 'Güneş enerji santrali sahalarında panel altı ve aralarındaki ot ve bitki örtüsünün düzenli temizliği. Gölgelenme, yangın riski ve haşere üremesini önlüyoruz.',
     serviceType: 'GES Sahası Ot Temizliği',
     url: `${SITE_URL}/hizmetlerimiz/ot-temizligi`,
-    provider: {
-      '@type': 'LocalBusiness',
-      name: 'New Temizlik',
-      url: SITE_URL,
-      telephone: '+905304738793',
-      image: `${SITE_URL}/logo.png`,
-      address: { '@type': 'PostalAddress', addressLocality: 'Soma', addressRegion: 'Manisa', addressCountry: 'TR' },
-    },
+    provider: { '@id': ORGANIZATION_ID },
     areaServed: areaServedSchema,
     hasOfferCatalog: {
       '@type': 'OfferCatalog',

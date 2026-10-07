@@ -6,7 +6,7 @@ import { buildMetadata, SITE_URL } from '@/lib/seo'
 import { getFaqs } from '@/lib/api'
 
 export const metadata = buildMetadata({
-  title: 'Sıkça Sorulan Sorular | GES Panel Temizliği SSS | New Temizlik',
+  title: 'Sıkça Sorulan Sorular: GES Temizliği | New Temizlik',
   description: 'Güneş paneli temizliği, GES bakım hizmetleri ve temizlik robotu hakkında merak edilen soruların cevapları. New Temizlik SSS sayfası.',
   canonical: '/sss',
   imageAlt: 'New Temizlik GES panel temizliği sıkça sorulan sorular logosu',

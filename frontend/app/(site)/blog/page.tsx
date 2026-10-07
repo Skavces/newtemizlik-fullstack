@@ -4,7 +4,7 @@ import { ArrowRight, Calendar } from 'lucide-react'
 import PageHero from '@/components/ui/PageHero'
 import SectionHeader from '@/components/ui/SectionHeader'
 import JsonLd from '@/components/ui/JsonLd'
-import { buildMetadata, SITE_URL } from '@/lib/seo'
+import { buildMetadata, ORGANIZATION_ID, SITE_URL } from '@/lib/seo'
 import { getBlogPosts } from '@/lib/api'
 
 export const metadata = buildMetadata({
@@ -32,11 +32,7 @@ export default async function BlogPage() {
     name: 'New Temizlik Blog',
     description: 'GES temizlik, bakım ve otonom temizlik teknolojileri hakkında uzman rehberler',
     url: `${SITE_URL}/blog`,
-    publisher: {
-      '@type': 'Organization',
-      name: 'New Temizlik',
-      logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.png` },
-    },
+    publisher: { '@id': ORGANIZATION_ID },
     blogPost: posts.map((p) => ({
       '@type': 'BlogPosting',
       headline: p.title,
