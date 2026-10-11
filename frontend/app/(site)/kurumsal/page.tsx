@@ -1,9 +1,13 @@
 import Image from 'next/image'
-import { Target, Eye, Leaf, Users, ShieldCheck, Award } from 'lucide-react'
+import Link from 'next/link'
+import { Target, Eye, Leaf, Users, ShieldCheck, Award, ArrowRight, Search, ClipboardCheck, Wrench, FileBarChart } from 'lucide-react'
 import PageHero from '@/components/ui/PageHero'
 import SectionHeader from '@/components/ui/SectionHeader'
 import JsonLd from '@/components/ui/JsonLd'
-import { buildMetadata, SITE_URL } from '@/lib/seo'
+import CtaBand from '@/components/ui/CtaBand'
+import Referanslar from '@/components/sections/Referanslar'
+import { buildMetadata, ORGANIZATION_ID, SITE_URL } from '@/lib/seo'
+import { getReferences } from '@/lib/api'
 
 export const metadata = buildMetadata({
   title: 'Kurumsal - GES Temizlik ve Bakım Çözümleri | New Temizlik',
@@ -21,6 +25,28 @@ const breadcrumbSchema = {
     { '@type': 'ListItem', position: 2, name: 'Kurumsal', item: `${SITE_URL}/kurumsal` },
   ],
 }
+
+const aboutSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'Kurumsal - New Temizlik',
+  url: `${SITE_URL}/kurumsal`,
+  about: { '@id': ORGANIZATION_ID },
+}
+
+const services = [
+  { title: 'GES Panel Temizliği', desc: 'Endüstriyel güneş paneli yıkama; kontrollü su kullanımı ve yumuşak fırça sistemleriyle.', href: '/hizmetlerimiz/panel-temizlik' },
+  { title: 'Panel Bakım ve İzleme', desc: 'Termal analiz, hotspot tespiti ve performans izleme ile arızaları erkenden yakalama.', href: '/hizmetlerimiz/panel-bakim' },
+  { title: 'Robot ve Makina Satışı', desc: 'Otonom ve yarı otomatik panel temizlik sistemleri; kurulum, eğitim ve teknik destekle.', href: '/hizmetlerimiz/robot-satisi' },
+  { title: 'Ot Temizliği', desc: 'Panel altı ve aralarındaki bitki örtüsünün düzenli temizliği; gölgelenme ve yangın riskine karşı.', href: '/hizmetlerimiz/ot-temizligi' },
+]
+
+const workSteps = [
+  { icon: Search, title: 'Keşif', desc: 'Sahayı yerinde inceler, kirlilik türünü ve panel dizilimini belirleriz.' },
+  { icon: ClipboardCheck, title: 'Planlama', desc: 'Sahaya uygun yöntemi, ekipmanı ve takvimi birlikte netleştiririz.' },
+  { icon: Wrench, title: 'Uygulama', desc: 'Sertifikalı ekibimiz, iş güvenliği kurallarına uygun şekilde temizliği yürütür.' },
+  { icon: FileBarChart, title: 'Raporlama', desc: 'Öncesi ve sonrası üretim karşılaştırmasını içeren raporu teslim ederiz.' },
+]
 
 const stats = [
   { value: '3 GWh', label: 'Kurumsal Referans' },
@@ -45,10 +71,13 @@ const collageImages = [
   { src: '/soma-gunes-enerjisi-santrali-uzman-bakim.webp', alt: 'Uzman GES bakımı' },
 ]
 
-export default function KurumsalPage() {
+export default async function KurumsalPage() {
+  const references = await getReferences()
+
   return (
     <>
       <JsonLd data={breadcrumbSchema} />
+      <JsonLd data={aboutSchema} />
 
       <PageHero
         title="Kurumsal"
@@ -174,6 +203,59 @@ export default function KurumsalPage() {
         </div>
       </section>
 
+      {/* ── Soma'dan Türkiye'ye ── */}
+      <section style={{ background: 'var(--bg-alt)', padding: '72px 0' }}>
+        <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-12">
+          <SectionHeader
+            eyebrow="Hikâyemiz"
+            title="Soma'dan Türkiye'ye"
+            titleSize="clamp(24px, 3.5vw, 36px)"
+            align="left"
+          />
+          <p style={{ fontSize: '15px', lineHeight: 1.85, color: 'var(--text-secondary)', marginTop: '20px', marginBottom: '16px' }}>
+            New Temizlik, Soma&apos;da başladı. Sanayi ve enerji tesislerinin çevresindeki güneş santrallerinde
+            panellerin ne kadar hızlı ve inatçı biçimde kirlendiğini sahada gördük; standart yöntemlerin
+            bu koşullarda yetersiz kaldığını yaşayarak öğrendik.
+          </p>
+          <p style={{ fontSize: '15px', lineHeight: 1.85, color: 'var(--text-secondary)', marginBottom: '16px' }}>
+            Bu deneyim bizi yöntem geliştirmeye itti: daha az su, daha kontrollü temizlik ve her müdahalenin
+            ölçülebilir olması. Zamanla hizmet alanımız Manisa&apos;dan Türkiye geneline genişledi; bugün
+            81 ilde, 100&apos;ü aşkın yıkama noktasında hizmet veriyoruz.
+          </p>
+          <p style={{ fontSize: '15px', lineHeight: 1.85, color: 'var(--text-secondary)' }}>
+            Hedefimiz değişmedi: GES yatırımınızın ürettiği enerjiyi, kirlilik nedeniyle kaybetmenize izin vermemek.
+          </p>
+        </div>
+      </section>
+
+      {/* ── Neler Yapıyoruz ── */}
+      <section style={{ background: 'var(--bg-body)', padding: '72px 0' }}>
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
+          <div className="text-center mb-12">
+            <SectionHeader eyebrow="Hizmetlerimiz" title="Neler Yapıyoruz?" titleSize="clamp(24px, 3.5vw, 36px)" />
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-5">
+            {services.map((svc) => (
+              <Link
+                key={svc.href}
+                href={svc.href}
+                className="section-card"
+                style={{ padding: '26px 26px 22px', textDecoration: 'none', display: 'block' }}
+              >
+                <h3 style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '8px', letterSpacing: '0.02em' }}>
+                  {svc.title}
+                </h3>
+                <p style={{ fontSize: '14px', lineHeight: 1.75, color: 'var(--text-secondary)', marginBottom: '14px' }}>{svc.desc}</p>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: 600, color: 'var(--color-secondary)' }}>
+                  Detaylı bilgi <ArrowRight size={14} />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Değerlerimiz ── */}
       <section style={{ background: 'var(--bg-body)', padding: '80px 0' }}>
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
@@ -196,6 +278,34 @@ export default function KurumsalPage() {
           </div>
         </div>
       </section>
+
+      {/* ── Nasıl Çalışıyoruz ── */}
+      <section style={{ background: 'var(--bg-alt)', padding: '72px 0' }}>
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
+          <div className="text-center mb-12">
+            <SectionHeader eyebrow="Çalışma Şeklimiz" title="Bir Projeye Nasıl Yaklaşıyoruz?" titleSize="clamp(24px, 3.5vw, 36px)" />
+          </div>
+
+          <ol className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            {workSteps.map((step, i) => (
+              <li key={step.title} className="section-card" style={{ padding: '26px 22px', cursor: 'default' }}>
+                <span style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '13px', fontWeight: 700, letterSpacing: '0.14em', color: 'var(--color-secondary)' }}>
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <step.icon size={30} style={{ color: 'var(--color-primary)', margin: '10px 0 12px' }} />
+                <h3 style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '19px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '8px' }}>
+                  {step.title}
+                </h3>
+                <p style={{ fontSize: '14px', lineHeight: 1.7, color: 'var(--text-secondary)' }}>{step.desc}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <Referanslar references={references} />
+
+      <CtaBand title="GES sahanız için ücretsiz keşif talep edin" href="/iletisim" label="İletişime Geç" />
     </>
   )
 }
