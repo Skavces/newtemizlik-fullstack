@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { brandedTitle, buildMetadata, clampDescription, SITE_NAME } from './seo'
+import { brandedTitle, buildFaqSchema, buildMetadata, clampDescription, SITE_NAME } from './seo'
 
 describe('buildMetadata', () => {
   it('varsayılan og görseli ve boyutlarını kullanır', () => {
@@ -67,5 +67,23 @@ describe('clampDescription', () => {
     expect(out.length).toBeLessThanOrEqual(155)
     expect(out.endsWith('…')).toBe(true)
     expect(text.startsWith(out.slice(0, -1))).toBe(true)
+  })
+})
+
+describe('buildFaqSchema', () => {
+  it('soru-cevap çiftlerini FAQPage şemasına çevirir', () => {
+    const schema = buildFaqSchema([
+      { question: 'Soru 1?', answer: 'Cevap 1' },
+      { question: 'Soru 2?', answer: 'Cevap 2' },
+    ])
+    expect(schema['@type']).toBe('FAQPage')
+    expect(schema.mainEntity).toEqual([
+      { '@type': 'Question', name: 'Soru 1?', acceptedAnswer: { '@type': 'Answer', text: 'Cevap 1' } },
+      { '@type': 'Question', name: 'Soru 2?', acceptedAnswer: { '@type': 'Answer', text: 'Cevap 2' } },
+    ])
+  })
+
+  it('boş listede boş mainEntity döner', () => {
+    expect(buildFaqSchema([]).mainEntity).toEqual([])
   })
 })

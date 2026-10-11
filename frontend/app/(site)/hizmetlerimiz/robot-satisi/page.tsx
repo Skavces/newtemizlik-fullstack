@@ -6,7 +6,7 @@ import FaqAccordion from '@/components/ui/FaqAccordion'
 import JsonLd from '@/components/ui/JsonLd'
 import TrackedLink from '@/components/ui/TrackedLink'
 import ProductGallery from '@/components/sections/ProductGallery'
-import { buildMetadata, ORGANIZATION_ID, SITE_URL } from '@/lib/seo'
+import { buildFaqSchema, buildMetadata, ORGANIZATION_ID, SITE_URL } from '@/lib/seo'
 import { getFaqs } from '@/lib/api'
 
 export const metadata = buildMetadata({
@@ -69,15 +69,7 @@ export default async function RobotSatisPage() {
     ],
   }
 
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.map((f) => ({
-      '@type': 'Question',
-      name: f.question,
-      acceptedAnswer: { '@type': 'Answer', text: f.answer },
-    })),
-  }
+  const faqSchema = buildFaqSchema(faqs)
 
   const serviceSchema = {
     '@context': 'https://schema.org',

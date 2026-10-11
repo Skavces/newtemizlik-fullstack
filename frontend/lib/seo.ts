@@ -25,6 +25,25 @@ export function clampDescription(text: string): string {
   return `${(lastSpace > 80 ? cut.slice(0, lastSpace) : cut).replace(/[\s,.;:–-]+$/, '')}…`
 }
 
+interface FaqItem {
+  question: string
+  answer: string
+}
+
+// FAQPage JSON-LD — accordion'u besleyen veriyle aynı kaynaktan üretilir ki
+// görünen metin ile şema birbirinden sapmasın.
+export function buildFaqSchema(faqs: FaqItem[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  }
+}
+
 interface BuildMetadataOptions {
   title: string
   description: string

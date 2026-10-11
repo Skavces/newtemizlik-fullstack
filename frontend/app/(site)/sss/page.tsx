@@ -2,7 +2,7 @@ import PageHero from '@/components/ui/PageHero'
 import SSS from '@/components/sections/SSS'
 import CtaBand from '@/components/ui/CtaBand'
 import JsonLd from '@/components/ui/JsonLd'
-import { buildMetadata, SITE_URL } from '@/lib/seo'
+import { buildFaqSchema, buildMetadata, SITE_URL } from '@/lib/seo'
 import { getFaqs } from '@/lib/api'
 
 export const metadata = buildMetadata({
@@ -26,15 +26,7 @@ export default async function SSSPage() {
 
   // FAQPage şeması artık accordion'u besleyen aynı backend verisinden üretilir
   // — eski sitede 8 yerde elle kopyalanan S.S.S. metinleri tek kaynağa indi.
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.map((f) => ({
-      '@type': 'Question',
-      name: f.question,
-      acceptedAnswer: { '@type': 'Answer', text: f.answer },
-    })),
-  }
+  const faqSchema = buildFaqSchema(faqs)
 
   return (
     <>

@@ -4,7 +4,10 @@ import { useState } from 'react'
 import { Plus, Minus } from 'lucide-react'
 import type { Faq } from '@/types/api'
 
-export default function FaqAccordion({ faqs }: { faqs: Faq[] }) {
+// Backend'den gelen Faq[] ya da sayfaya gömülü statik {question, answer} dizisi.
+export type FaqAccordionItem = Pick<Faq, 'question' | 'answer'> & { id?: string }
+
+export default function FaqAccordion({ faqs }: { faqs: FaqAccordionItem[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
