@@ -5,7 +5,10 @@ import SectionHeader from '@/components/ui/SectionHeader'
 import JsonLd from '@/components/ui/JsonLd'
 import TrackedLink from '@/components/ui/TrackedLink'
 import CtaBand from '@/components/ui/CtaBand'
-import { buildMetadata, SITE_URL } from '@/lib/seo'
+import RelatedLinks from '@/components/ui/RelatedLinks'
+import FaqAccordion from '@/components/ui/FaqAccordion'
+import Link from 'next/link'
+import { buildFaqSchema, buildMetadata, SITE_URL } from '@/lib/seo'
 
 export const metadata = buildMetadata({
   title: 'Veri Odaklı ROI Analizi | New Temizlik',
@@ -26,6 +29,20 @@ const features = [
   'Yıllara yayılan trend analiziyle veriye dayalı bakım kararları',
 ]
 
+const detailBlocks = [
+  { title: "Öncesi ve Sonrası Karşılaştırma", text: "Temizlikten önceki inverter üretim verisini kaydeder, temizlik sonrasında karşılaştırılabilir koşullarda ölçüm alırız. Güneşlenme farkı gibi etkenleri göz önünde bulundurarak artışı kWh bazında hesaplarız." },
+  { title: "Rapor Kararlarınıza Yön Verir", text: "Rapor; bir sonraki temizliğin ne zaman yapılacağını, temizlik sıklığının yeterli olup olmadığını ve kaybın kirlilikten mi başka bir arızadan mı kaynaklandığını anlamanıza yardımcı olur." },
+]
+
+const faqs = [
+  { question: "Verim artışını hangi veriye dayandırıyorsunuz?", answer: "Santralinizin inverter üretim verisine. Temizlik öncesi ve sonrası değerleri karşılaştırarak kazancı kWh bazında raporluyoruz." },
+  { question: "Temizlik kendini ne kadar sürede amorti eder?", answer: "Bu süre sahanın kirlilik yüküne, panel kapasitesine ve temizlik sıklığına göre değişir. Sabit bir süre vaat etmiyoruz; raporlar sizin sahanız için gerçek geri dönüşü gösterir." },
+  { question: "Raporları ne sıklıkla alırım?", answer: "Temizlik sonrası karşılaştırma raporunun yanında aylık ve yıllık performans göstergelerini (KPI) takip ediyoruz." },
+  { question: "Raporlar arşivlenebilir mi?", answer: "Evet. Raporlar dijital ve arşivlenebilir biçimde teslim edilir; yıllar içinde trend analizi yapmanıza olanak tanır." },
+]
+
+const faqSchema = buildFaqSchema(faqs)
+
 export default function VeriOdakliRoiAnaliziPage() {
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -39,6 +56,7 @@ export default function VeriOdakliRoiAnaliziPage() {
   return (
     <>
       <JsonLd data={breadcrumbSchema} />
+      <JsonLd data={faqSchema} />
 
       <PageHero
         title="Veri Odaklı ROI Analizi"
@@ -109,6 +127,52 @@ export default function VeriOdakliRoiAnaliziPage() {
           </div>
         </div>
       </section>
+
+      <section style={{ background: 'var(--bg-alt)', padding: '72px 0' }}>
+        <div className="max-w-5xl mx-auto px-5 sm:px-8 lg:px-12">
+          <div className="text-center mb-10">
+            <SectionHeader eyebrow="Ölçüm" title="Verim Artışını Nasıl Ölçüyoruz?" titleSize="clamp(24px, 3.5vw, 34px)" />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-5">
+            {detailBlocks.map((b) => (
+              <div key={b.title} className="section-card" style={{ padding: '28px 26px', cursor: 'default' }}>
+                <h3 style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '10px', letterSpacing: '0.02em' }}>
+                  {b.title}
+                </h3>
+                <p style={{ fontSize: '14.5px', lineHeight: 1.8, color: 'var(--text-secondary)' }}>{b.text}</p>
+              </div>
+            ))}
+          </div>
+
+          <p style={{ fontSize: '14.5px', lineHeight: 1.8, color: 'var(--text-secondary)', marginTop: '28px', textAlign: 'center' }}>
+            Kirliliğin üretimi ne kadar düşürdüğünü blog yazımızda inceledik.{' '}
+            <Link href="/blog/kirli-gunes-paneli-verim-kaybi" className="hover-brand" style={{ color: 'var(--color-secondary)', fontWeight: 600 }}>
+              Yazıyı okuyun →
+            </Link>
+          </p>
+        </div>
+      </section>
+
+      <section style={{ background: 'var(--bg-body)', padding: '72px 0' }}>
+        <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-12">
+          <div className="text-center mb-10">
+            <SectionHeader eyebrow="Merak Edilenler" title="Raporlama Hakkında Merak Edilenler" titleSize="clamp(22px, 3vw, 30px)" />
+          </div>
+          <FaqAccordion faqs={faqs} />
+        </div>
+      </section>
+
+      <RelatedLinks
+        eyebrow="Keşfedin"
+        title="İlgili Sayfalar"
+        background="var(--bg-alt)"
+        links={[
+          { title: "Panel Bakım ve İzleme", desc: "Performans düşüşünün nedenini termal analizle tespit edin.", href: "/hizmetlerimiz/panel-bakim" },
+          { title: "Periyodik Bakım Planı", desc: "Rapor verilerine göre optimize edilmiş bakım takvimi.", href: "/neden-biz/periyodik-bakim-plani" },
+          { title: "GES Panel Temizlik Hizmeti", desc: "Verim kaybını gidermeye yönelik temizlik hizmeti.", href: "/hizmetlerimiz/panel-temizlik" },
+        ]}
+      />
 
       <CtaBand title="Santralinizin verim potansiyelini birlikte analiz edelim" href="/iletisim" label="İletişime Geç" />
     </>

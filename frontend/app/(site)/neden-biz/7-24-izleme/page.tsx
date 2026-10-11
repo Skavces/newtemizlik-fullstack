@@ -5,6 +5,7 @@ import SectionHeader from '@/components/ui/SectionHeader'
 import JsonLd from '@/components/ui/JsonLd'
 import TrackedLink from '@/components/ui/TrackedLink'
 import CtaBand from '@/components/ui/CtaBand'
+import RelatedLinks from '@/components/ui/RelatedLinks'
 import { buildMetadata, SITE_URL } from '@/lib/seo'
 
 export const metadata = buildMetadata({
@@ -109,6 +110,17 @@ export default function YirmiDortKesintisizIzlemePage() {
           </div>
         </div>
       </section>
+
+      <RelatedLinks
+        eyebrow="Keşfedin"
+        title="İlgili Sayfalar"
+        background="var(--bg-alt)"
+        links={[
+          { title: "Panel Bakım ve İzleme", desc: "Termal analiz, hotspot tespiti ve performans izleme.", href: "/hizmetlerimiz/panel-bakim" },
+          { title: "Periyodik Bakım Planı", desc: "Sahanıza özel yıllık bakım takvimi.", href: "/neden-biz/periyodik-bakim-plani" },
+          { title: "Veri Odaklı ROI Analizi", desc: "Üretim artışını inverter verisiyle raporluyoruz.", href: "/neden-biz/veri-odakli-roi-analizi" },
+        ]}
+      />
 
       <CtaBand title="Santralinizin sürekli izlenmesi için bize ulaşın" href="/iletisim" label="İletişime Geç" />
     </>

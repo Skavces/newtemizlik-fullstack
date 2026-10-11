@@ -5,7 +5,10 @@ import SectionHeader from '@/components/ui/SectionHeader'
 import JsonLd from '@/components/ui/JsonLd'
 import TrackedLink from '@/components/ui/TrackedLink'
 import CtaBand from '@/components/ui/CtaBand'
-import { buildMetadata, SITE_URL } from '@/lib/seo'
+import RelatedLinks from '@/components/ui/RelatedLinks'
+import FaqAccordion from '@/components/ui/FaqAccordion'
+import Link from 'next/link'
+import { buildFaqSchema, buildMetadata, SITE_URL } from '@/lib/seo'
 
 export const metadata = buildMetadata({
   title: 'Periyodik Bakım Planı | New Temizlik',
@@ -26,6 +29,20 @@ const features = [
   'Değişen hava koşullarına göre esnek yeniden planlama',
 ]
 
+const detailBlocks = [
+  { title: "Sahanın Verisiyle Başlıyoruz", text: "Konumu, çevredeki kirlilik kaynaklarını (tarım, sanayi, yol), panel dizilimini ve geçmiş üretim verisini inceleriz. Plan, genel bir şablon değil sahanın kendi ritmine göre çıkar." },
+  { title: "Mevsime Göre Takvim", text: "Bahar çiçeklenme ve polen, yaz yağışsız aylarda toz birikimi, sonbahar hasat ve tarım tozu dönemleridir. Verimin en değerli olduğu aylar öne alınır, sezon öncesi ve sonrası kontrol ziyaretleri takvime eklenir." },
+]
+
+const faqs = [
+  { question: "Yılda kaç kez temizlik gerekir?", answer: "Maksimum verim için genel öneri yılda en az iki kez temizliktir. Yoğun kirlilik bölgelerinde bu sıklık artar; sahanıza özel takvimi plan aşamasında belirliyoruz." },
+  { question: "Yıllık sözleşmede fiyat sabit mi?", answer: "Evet. Yıllık sözleşmeli müşterilerimize sabit fiyat ve öncelikli müdahale sunuyoruz; böylece bakım önceden planlanmış bir kalem olur." },
+  { question: "Plan sahaya özel mi hazırlanıyor?", answer: "Evet. Bölgesel tozlanma ve iklim verisine, sahanın yapısına göre size özel bir plan çıkarıyoruz." },
+  { question: "Hava koşulları değişirse plan değişir mi?", answer: "Takvim esnektir. Değişen hava koşullarına göre uygulamayı yeniden planlıyoruz." },
+]
+
+const faqSchema = buildFaqSchema(faqs)
+
 export default function PeriyodikBakimPlaniPage() {
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -39,6 +56,7 @@ export default function PeriyodikBakimPlaniPage() {
   return (
     <>
       <JsonLd data={breadcrumbSchema} />
+      <JsonLd data={faqSchema} />
 
       <PageHero
         title="Periyodik Bakım Planı"
@@ -108,6 +126,52 @@ export default function PeriyodikBakimPlaniPage() {
           </div>
         </div>
       </section>
+
+      <section style={{ background: 'var(--bg-alt)', padding: '72px 0' }}>
+        <div className="max-w-5xl mx-auto px-5 sm:px-8 lg:px-12">
+          <div className="text-center mb-10">
+            <SectionHeader eyebrow="Planlama" title="Bakım Planı Nasıl Hazırlanır?" titleSize="clamp(24px, 3.5vw, 34px)" />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-5">
+            {detailBlocks.map((b) => (
+              <div key={b.title} className="section-card" style={{ padding: '28px 26px', cursor: 'default' }}>
+                <h3 style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '10px', letterSpacing: '0.02em' }}>
+                  {b.title}
+                </h3>
+                <p style={{ fontSize: '14.5px', lineHeight: 1.8, color: 'var(--text-secondary)' }}>{b.text}</p>
+              </div>
+            ))}
+          </div>
+
+          <p style={{ fontSize: '14.5px', lineHeight: 1.8, color: 'var(--text-secondary)', marginTop: '28px', textAlign: 'center' }}>
+            Mevsimlere göre temizlik zamanlamasını blog yazımızda ayrıntılı anlattık.{' '}
+            <Link href="/blog/gunes-paneli-temizligi-ne-zaman-yapilmali" className="hover-brand" style={{ color: 'var(--color-secondary)', fontWeight: 600 }}>
+              Yazıyı okuyun →
+            </Link>
+          </p>
+        </div>
+      </section>
+
+      <section style={{ background: 'var(--bg-body)', padding: '72px 0' }}>
+        <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-12">
+          <div className="text-center mb-10">
+            <SectionHeader eyebrow="Merak Edilenler" title="Bakım Planı Hakkında Merak Edilenler" titleSize="clamp(22px, 3vw, 30px)" />
+          </div>
+          <FaqAccordion faqs={faqs} />
+        </div>
+      </section>
+
+      <RelatedLinks
+        eyebrow="Keşfedin"
+        title="İlgili Sayfalar"
+        background="var(--bg-alt)"
+        links={[
+          { title: "GES Panel Temizlik Hizmeti", desc: "Planlı temizliğin uygulandığı hizmet sayfası.", href: "/hizmetlerimiz/panel-temizlik" },
+          { title: "Panel Bakım ve İzleme", desc: "Termal analiz ve performans izleme ile bakımı tamamlayın.", href: "/hizmetlerimiz/panel-bakim" },
+          { title: "Veri Odaklı ROI Analizi", desc: "Her temizliğin üretime etkisini raporlarla görün.", href: "/neden-biz/veri-odakli-roi-analizi" },
+        ]}
+      />
 
       <CtaBand title="Sahanıza özel bakım planı için bize ulaşın" href="/iletisim" label="İletişime Geç" />
     </>

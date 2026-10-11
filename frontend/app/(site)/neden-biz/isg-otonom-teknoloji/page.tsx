@@ -5,6 +5,7 @@ import SectionHeader from '@/components/ui/SectionHeader'
 import JsonLd from '@/components/ui/JsonLd'
 import TrackedLink from '@/components/ui/TrackedLink'
 import CtaBand from '@/components/ui/CtaBand'
+import RelatedLinks from '@/components/ui/RelatedLinks'
 import { buildMetadata, SITE_URL } from '@/lib/seo'
 import { TEAM_SIZE } from '@/lib/companyStats'
 
@@ -110,6 +111,17 @@ export default function IsgOtonomTeknolojiPage() {
           </div>
         </div>
       </section>
+
+      <RelatedLinks
+        eyebrow="Keşfedin"
+        title="İlgili Sayfalar"
+        background="var(--bg-alt)"
+        links={[
+          { title: "Temizlik Robotu ve Makina Satışı", desc: "Sahanıza uygun otonom ve yarı otomatik sistemler.", href: "/hizmetlerimiz/robot-satisi" },
+          { title: "Su İsrafı Yapmıyoruz", desc: "Düşük su tüketimiyle temizlik yöntemlerimiz.", href: "/neden-biz/su-tasarrufu" },
+          { title: "Sertifikalı Uzman Kadro", desc: "Sahada çalışan ekibimiz hakkında.", href: "/neden-biz/sertifikali-uzman-kadro" },
+        ]}
+      />
 
       <CtaBand title="Sahanızda güvenli ve teknolojik bir temizlik için bize ulaşın" href="/iletisim" label="İletişime Geç" />
     </>

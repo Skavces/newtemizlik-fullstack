@@ -5,6 +5,7 @@ import SectionHeader from '@/components/ui/SectionHeader'
 import JsonLd from '@/components/ui/JsonLd'
 import TrackedLink from '@/components/ui/TrackedLink'
 import CtaBand from '@/components/ui/CtaBand'
+import RelatedLinks from '@/components/ui/RelatedLinks'
 import { buildMetadata, SITE_URL } from '@/lib/seo'
 import { TEAM_SIZE } from '@/lib/companyStats'
 
@@ -110,6 +111,17 @@ export default function SertifikaliUzmanKadroPage() {
           </div>
         </div>
       </section>
+
+      <RelatedLinks
+        eyebrow="Keşfedin"
+        title="İlgili Sayfalar"
+        background="var(--bg-alt)"
+        links={[
+          { title: "Kurumsal", desc: "New Temizlik, hikâyemiz ve çalışma prensibimiz.", href: "/kurumsal" },
+          { title: "GES Panel Temizlik Hizmeti", desc: "Ekibimizin sahada uyguladığı hizmet.", href: "/hizmetlerimiz/panel-temizlik" },
+          { title: "İSG ve Otonom Teknoloji", desc: "Sahada iş güvenliği yaklaşımımız.", href: "/neden-biz/isg-otonom-teknoloji" },
+        ]}
+      />
 
       <CtaBand title="Uzman kadromuzla tanışmak için bize ulaşın" href="/iletisim" label="İletişime Geç" />
     </>
