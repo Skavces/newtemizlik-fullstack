@@ -10,7 +10,7 @@ import { getReferences } from '@/lib/api'
 export const metadata = buildMetadata({
   title: 'New Temizlik | Soma GES Temizlik ve Bakım Çözümleri',
   description:
-    'Soma ve Türkiye genelinde endüstriyel GES ve güneş paneli temizliği. Solar panel yıkama, bakım izleme ve otonom temizlik robotu ile verim kaybını önlüyoruz.',
+    'Soma ve Türkiye genelinde endüstriyel GES ve güneş paneli temizliği. Solar panel yıkama, bakım izleme ve otonom robot ile verim kaybını önlüyoruz.',
   keywords: 'soma ges temizliği, güneş paneli temizliği, panel temizliği, ges temizliği, solar panel yıkama, türkiye geneli ges temizliği, manisa ges temizliği',
   canonical: '/',
   imageAlt: 'New Temizlik - GES ve güneş paneli temizlik hizmetleri',

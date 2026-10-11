@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import BlogArticleLayout from '@/components/ui/BlogArticleLayout'
 import JsonLd from '@/components/ui/JsonLd'
-import { buildMetadata, ORGANIZATION_ID, SITE_URL, SITE_NAME } from '@/lib/seo'
+import { buildMetadata, brandedTitle, clampDescription, ORGANIZATION_ID, SITE_URL, SITE_NAME } from '@/lib/seo'
 import { getBlogPost, getBlogPosts } from '@/lib/api'
 import { isApiError } from '@/lib/errors'
 
@@ -45,9 +45,9 @@ export async function generateMetadata({ params }: PageProps) {
   if (!post) return {}
 
   return buildMetadata({
-    title: `${post.title} | New Temizlik`,
+    title: brandedTitle(post.title),
     ogTitle: post.title,
-    description: post.metaDescription || post.excerpt || fallbackDescription(post.content),
+    description: clampDescription(post.metaDescription || post.excerpt || fallbackDescription(post.content)),
     canonical: `/blog/${post.slug}`,
     image: post.coverImage || '/og.jpg',
     imageAlt: post.title,

@@ -9,7 +9,7 @@ import { buildMetadata, ORGANIZATION_ID, SITE_URL } from '@/lib/seo'
 
 export const metadata = buildMetadata({
   title: 'GES Sahası Ot Temizliği Hizmeti | New Temizlik',
-  description: 'Güneş enerji santrali sahalarında panel altı ve aralarındaki ot ve bitki örtüsünün düzenli temizliği. Gölgelenme, yangın riski ve haşere üremesini önlüyoruz.',
+  description: 'GES sahalarında panel altı ve aralarındaki ot ve bitki örtüsünün düzenli temizliği. Gölgelenme, yangın riski ve haşere üremesini önlüyoruz.',
   canonical: '/hizmetlerimiz/ot-temizligi',
   image: '/gesottemizligi.webp',
   imageAlt: 'GES sahasında tırpanla ot temizliği yapan saha ekibi',

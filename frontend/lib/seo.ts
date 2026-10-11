@@ -6,6 +6,25 @@ export const SITE_NAME = 'New Temizlik'
 // diğer şemalar provider/publisher/author'ı bu id'ye referansla bağlar.
 export const ORGANIZATION_ID = `${SITE_URL}/#organization`
 
+const TITLE_MAX = 60
+const DESCRIPTION_MAX = 155
+
+// Başlığa " | New Temizlik" eki 60 karakteri aşıyorsa ek düşer — SERP'te
+// kesilen bir başlıktan, markasız ama tam bir başlık daha iyi.
+export function brandedTitle(title: string): string {
+  const branded = `${title} | ${SITE_NAME}`
+  return branded.length <= TITLE_MAX ? branded : title
+}
+
+// Backend'den gelen (editörün yazdığı) açıklamalar için güvenlik ağı:
+// sınırı aşarsa son tam kelimede kesip "…" ekler.
+export function clampDescription(text: string): string {
+  if (text.length <= DESCRIPTION_MAX) return text
+  const cut = text.slice(0, DESCRIPTION_MAX - 1)
+  const lastSpace = cut.lastIndexOf(' ')
+  return `${(lastSpace > 80 ? cut.slice(0, lastSpace) : cut).replace(/[\s,.;:–-]+$/, '')}…`
+}
+
 interface BuildMetadataOptions {
   title: string
   description: string
