@@ -291,13 +291,11 @@ export default function ChatWidget() {
             {/* Header */}
             <div
               className="flex items-center gap-3 px-5 py-4 shrink-0"
-              style={{ background: 'var(--color-primary)' }}
+              style={{ background: 'var(--color-secondary)' }}
             >
-              <div
-                className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-                style={{ background: '#fff' }}
-              >
-                <Image src="/newtemizliklogo.svg" alt="New Temizlik" width={32} height={31} style={{ objectFit: 'contain' }} />
+              {/* SVG tuvalinde logo çevresinde ~%30 boşluk var; görsel kutudan büyük çizilir, taşan kısım saydam */}
+              <div className="w-14 h-12 flex items-center justify-center shrink-0">
+                <Image src="/newtemizliklogo.svg" alt="New Temizlik" width={78} height={75} className="max-w-none shrink-0" style={{ objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-white font-semibold text-sm leading-tight">New Temizlik Danışmanı</p>
@@ -305,8 +303,7 @@ export default function ChatWidget() {
               </div>
               <button
                 onClick={requestClose}
-                className="w-10 h-10 flex items-center justify-center rounded-full transition-colors"
-                style={{ color: 'rgba(255,255,255,0.85)' }}
+                className="w-10 h-10 flex items-center justify-center rounded-full cursor-pointer text-white/85 transition-colors duration-200 hover:bg-white/20 hover:text-white"
                 aria-label="Kapat"
               >
                 <X size={18} />
