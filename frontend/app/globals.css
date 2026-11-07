@@ -403,6 +403,12 @@
     box-shadow: 0 4px 20px rgba(127, 191, 58, 0.35);
     transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
   }
+  /* Yeşil zeminde beyaz yazı okunurluğu — renk değiştirilmeden hafif gölgeyle
+     (karar 2026-11-08). Hero'daki birincil CTA aynı yeşili kullanıyor. */
+  .cta-button,
+  .hero-cta-primary {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
   .cta-button:hover {
     background: var(--color-primary-dark) !important;
     box-shadow: 0 8px 30px rgba(127, 191, 58, 0.5) !important;
