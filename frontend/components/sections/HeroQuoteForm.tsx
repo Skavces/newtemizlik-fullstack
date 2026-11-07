@@ -1,27 +1,36 @@
 'use client'
 
-import { useState, type CSSProperties, type FormEvent, type InputEvent } from 'react'
-import { ArrowRight, CheckCircle2 } from 'lucide-react'
+import { useId, useState, type CSSProperties, type FormEvent, type InputEvent } from 'react'
+import { ArrowRight, CheckCircle2, ChevronDown } from 'lucide-react'
 import { trackEvent } from '@/lib/analytics'
 import { API_URL } from '@/lib/apiClient'
-
-// "+90 5XX XXX XX XX" formatına zorlar; +90'ı silmeye çalışırsa geri ekler.
-function formatTurkishPhone(rawValue: string) {
-  let value = rawValue.replace(/[^\d+]/g, '')
-  if (value.startsWith('90')) value = '+' + value
-  if (!value.startsWith('+90')) value = '+90' + value.replace(/^\+?0?/, '')
-  const match = value.match(/^(\+90)(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})$/)
-  if (!match) return value
-  return match[1] + ' ' + match[2] + (match[3] ? ' ' + match[3] : '') + (match[4] ? ' ' + match[4] : '') + (match[5] ? ' ' + match[5] : '')
-}
+import { formatPhoneWithCaret } from '@/lib/phone'
+import { getService, getServicesByCategory, SERVICE_CATEGORIES, type ServiceCategory } from '@/lib/services'
 
 const labelStyle: CSSProperties = { display: 'block', fontSize: '11.5px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px', letterSpacing: '0.04em' }
 const inputStyle: CSSProperties = { padding: '10px 13px', background: 'var(--bg-body)', border: '1.5px solid var(--border-subtle)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '16px' }
 
 type Status = 'idle' | 'submitting' | 'success' | 'error'
 
-export default function HeroQuoteForm() {
+// Formda seçilebilecek hizmetler: yalnızca yayındakiler, kategoriye göre gruplu.
+// Boş kategori optgroup olarak hiç basılmaz.
+const SERVICE_GROUPS = (Object.keys(SERVICE_CATEGORIES) as ServiceCategory[])
+  .map((category) => ({ category, label: SERVICE_CATEGORIES[category].label, services: getServicesByCategory(category) }))
+  .filter((g) => g.services.length > 0)
+
+interface HeroQuoteFormProps {
+  // Hizmet sayfalarında form o hizmet seçili açılır (kullanıcı değiştirebilir)
+  defaultService?: string
+}
+
+export default function HeroQuoteForm({ defaultService }: HeroQuoteFormProps = {}) {
   const [status, setStatus] = useState<Status>('idle')
+  const [serviceSlug, setServiceSlug] = useState<string>(getService(defaultService ?? '') ? defaultService! : '')
+  const id = useId()
+  const fieldId = (name: string) => `${id}-${name}`
+
+  const category = getService(serviceSlug)?.category
+  const asksWater = serviceSlug === 'panel-temizlik'
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -34,13 +43,18 @@ export default function HeroQuoteForm() {
       return
     }
 
+    // Yalnızca seçilen hizmetin kategorisine ait alanlar gönderilir; backend de
+    // aynı kuralı uygular (bkz. backend CreateQuoteRequestDto).
+    const metrekare = String(data.get('metrekare') ?? '').trim()
     const payload = {
+      hizmet: serviceSlug,
       adSoyad: data.get('adSoyad'),
       telefon: data.get('telefon'),
-      panelAdeti: Number(data.get('panelAdeti')),
-      suUlasimi: data.get('suUlasimi') === 'Evet',
       lokasyon: data.get('lokasyon'),
       kvkkConsent: data.get('kvkkConsent') === 'on',
+      ...(category === 'ges' ? { panelAdeti: Number(data.get('panelAdeti')) } : {}),
+      ...(asksWater ? { suUlasimi: data.get('suUlasimi') === 'Evet' } : {}),
+      ...(category === 'temizlik' && metrekare ? { metrekare: Number(metrekare) } : {}),
     }
 
     setStatus('submitting')
@@ -51,7 +65,7 @@ export default function HeroQuoteForm() {
         body: JSON.stringify(payload),
       })
       if (!res.ok) throw new Error(`quote -> ${res.status}`)
-      trackEvent('generate_lead', { method: 'hero_form' })
+      trackEvent('generate_lead', { method: 'hero_form', service: serviceSlug, category })
       setStatus('success')
       form.reset()
     } catch {
@@ -78,95 +92,132 @@ export default function HeroQuoteForm() {
       />
 
       <div className="relative p-5 sm:p-7" style={{ width: '100%', background: 'var(--bg-card)', borderRadius: '24px', boxShadow: 'var(--shadow-md)' }}>
-        <h3 className="section-heading" style={{ fontSize: '21px', marginBottom: '4px' }}>
+        {/* h2: sayfanın h1'inden sonra gelen ilk başlık seviyesi (h3 başlık sırasını atlatıyordu) */}
+        <h2 className="section-heading" style={{ fontSize: '21px', marginBottom: '4px' }}>
           Ücretsiz Keşif Talep Et
-        </h3>
+        </h2>
         <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '18px', lineHeight: 1.5 }}>
           Formu doldurun, ekibimiz size en kısa sürede dönüş yapsın.
         </p>
 
         {status === 'success' ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '12px', padding: '28px 10px' }}>
-            <CheckCircle2 style={{ width: '42px', height: '42px', color: 'var(--color-primary)' }} />
+          <div role="status" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '12px', padding: '28px 10px' }}>
+            <CheckCircle2 aria-hidden="true" style={{ width: '42px', height: '42px', color: 'var(--color-primary)' }} />
             <p style={{ fontSize: '14px', color: 'var(--text-primary)', fontWeight: 600 }}>
               Talebiniz alındı, en kısa sürede size dönüş yapacağız.
             </p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {/* Honeypot — gerçek kullanıcılar bu alanı görmez/doldurmaz */}
-            <input type="text" name="website" tabIndex={-1} autoComplete="off" style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0 }} />
+            {/* Honeypot — gerçek kullanıcılar bu alanı görmez/doldurmaz; yardımcı
+                teknolojilerden de tamamen gizli (etiketsiz input denetimine takılmaz) */}
+            <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', overflow: 'hidden' }}>
+              <label htmlFor={fieldId('website')}>Web sitesi</label>
+              <input id={fieldId('website')} type="text" name="website" tabIndex={-1} autoComplete="off" />
+            </div>
 
             <div>
-              <label style={labelStyle}>Ad Soyad *</label>
+              <label htmlFor={fieldId('hizmet')} style={labelStyle}>Hizmet *</label>
+              <div className="relative">
+                <select
+                  id={fieldId('hizmet')}
+                  name="hizmet"
+                  value={serviceSlug}
+                  onChange={(e) => setServiceSlug(e.target.value)}
+                  className="form-input w-full outline-none transition-all duration-200 appearance-none cursor-pointer"
+                  style={{ ...inputStyle, paddingRight: '36px', color: serviceSlug ? 'var(--text-primary)' : 'var(--text-muted)' }}
+                  required
+                >
+                  <option value="" disabled>Hizmet seçin</option>
+                  {SERVICE_GROUPS.length === 1
+                    ? SERVICE_GROUPS[0].services.map((s) => <option key={s.slug} value={s.slug}>{s.name}</option>)
+                    : SERVICE_GROUPS.map((g) => (
+                        <optgroup key={g.category} label={g.label}>
+                          {g.services.map((s) => <option key={s.slug} value={s.slug}>{s.name}</option>)}
+                        </optgroup>
+                      ))}
+                </select>
+                <ChevronDown aria-hidden="true" size={16} className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2" style={{ color: 'var(--text-muted)' }} />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor={fieldId('adSoyad')} style={labelStyle}>Ad Soyad *</label>
               <input
-                type="text" name="adSoyad"
+                id={fieldId('adSoyad')} type="text" name="adSoyad" autoComplete="name"
                 className="form-input w-full outline-none transition-all duration-200"
                 style={inputStyle}
                 placeholder="Ad Soyad" maxLength={50} required
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className={`grid grid-cols-1 gap-3 ${category ? 'sm:grid-cols-2' : ''}`}>
               <div>
-                <label style={labelStyle}>Telefon *</label>
+                <label htmlFor={fieldId('telefon')} style={labelStyle}>Telefon *</label>
                 <input
-                  type="tel" name="telefon"
+                  id={fieldId('telefon')} type="tel" name="telefon" autoComplete="tel"
                   className="form-input w-full outline-none transition-all duration-200"
                   style={inputStyle}
                   placeholder="+90 5XX XXX XX XX" defaultValue="+90 " maxLength={17}
                   pattern="^(\+90|0)?\s*5[0-9]{2}\s*[0-9]{3}\s*[0-9]{2}\s*[0-9]{2}$"
                   onInput={(e: InputEvent<HTMLInputElement>) => {
                     const input = e.currentTarget
-                    // Formatlama imleci sona atmasın diye, imleçten önceki rakam
-                    // sayısını say, formatladıktan sonra aynı sayıda rakamın
-                    // bittiği noktaya geri koy (ortada düzenleme yapılabilsin).
-                    const digitsBeforeCursor = input.value.slice(0, input.selectionStart ?? input.value.length).replace(/\D/g, '').length
-                    const formatted = formatTurkishPhone(input.value)
-                    input.value = formatted
-                    let seen = 0
-                    let pos = formatted.length
-                    for (let i = 0; i < formatted.length; i++) {
-                      if (/\d/.test(formatted[i])) seen++
-                      if (seen === digitsBeforeCursor) { pos = i + 1; break }
-                    }
-                    input.setSelectionRange(pos, pos)
+                    const { value, caret } = formatPhoneWithCaret(input.value, input.selectionStart ?? input.value.length)
+                    input.value = value
+                    input.setSelectionRange(caret, caret)
                   }}
                   required
                 />
               </div>
-              <div>
-                <label style={labelStyle}>Panel Adeti *</label>
-                <input
-                  type="number" name="panelAdeti" min="0" max="1000000"
-                  className="form-input w-full outline-none transition-all duration-200"
-                  style={inputStyle}
-                  placeholder="Örn: 1000" required
-                />
-              </div>
+
+              {category === 'ges' && (
+                <div>
+                  <label htmlFor={fieldId('panelAdeti')} style={labelStyle}>Panel Adeti *</label>
+                  <input
+                    id={fieldId('panelAdeti')} type="number" name="panelAdeti" min="0" max="1000000" inputMode="numeric"
+                    className="form-input w-full outline-none transition-all duration-200"
+                    style={inputStyle}
+                    placeholder="Örn: 1000" required
+                  />
+                </div>
+              )}
+
+              {category === 'temizlik' && (
+                <div>
+                  <label htmlFor={fieldId('metrekare')} style={labelStyle}>Yaklaşık Alan (m²)</label>
+                  <input
+                    id={fieldId('metrekare')} type="number" name="metrekare" min="1" max="1000000" inputMode="numeric"
+                    className="form-input w-full outline-none transition-all duration-200"
+                    style={inputStyle}
+                    placeholder="Örn: 120"
+                  />
+                </div>
+              )}
             </div>
 
             <div>
-              <label style={labelStyle}>Lokasyon (İl / İlçe) *</label>
+              <label htmlFor={fieldId('lokasyon')} style={labelStyle}>Lokasyon (İl / İlçe) *</label>
               <input
-                type="text" name="lokasyon"
+                id={fieldId('lokasyon')} type="text" name="lokasyon"
                 className="form-input w-full outline-none transition-all duration-200"
                 style={inputStyle}
                 placeholder="Örn: Soma, Manisa" maxLength={160} required
               />
             </div>
 
-            <div>
-              <label style={{ ...labelStyle, marginBottom: '8px' }}>Sahada Su Ulaşımı Var Mı? *</label>
-              <div className="flex gap-6">
-                {['Evet', 'Hayır'].map((val) => (
-                  <label key={val} className="flex items-center gap-2 cursor-pointer">
-                    <input type="radio" name="suUlasimi" value={val} style={{ accentColor: 'var(--color-primary)', width: '15px', height: '15px' }} required={val === 'Evet'} />
-                    <span style={{ fontSize: '13.5px', color: 'var(--text-primary)' }}>{val}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
+            {asksWater && (
+              <fieldset style={{ border: 'none', padding: 0, margin: 0 }}>
+                <legend style={{ ...labelStyle, marginBottom: '8px' }}>Sahada Su Ulaşımı Var Mı? *</legend>
+                <div className="flex gap-6">
+                  {['Evet', 'Hayır'].map((val) => (
+                    <label key={val} className="flex items-center gap-2 cursor-pointer">
+                      <input type="radio" name="suUlasimi" value={val} style={{ accentColor: 'var(--color-primary)', width: '15px', height: '15px' }} required={val === 'Evet'} />
+                      <span style={{ fontSize: '13.5px', color: 'var(--text-primary)' }}>{val}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+            )}
 
             <label className="flex items-start gap-2.5 cursor-pointer" style={{ marginTop: '2px' }}>
               <input type="checkbox" name="kvkkConsent" style={{ accentColor: 'var(--color-primary)', width: '15px', height: '15px', marginTop: '2px' }} required />
@@ -186,7 +237,7 @@ export default function HeroQuoteForm() {
             </label>
 
             {status === 'error' && (
-              <p style={{ fontSize: '12.5px', color: '#e74c3c' }}>
+              <p role="alert" style={{ fontSize: '12.5px', color: '#e74c3c' }}>
                 Bir hata oluştu, lütfen tekrar deneyin veya bizi telefonla arayın.
               </p>
             )}
@@ -198,7 +249,7 @@ export default function HeroQuoteForm() {
               style={{ border: 'none', opacity: status === 'submitting' ? 0.7 : 1 }}
             >
               {status === 'submitting' ? 'Gönderiliyor...' : 'Ücretsiz Keşif Talep Et'}
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight aria-hidden="true" className="w-4 h-4" />
             </button>
           </form>
         )}

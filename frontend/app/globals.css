@@ -411,6 +411,11 @@
   .form-input:focus {
     border-color: var(--color-primary) !important;
   }
+  /* Yalnızca kenar rengi değişimi klavye odağını görmek için zayıf kalıyordu
+     (input'larda outline-none var); klavyeyle gelindiğinde belirgin bir halka */
+  .form-input:focus-visible {
+    box-shadow: 0 0 0 3px rgba(127, 191, 58, 0.35);
+  }
   .collage-img {
     transition: transform 0.5s;
   }
