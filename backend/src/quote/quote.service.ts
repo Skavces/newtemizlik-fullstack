@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { FindOptionsWhere, Repository } from 'typeorm'
+import { FindOptionsWhere, In, IsNull, Repository } from 'typeorm'
+import { ServiceCategory, slugsInCategory } from '../common/service-catalog'
 import { QuoteRequest, QuoteStatus } from './entities/quote-request.entity'
-import { CreateQuoteRequestDto } from './dto/create-quote-request.dto'
+import { CreateQuoteRequestDto, isCleaningRequest, isGesRequest } from './dto/create-quote-request.dto'
 import { DateRange, dateRangeOperator } from '../common/date-range'
 
 export interface QuoteStats {
@@ -23,14 +24,19 @@ export class QuoteService {
   ) {}
 
   async create(dto: CreateQuoteRequestDto): Promise<QuoteRequest> {
+    // Hizmetin kategorisine ait olmayan alanlar doğrulanmadan gelmiş olabilir
+    // (bkz. DTO'daki ValidateIf'ler) — kayda yalnızca anlamlı olanlar girer
+    const ges = isGesRequest(dto)
     return this.repo.save(
       this.repo.create({
+        hizmet: dto.hizmet ?? null,
         adSoyad: dto.adSoyad.trim(),
         telefon: dto.telefon,
         ePosta: dto.ePosta?.trim() || null,
-        panelAdeti: dto.panelAdeti,
-        sahaMegavati: dto.sahaMegavati ?? null,
-        suUlasimi: dto.suUlasimi,
+        panelAdeti: ges ? (dto.panelAdeti ?? null) : null,
+        metrekare: isCleaningRequest(dto) ? (dto.metrekare ?? null) : null,
+        sahaMegavati: ges ? (dto.sahaMegavati ?? null) : null,
+        suUlasimi: ges ? (dto.suUlasimi ?? null) : null,
         lokasyon: dto.lokasyon.trim(),
         kvkkConsent: dto.kvkkConsent,
         consentAt: new Date(),
@@ -55,13 +61,20 @@ export class QuoteService {
     page = 1,
     status?: QuoteStatus,
     range: DateRange = {},
+    category?: ServiceCategory,
   ): Promise<{ stats: QuoteStats; requests: QuoteRequest[]; page: number; pageCount: number }> {
     // Tarih filtresi createdAt üzerinden; sıralama en yeni talep önde.
     // Stats her zaman global — logs deseniyle aynı.
-    const where: FindOptionsWhere<QuoteRequest> = {}
-    if (status) where.status = status
+    const base: FindOptionsWhere<QuoteRequest> = {}
+    if (status) base.status = status
     const createdAt = dateRangeOperator(range)
-    if (createdAt) where.createdAt = createdAt
+    if (createdAt) base.createdAt = createdAt
+
+    // Kategori filtresi: hizmet slug'ı o kategoride olanlar. GES'e hizmet alanı
+    // eklenmeden önceki kayıtlar (hizmet NULL) da dahil — o form yalnızca GES'ti.
+    let where: FindOptionsWhere<QuoteRequest> | FindOptionsWhere<QuoteRequest>[] = base
+    if (category === 'temizlik') where = { ...base, hizmet: In(slugsInCategory('temizlik')) }
+    if (category === 'ges') where = [{ ...base, hizmet: In(slugsInCategory('ges')) }, { ...base, hizmet: IsNull() }]
 
     const [requests, filteredTotal, total, newCount, contacted, won, lost] = await Promise.all([
       this.repo.find({ where, order: { createdAt: 'DESC' }, take: PAGE_SIZE, skip: (page - 1) * PAGE_SIZE }),

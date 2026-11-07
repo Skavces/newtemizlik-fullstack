@@ -61,10 +61,16 @@ export interface QuoteRequest {
   adSoyad: string | null
   telefon: string | null
   ePosta: string | null
-  panelAdeti: number
+  // Hizmet slug'ı (lib/services.ts); null = hizmet alanından önceki GES formu
+  hizmet: string | null
+  // Yalnızca GES taleplerinde dolu
+  panelAdeti: number | null
+  // Temizlik taleplerinde opsiyonel yaklaşık alan (m²)
+  metrekare: number | null
   // pg numeric(8,2) JSON'da string döner (ör. "12.50"); artık toplanmıyor, eski kayıtlarda olabilir
   sahaMegavati: string | null
-  suUlasimi: boolean
+  // Panel temizliğinde zorunlu, diğer GES hizmetlerinde opsiyonel, temizlikte null
+  suUlasimi: boolean | null
   lokasyon: string | null
   kvkkConsent: boolean
   consentAt: string

@@ -23,8 +23,11 @@ export const ALLOWED_IMAGE_MIMES = ['image/jpeg', 'image/png', 'image/webp']
 export const ALLOWED_LOGO_MIMES = [...ALLOWED_IMAGE_MIMES]
 export const ALLOWED_MEDIA_MIMES = [...ALLOWED_IMAGE_MIMES, 'video/mp4', 'video/quicktime', 'video/webm']
 
-// Video uzantısını MIME'den al, orijinal dosya adına güvenme
-export const SEO_SUFFIX = 'gunes-paneli-temizligi'
+// Yüklenen dosya adına eklenen marka eki. Eskiden 'gunes-paneli-temizligi'ydi;
+// site iki hatlı (GES + genel temizlik) olunca ev/koltuk görsellerine yanıltıcı
+// bir GES anahtar kelimesi basmasın diye nötr marka adına çevrildi. Mevcut
+// dosyaların adları değişmez (yalnızca yeni yüklemeler).
+export const SEO_SUFFIX = 'new-temizlik'
 
 // Hiçbir görüntülenme boyutu bunun üzerinde değil (en büyük next/image talebi
 // solar-panel.webp'nin fill+100vw kullanımı) — admin panelden yüklenen

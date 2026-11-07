@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { ChevronDown, Clock, Inbox, PhoneCall, Trash2, Trophy, XCircle, Phone, Droplets, MapPin } from 'lucide-react'
+import { ChevronDown, Clock, Inbox, PhoneCall, Trash2, Trophy, XCircle, Phone, Droplets, MapPin, Ruler } from 'lucide-react'
+import { findServiceAnyState, SERVICE_CATEGORIES, type ServiceCategory } from '@/lib/services'
 import { getQuoteAdminList, updateQuoteStatus, deleteQuoteRequest, type QuoteAdminListParams } from '@/lib/panelApi'
 import { dayRangeToIso, formatDateTime } from '@/lib/date'
 import { formatStoredPhone } from '@/lib/phone'
@@ -24,6 +25,17 @@ const STATUS_TABS = [
   { id: 'lost', label: 'Kaybedildi' },
 ]
 
+const CATEGORY_TABS = [
+  { id: 'all', label: 'Tüm hizmetler' },
+  ...(Object.entries(SERVICE_CATEGORIES) as [ServiceCategory, { label: string }][]).map(([id, c]) => ({ id, label: c.label })),
+]
+
+// hizmet null = hizmet alanı eklenmeden önceki (yalnızca GES) formdan gelen kayıt
+function serviceLabel(hizmet: string | null): string {
+  if (!hizmet) return 'GES (hizmet belirtilmemiş)'
+  return findServiceAnyState(hizmet)?.name ?? hizmet
+}
+
 function RequestRow({
   request,
   onStatusChange,
@@ -42,9 +54,17 @@ function RequestRow({
     <div className="rounded-2xl p-5" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
         <div className="min-w-0 flex-1">
-          <p className="mb-1.5 font-semibold" style={{ color: 'var(--text-primary)' }}>
-            {request.adSoyad ?? '(anonimleştirildi)'}
-          </p>
+          <div className="mb-1.5 flex flex-wrap items-center gap-2">
+            <p className="font-semibold" style={{ color: 'var(--text-primary)' }}>
+              {request.adSoyad ?? '(anonimleştirildi)'}
+            </p>
+            <span
+              className="rounded-md px-2 py-0.5 text-xs font-semibold"
+              style={{ background: 'var(--bg-body)', border: '1px solid var(--border-subtle)', color: 'var(--text-secondary)' }}
+            >
+              {serviceLabel(request.hizmet)}
+            </span>
+          </div>
           <div className="flex flex-wrap items-center gap-4 text-sm" style={{ color: 'var(--text-muted)' }}>
             {request.telefon && (
               <a href={`tel:+${request.telefon}`} className="flex items-center gap-1.5" style={{ color: 'var(--text-muted)' }}>
@@ -52,11 +72,18 @@ function RequestRow({
               </a>
             )}
             {request.ePosta && <span>{request.ePosta}</span>}
-            <span>{request.panelAdeti} panel</span>
+            {request.panelAdeti != null && <span>{request.panelAdeti} panel</span>}
             {request.sahaMegavati != null && <span>{Number(request.sahaMegavati)} MW</span>}
-            <span className="flex items-center gap-1.5">
-              <Droplets size={13} /> Su {request.suUlasimi ? 'Var' : 'Yok'}
-            </span>
+            {request.suUlasimi != null && (
+              <span className="flex items-center gap-1.5">
+                <Droplets size={13} /> Su {request.suUlasimi ? 'Var' : 'Yok'}
+              </span>
+            )}
+            {request.metrekare != null && (
+              <span className="flex items-center gap-1.5">
+                <Ruler size={13} /> ~{request.metrekare} m²
+              </span>
+            )}
             {request.lokasyon && (
               <span className="flex items-center gap-1.5">
                 <MapPin size={13} /> {request.lokasyon}
@@ -102,6 +129,7 @@ export default function TeklifTalepleriPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [page, setPage] = useState(1)
   const [status, setStatus] = useState<string>('all')
+  const [category, setCategory] = useState<string>('all')
   const [fromDay, setFromDay] = useState('')
   const [toDay, setToDay] = useState('')
   const [refreshTick, setRefreshTick] = useState(0)
@@ -113,6 +141,7 @@ export default function TeklifTalepleriPage() {
     return {
       page,
       status: status === 'all' ? undefined : (status as QuoteStatus),
+      kategori: category === 'all' ? undefined : (category as ServiceCategory),
       ...dayRangeToIso(fromDay, toDay),
     }
   }
@@ -130,10 +159,15 @@ export default function TeklifTalepleriPage() {
         setDeletingId(null)
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, status, fromDay, toDay, refreshTick])
+  }, [page, status, category, fromDay, toDay, refreshTick])
 
   function changeStatus(next: string | number) {
     setStatus(String(next))
+    setPage(1)
+  }
+
+  function changeCategory(next: string | number) {
+    setCategory(String(next))
     setPage(1)
   }
 
@@ -201,6 +235,9 @@ export default function TeklifTalepleriPage() {
           <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <AdminTabs items={STATUS_TABS} value={status} onChange={changeStatus} size="sm" wrap />
             <AdminDateRange from={fromDay} to={toDay} onChange={changeDates} />
+          </div>
+          <div className="mb-4">
+            <AdminTabs items={CATEGORY_TABS} value={category} onChange={changeCategory} size="xs" wrap />
           </div>
 
           {requests.length === 0 ? (

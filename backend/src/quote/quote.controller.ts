@@ -7,8 +7,10 @@ import { UpdateQuoteStatusDto } from './dto/update-quote-status.dto'
 import { parsePage } from '../common/pagination'
 import { parseDateRange } from '../common/date-range'
 import { QuoteStatus } from './entities/quote-request.entity'
+import { ServiceCategory } from '../common/service-catalog'
 
 const STATUSES: QuoteStatus[] = ['new', 'contacted', 'won', 'lost']
+const CATEGORIES: ServiceCategory[] = ['ges', 'temizlik']
 
 @Controller('quote')
 export class QuoteController {
@@ -28,9 +30,11 @@ export class QuoteController {
     @Query('status') status?: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
+    @Query('kategori') kategori?: string,
   ) {
     const narrowed = STATUSES.find(s => s === status)
-    return this.service.findAllWithStats(parsePage(page), narrowed, parseDateRange(from, to))
+    const category = CATEGORIES.find(c => c === kategori)
+    return this.service.findAllWithStats(parsePage(page), narrowed, parseDateRange(from, to), category)
   }
 
   @UseGuards(JwtAuthGuard)

@@ -80,7 +80,7 @@ describe('Blog cover upload (e2e)', () => {
     const coverImage: string = res.body.coverImage
     // saveWithSeoName `${slug}-${SEO_SUFFIX}-${timestamp}-${rand}${ext}` üretir
     // (bkz. upload.utils.ts) — iki ayrı sayısal grup, tek değil.
-    expect(coverImage).toMatch(/^\/uploads\/e2e-test-yazisi-gunes-paneli-temizligi-\d+-\d+\.webp$/)
+    expect(coverImage).toMatch(/^\/uploads\/e2e-test-yazisi-new-temizlik-\d+-\d+\.webp$/)
 
     // Testin ürettiği dosyayı temizle
     await unlink(`.${coverImage}`)
@@ -127,7 +127,7 @@ describe('Blog content-image upload (e2e)', () => {
       .expect(201)
 
     const url: string = res.body.url
-    expect(url).toMatch(/^\/uploads\/blog-icerik-gunes-paneli-temizligi-\d+-\d+\.webp$/)
+    expect(url).toMatch(/^\/uploads\/blog-icerik-new-temizlik-\d+-\d+\.webp$/)
 
     await unlink(`.${url}`)
   })

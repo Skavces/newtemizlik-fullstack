@@ -133,6 +133,12 @@ export function getService(slug: string): ServiceEntry | undefined {
   return PUBLISHED_SERVICES.find((s) => s.slug === slug)
 }
 
+// Yayında olup olmamasından bağımsız kayıt (admin paneli eski/gizli hizmet
+// slug'larını da adlandırabilsin diye).
+export function findServiceAnyState(slug: string | null | undefined): ServiceEntry | undefined {
+  return SERVICES.find((s) => s.slug === slug)
+}
+
 // hizmetlerimiz/[slug] şablonunun üreteceği sayfalar.
 export function getTemplateServices(): ServiceEntry[] {
   return PUBLISHED_SERVICES.filter((s) => !s.customPage)

@@ -20,16 +20,28 @@ export class QuoteRequest {
   @Column({ type: 'varchar', length: 120, nullable: true })
   ePosta: string | null
 
-  @Column({ type: 'integer' })
-  panelAdeti: number
+  // Seçilen hizmetin slug'ı (bkz. common/service-catalog.ts). NULL = hizmet
+  // alanı eklenmeden önceki (yalnızca GES) formdan gelen eski kayıt.
+  @Column({ type: 'varchar', length: 40, nullable: true })
+  hizmet: string | null
+
+  // Yalnızca GES taleplerinde dolu; temizlik taleplerinde null
+  @Column({ type: 'integer', nullable: true })
+  panelAdeti: number | null
+
+  // Temizlik taleplerinde opsiyonel yaklaşık alan (m²); GES'te null
+  @Column({ type: 'integer', nullable: true })
+  metrekare: number | null
 
   // Artık hiçbir formda toplanmıyor (hero formu sadeleştirildi) — eski kayıtlarla
   // uyumluluk için kolon kalıyor, yeni kayıtlarda null
   @Column({ type: 'numeric', precision: 8, scale: 2, nullable: true })
   sahaMegavati: number | null
 
-  @Column({ type: 'boolean' })
-  suUlasimi: boolean
+  // Yalnızca panel temizliğinde zorunlu sorulur; diğer GES hizmetlerinde
+  // opsiyonel, temizlik taleplerinde null
+  @Column({ type: 'boolean', nullable: true })
+  suUlasimi: boolean | null
 
   // KVKK temizliğinde null'lanır — bkz. adSoyad yorumu
   @Column({ type: 'varchar', length: 160, nullable: true })

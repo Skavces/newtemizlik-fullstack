@@ -56,6 +56,24 @@ describe('SERVICES kayıtları', () => {
   })
 })
 
+describe('backend kataloğu ile eşleşme (parity)', () => {
+  // backend/src/common/service-catalog.ts teklif formunu doğrular ve chatbot
+  // prompt kapsama testine kaynaklık eder. Statik import YAPILMAZ: frontend'in
+  // Docker build context'i yalnızca frontend/ — next build'in tip kontrolü bu
+  // dosyayı da tarar ve ../backend yolunu çözemeyip kırılırdı. Çalışma anında,
+  // hesaplanan yolla dinamik import edilir (CI'da tüm repo checkout edilir).
+  const BACKEND_CATALOG = path.resolve(FRONTEND_ROOT, '..', 'backend', 'src', 'common', 'service-catalog.ts')
+
+  it('slug, kategori ve ad iki tarafta birebir aynı', async () => {
+    expect(existsSync(BACKEND_CATALOG), `${BACKEND_CATALOG} bulunamadı`).toBe(true)
+    const mod = await import(/* @vite-ignore */ BACKEND_CATALOG)
+    const backend = (mod.SERVICE_CATALOG as { slug: string; category: string; name: string }[])
+      .map(({ slug, category, name }) => ({ slug, category, name }))
+    const frontend = SERVICES.map(({ slug, category, name }) => ({ slug, category, name }))
+    expect(backend).toEqual(frontend)
+  })
+})
+
 describe('yardımcılar', () => {
   it('getService yalnızca yayındaki hizmeti döndürür', () => {
     expect(getService('panel-temizlik')?.name).toBe('Panel Temizlik Hizmeti')

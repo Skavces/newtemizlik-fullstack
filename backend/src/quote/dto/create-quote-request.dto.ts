@@ -1,7 +1,28 @@
-import { Equals, IsBoolean, IsEmail, IsEmpty, IsInt, IsNotEmpty, IsOptional, IsString, Matches, Max, MaxLength, Min } from 'class-validator'
+import { Equals, IsBoolean, IsEmail, IsEmpty, IsIn, IsInt, IsNotEmpty, IsOptional, IsString, Matches, Max, MaxLength, Min, ValidateIf } from 'class-validator'
 import { Transform, Type } from 'class-transformer'
+import { SERVICE_SLUGS, serviceCategoryOf } from '../../common/service-catalog'
+
+// hizmet gönderilmeyen istek = hizmet alanından önceki (yalnızca GES) form
+// sözleşmesi; deploy anında sayfayı eski sürümle açık tutan ziyaretçiler de
+// böylece 400 almaz. Bu durumda panelAdeti + suUlasimi eskisi gibi zorunludur.
+export function isGesRequest(o: { hizmet?: string }): boolean {
+  return !o.hizmet || serviceCategoryOf(o.hizmet) === 'ges'
+}
+
+// Su erişimi yalnızca panel temizliğinde (ve eski formda) zorunlu sorulur
+export function requiresWaterAccess(o: { hizmet?: string }): boolean {
+  return !o.hizmet || o.hizmet === 'panel-temizlik'
+}
+
+export function isCleaningRequest(o: { hizmet?: string }): boolean {
+  return serviceCategoryOf(o.hizmet) === 'temizlik'
+}
 
 export class CreateQuoteRequestDto {
+  @IsOptional()
+  @IsIn(SERVICE_SLUGS, { message: 'Geçerli bir hizmet seçin' })
+  hizmet?: string
+
   @IsString()
   @IsNotEmpty()
   @MaxLength(120)
@@ -25,11 +46,22 @@ export class CreateQuoteRequestDto {
   @MaxLength(120)
   ePosta?: string
 
+  // GES taleplerinde zorunlu; temizlik talebinde gelirse doğrulanmaz ve
+  // QuoteService tarafından kaydedilmez
+  @ValidateIf(isGesRequest)
   @Type(() => Number)
   @IsInt()
   @Min(0)
   @Max(1000000)
-  panelAdeti: number
+  panelAdeti?: number
+
+  // Temizlik taleplerinde opsiyonel yaklaşık alan; GES'te yok sayılır
+  @ValidateIf((o: CreateQuoteRequestDto) => isCleaningRequest(o) && o.metrekare !== undefined && o.metrekare !== null)
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  @Max(1000000)
+  metrekare?: number
 
   @IsOptional()
   @Type(() => Number)
@@ -37,8 +69,11 @@ export class CreateQuoteRequestDto {
   @Max(1000000)
   sahaMegavati?: number
 
+  // Panel temizliğinde zorunlu; diğer GES hizmetlerinde gönderilirse boolean
+  // olmalı; temizlik talebinde yok sayılır
+  @ValidateIf((o: CreateQuoteRequestDto) => requiresWaterAccess(o) || (isGesRequest(o) && o.suUlasimi !== undefined))
   @IsBoolean()
-  suUlasimi: boolean
+  suUlasimi?: boolean
 
   @IsString()
   @IsNotEmpty()

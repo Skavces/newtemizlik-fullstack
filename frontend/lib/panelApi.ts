@@ -168,6 +168,8 @@ export interface QuoteAdminListParams {
   status?: QuoteStatus
   from?: string
   to?: string
+  // Hizmet kategorisi; 'ges' hizmet alanı olmayan eski kayıtları da içerir
+  kategori?: import('@/lib/services').ServiceCategory
 }
 
 export const getQuoteAdminList = (params: QuoteAdminListParams = {}) =>
