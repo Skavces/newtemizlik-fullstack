@@ -16,11 +16,14 @@ export const metadata: Metadata = {
   description:
     'Soma ve çevresinde endüstriyel güneş enerji santrali (GES) temizliği, verimlilik analizi, otonom panel yıkama robotu ve makine satışı.',
   icons: {
+    // Yaprak + damla ikonu (2026-11-08). SVG ikon bilerek yok: SVG destekleyen
+    // tarayıcılar onu öncelikli seçer.
     icon: [
-      { url: '/logo.png', sizes: '192x192', type: 'image/png' },
-      { url: '/logo.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: '48x48' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
     ],
-    apple: '/logo.png',
+    apple: { url: '/apple-icon.png', sizes: '180x180' },
   },
 }
 
