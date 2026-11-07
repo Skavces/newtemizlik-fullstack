@@ -102,7 +102,7 @@ server {
     # config'i üzerinden doğrudan sunuluyor — bu compose nginx'inin işi değil
     # (bkz. review notu: /umami subpath'i asset/API path çakışması yüzünden terk edildi)
 
-    location = /favicon.ico { return 204; access_log off; }
+    # /favicon.ico artık gerçek dosya (frontend/public) — Next'e gider
     location = /site.webmanifest { return 204; access_log off; }
 
     # helmet'in backend'de, Next'in kendi sunucusunda set ettiği header'lar —
