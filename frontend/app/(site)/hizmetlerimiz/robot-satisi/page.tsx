@@ -8,7 +8,8 @@ import JsonLd from '@/components/ui/JsonLd'
 import TrackedLink from '@/components/ui/TrackedLink'
 import ProductGallery from '@/components/sections/ProductGallery'
 import RelatedLinks from '@/components/ui/RelatedLinks'
-import { buildFaqSchema, buildMetadata, ORGANIZATION_ID, SITE_URL } from '@/lib/seo'
+import { buildFaqSchema, buildMetadata } from '@/lib/seo'
+import { AREA_SERVED_GES, buildServiceBreadcrumb, buildServiceSchema } from '@/lib/schema'
 import { getFaqs } from '@/lib/api'
 
 export const metadata = buildMetadata({
@@ -82,52 +83,24 @@ const purchaseSteps = [
   { icon: LifeBuoy, title: 'Teknik Destek', desc: '2 yıl teknik destek ile satış sonrasında da yanınızdayız.' },
 ]
 
-const areaServedSchema = [
-  { '@type': 'City', name: 'Soma' },
-  { '@type': 'City', name: 'Akhisar' },
-  { '@type': 'City', name: 'Kırkağaç' },
-  { '@type': 'AdministrativeArea', name: 'Manisa' },
-  { '@type': 'AdministrativeArea', name: 'İzmir' },
-  { '@type': 'AdministrativeArea', name: 'Balıkesir' },
-  { '@type': 'AdministrativeArea', name: 'Kütahya' },
-  { '@type': 'Country', name: 'Türkiye' },
-]
-
 export default async function RobotSatisPage() {
   const faqs = await getFaqs('robot-satisi')
 
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Ana Sayfa', item: `${SITE_URL}/` },
-      { '@type': 'ListItem', position: 2, name: 'Hizmetlerimiz', item: `${SITE_URL}/hizmetlerimiz` },
-      { '@type': 'ListItem', position: 3, name: 'Robot & Makina Satışı', item: `${SITE_URL}/hizmetlerimiz/robot-satisi` },
-    ],
-  }
+  const breadcrumbSchema = buildServiceBreadcrumb('Robot & Makina Satışı', '/hizmetlerimiz/robot-satisi')
 
   const faqSchema = buildFaqSchema(faqs)
 
-  const serviceSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Service',
+  const serviceSchema = buildServiceSchema({
     name: 'GES Panel Temizlik Robotu Satışı',
     alternateName: ['GES Robot Satışı', 'Solar Panel Temizlik Robotu', 'Otonom Panel Yıkama Makinası'],
     description: 'GES solar panel temizlik robotu ve makina satışı. Büyük ölçekli güneş enerji santralleri için otonom, IoT destekli, uzaktan yönetilebilen panel yıkama sistemleri.',
-    serviceType: 'GES Panel Temizlik Robotu Satışı',
-    url: `${SITE_URL}/hizmetlerimiz/robot-satisi`,
-    provider: { '@id': ORGANIZATION_ID },
-    areaServed: areaServedSchema,
-    hasOfferCatalog: {
-      '@type': 'OfferCatalog',
+    path: '/hizmetlerimiz/robot-satisi',
+    areaServed: AREA_SERVED_GES,
+    offerCatalog: {
       name: 'GES Robot Satış ve Kurulum Hizmetleri',
-      itemListElement: [
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Otonom Temizlik Robotu Satışı' } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Ray Sistemi Kurulumu' } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Operatör Eğitimi ve Teknik Destek' } },
-      ],
+      offers: ['Otonom Temizlik Robotu Satışı', 'Ray Sistemi Kurulumu', 'Operatör Eğitimi ve Teknik Destek'],
     },
-  }
+  })
 
   return (
     <>

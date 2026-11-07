@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X, ChevronDown, ChevronRight } from 'lucide-react'
+import { PUBLISHED_SERVICES, servicePath } from '@/lib/services'
 
 interface NavChild {
   label: string
@@ -23,12 +24,7 @@ const navLinks: NavLink[] = [
   {
     label: 'Hizmetlerimiz',
     path: '/hizmetlerimiz',
-    children: [
-      { label: 'Panel Temizlik Hizmeti', path: '/hizmetlerimiz/panel-temizlik' },
-      { label: 'Panel Bakım & Onarım İzleme', path: '/hizmetlerimiz/panel-bakim' },
-      { label: 'Robot & Makina Satışı', path: '/hizmetlerimiz/robot-satisi' },
-      { label: 'Ot Temizliği', path: '/hizmetlerimiz/ot-temizligi' },
-    ],
+    children: PUBLISHED_SERVICES.map((s) => ({ label: s.name, path: servicePath(s) })),
   },
   { label: 'Referanslarımız', path: '/referanslarimiz' },
   { label: 'Blog', path: '/blog' },

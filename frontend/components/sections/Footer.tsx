@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Facebook, Instagram, MapPin, Phone, Mail, type LucideIcon } from 'lucide-react'
 import TrackedLink from '@/components/ui/TrackedLink'
+import { getServicesByCategory, servicePath } from '@/lib/services'
 
 interface FooterLinkGroup {
   title: string
@@ -26,10 +27,7 @@ const footerLinks: FooterLinkGroup[] = [
   {
     title: 'Hizmetler',
     links: [
-      { label: 'Panel Temizlik', path: '/hizmetlerimiz/panel-temizlik' },
-      { label: 'Bakım & Onarım', path: '/hizmetlerimiz/panel-bakim' },
-      { label: 'Robot & Makina Satışı', path: '/hizmetlerimiz/robot-satisi' },
-      { label: 'Ot Temizliği', path: '/hizmetlerimiz/ot-temizligi' },
+      ...getServicesByCategory('ges').map((s) => ({ label: s.shortName ?? s.name, path: servicePath(s) })),
       { label: 'Panel Kirlilik Rehberi', path: '/panel-kirlilik-rehberi' },
     ],
   },

@@ -5,7 +5,8 @@ import SectionHeader from '@/components/ui/SectionHeader'
 import FaqAccordion from '@/components/ui/FaqAccordion'
 import JsonLd from '@/components/ui/JsonLd'
 import TrackedLink from '@/components/ui/TrackedLink'
-import { buildFaqSchema, buildMetadata, ORGANIZATION_ID, SITE_URL } from '@/lib/seo'
+import { buildFaqSchema, buildMetadata } from '@/lib/seo'
+import { AREA_SERVED_GES, buildServiceBreadcrumb, buildServiceSchema } from '@/lib/schema'
 import { getFaqs } from '@/lib/api'
 
 export const metadata = buildMetadata({
@@ -27,52 +28,24 @@ const features = [
   'Yıllık bakım sözleşmesiyle öncelikli müdahale garantisi',
 ]
 
-const areaServedSchema = [
-  { '@type': 'City', name: 'Soma' },
-  { '@type': 'City', name: 'Akhisar' },
-  { '@type': 'City', name: 'Kırkağaç' },
-  { '@type': 'AdministrativeArea', name: 'Manisa' },
-  { '@type': 'AdministrativeArea', name: 'İzmir' },
-  { '@type': 'AdministrativeArea', name: 'Balıkesir' },
-  { '@type': 'AdministrativeArea', name: 'Kütahya' },
-  { '@type': 'Country', name: 'Türkiye' },
-]
-
 export default async function PanelBakimPage() {
   const faqs = await getFaqs('panel-bakim')
 
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Ana Sayfa', item: `${SITE_URL}/` },
-      { '@type': 'ListItem', position: 2, name: 'Hizmetlerimiz', item: `${SITE_URL}/hizmetlerimiz` },
-      { '@type': 'ListItem', position: 3, name: 'Panel Bakım & Onarım İzleme', item: `${SITE_URL}/hizmetlerimiz/panel-bakim` },
-    ],
-  }
+  const breadcrumbSchema = buildServiceBreadcrumb('Panel Bakım & Onarım İzleme', '/hizmetlerimiz/panel-bakim')
 
   const faqSchema = buildFaqSchema(faqs)
 
-  const serviceSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Service',
+  const serviceSchema = buildServiceSchema({
     name: 'GES Panel Bakım ve Onarım İzleme',
     alternateName: ['GES Bakım Hizmeti', 'Panel Bakım İzleme', 'Hotspot Tespiti', 'GES Performans İzleme'],
     description: 'GES santrallerinde proaktif bakım, termal analiz ve performans izleme hizmetleri. Hotspot tespiti ve invertör kontrolüyle verim kayıplarını ve arızaları erkenden önlüyoruz.',
-    serviceType: 'GES Panel Bakım ve Onarım İzleme',
-    url: `${SITE_URL}/hizmetlerimiz/panel-bakim`,
-    provider: { '@id': ORGANIZATION_ID },
-    areaServed: areaServedSchema,
-    hasOfferCatalog: {
-      '@type': 'OfferCatalog',
+    path: '/hizmetlerimiz/panel-bakim',
+    areaServed: AREA_SERVED_GES,
+    offerCatalog: {
       name: 'GES Bakım Hizmetleri',
-      itemListElement: [
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Termal Analiz ve Hotspot Tespiti' } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'İnvertör ve DC Hat Kontrolü' } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Periyodik Bakım Sözleşmesi' } },
-      ],
+      offers: ['Termal Analiz ve Hotspot Tespiti', 'İnvertör ve DC Hat Kontrolü', 'Periyodik Bakım Sözleşmesi'],
     },
-  }
+  })
 
   return (
     <>

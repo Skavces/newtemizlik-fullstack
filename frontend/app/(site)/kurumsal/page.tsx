@@ -8,6 +8,7 @@ import CtaBand from '@/components/ui/CtaBand'
 import Referanslar from '@/components/sections/Referanslar'
 import { buildMetadata, ORGANIZATION_ID, SITE_URL } from '@/lib/seo'
 import { getReferences } from '@/lib/api'
+import { getServicesByCategory, servicePath } from '@/lib/services'
 
 export const metadata = buildMetadata({
   title: 'Kurumsal - GES Temizlik ve Bakım Çözümleri | New Temizlik',
@@ -34,12 +35,20 @@ const aboutSchema = {
   about: { '@id': ORGANIZATION_ID },
 }
 
-const services = [
-  { title: 'GES Panel Temizliği', desc: 'Endüstriyel güneş paneli yıkama; kontrollü su kullanımı ve yumuşak fırça sistemleriyle.', href: '/hizmetlerimiz/panel-temizlik' },
-  { title: 'Panel Bakım ve İzleme', desc: 'Termal analiz, hotspot tespiti ve performans izleme ile arızaları erkenden yakalama.', href: '/hizmetlerimiz/panel-bakim' },
-  { title: 'Robot ve Makina Satışı', desc: 'Otonom ve yarı otomatik panel temizlik sistemleri; kurulum, eğitim ve teknik destekle.', href: '/hizmetlerimiz/robot-satisi' },
-  { title: 'Ot Temizliği', desc: 'Panel altı ve aralarındaki bitki örtüsünün düzenli temizliği; gölgelenme ve yangın riskine karşı.', href: '/hizmetlerimiz/ot-temizligi' },
-]
+// Kurumsal sayfaya özgü kısa açıklamalar; hizmet listesinin kendisi lib/services.ts'ten
+// gelir (yeni hizmet eklenince burada da otomatik görünür, açıklama yoksa summary'ye düşer).
+const KURUMSAL_DESC: Record<string, string> = {
+  'panel-temizlik': 'Endüstriyel güneş paneli yıkama; kontrollü su kullanımı ve yumuşak fırça sistemleriyle.',
+  'panel-bakim': 'Termal analiz, hotspot tespiti ve performans izleme ile arızaları erkenden yakalama.',
+  'robot-satisi': 'Otonom ve yarı otomatik panel temizlik sistemleri; kurulum, eğitim ve teknik destekle.',
+  'ot-temizligi': 'Panel altı ve aralarındaki bitki örtüsünün düzenli temizliği; gölgelenme ve yangın riskine karşı.',
+}
+
+const services = getServicesByCategory('ges').map((s) => ({
+  title: s.name,
+  desc: KURUMSAL_DESC[s.slug] ?? s.summary,
+  href: servicePath(s),
+}))
 
 const workSteps = [
   { icon: Search, title: 'Keşif', desc: 'Sahayı yerinde inceler, kirlilik türünü ve panel dizilimini belirleriz.' },

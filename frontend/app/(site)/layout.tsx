@@ -6,6 +6,8 @@ import ChatWidget from '@/components/ui/ChatWidget'
 import JsonLd from '@/components/ui/JsonLd'
 import PageTransitionOverlay from '@/components/ui/PageTransitionOverlay'
 import { ORGANIZATION_ID, SITE_NAME, SITE_URL } from '@/lib/seo'
+import { AREA_SERVED_GES } from '@/lib/schema'
+import { getServicesByCategory, servicePath } from '@/lib/services'
 
 // GA4 ve kurumsal @graph JSON-LD burada (root layout'ta değil) yaşar ki
 // admin paneli ((panel) route group, ayrı bir layout kullanır) bu takip
@@ -25,16 +27,7 @@ const organizationSchema = {
       telephone: '+905304738793',
       address: { '@type': 'PostalAddress', addressLocality: 'Soma', addressRegion: 'Manisa', addressCountry: 'TR' },
       geo: { '@type': 'GeoCoordinates', latitude: 39.185, longitude: 27.607 },
-      areaServed: [
-        { '@type': 'City', name: 'Soma' },
-        { '@type': 'City', name: 'Akhisar' },
-        { '@type': 'City', name: 'Kırkağaç' },
-        { '@type': 'AdministrativeArea', name: 'Manisa' },
-        { '@type': 'AdministrativeArea', name: 'İzmir' },
-        { '@type': 'AdministrativeArea', name: 'Balıkesir' },
-        { '@type': 'AdministrativeArea', name: 'Kütahya' },
-        { '@type': 'Country', name: 'Türkiye' },
-      ],
+      areaServed: AREA_SERVED_GES,
       sameAs: [
         'https://www.facebook.com/people/New-Temizlik-Hizmetleri/61564445445368/',
         'https://www.instagram.com/new_temizlikhizmetleri/',
@@ -51,12 +44,10 @@ const organizationSchema = {
       hasOfferCatalog: {
         '@type': 'OfferCatalog',
         name: 'GES Temizlik ve Bakım Hizmetleri',
-        itemListElement: [
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'GES Panel Temizliği', url: `${SITE_URL}/hizmetlerimiz/panel-temizlik` } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'GES Panel Bakımı', url: `${SITE_URL}/hizmetlerimiz/panel-bakim` } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Otonom Temizlik Robotu Satışı', url: `${SITE_URL}/hizmetlerimiz/robot-satisi` } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'GES Sahası Ot Temizliği', url: `${SITE_URL}/hizmetlerimiz/ot-temizligi` } },
-        ],
+        itemListElement: getServicesByCategory('ges').map((s) => ({
+          '@type': 'Offer',
+          itemOffered: { '@type': 'Service', name: s.schemaName ?? s.name, url: `${SITE_URL}${servicePath(s)}` },
+        })),
       },
     },
     {

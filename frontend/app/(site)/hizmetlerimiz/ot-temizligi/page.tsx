@@ -5,7 +5,8 @@ import SectionHeader from '@/components/ui/SectionHeader'
 import JsonLd from '@/components/ui/JsonLd'
 import TrackedLink from '@/components/ui/TrackedLink'
 import CtaBand from '@/components/ui/CtaBand'
-import { buildMetadata, ORGANIZATION_ID, SITE_URL } from '@/lib/seo'
+import { buildMetadata } from '@/lib/seo'
+import { AREA_SERVED_GES, buildServiceBreadcrumb, buildServiceSchema } from '@/lib/schema'
 
 export const metadata = buildMetadata({
   title: 'GES Sahası Ot Temizliği Hizmeti | New Temizlik',
@@ -26,48 +27,20 @@ const features = [
   'Mevsimsel bitki büyüme hızına göre planlı temizlik takvimi',
 ]
 
-const areaServedSchema = [
-  { '@type': 'City', name: 'Soma' },
-  { '@type': 'City', name: 'Akhisar' },
-  { '@type': 'City', name: 'Kırkağaç' },
-  { '@type': 'AdministrativeArea', name: 'Manisa' },
-  { '@type': 'AdministrativeArea', name: 'İzmir' },
-  { '@type': 'AdministrativeArea', name: 'Balıkesir' },
-  { '@type': 'AdministrativeArea', name: 'Kütahya' },
-  { '@type': 'Country', name: 'Türkiye' },
-]
-
 export default function OtTemizligiPage() {
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Ana Sayfa', item: `${SITE_URL}/` },
-      { '@type': 'ListItem', position: 2, name: 'Hizmetlerimiz', item: `${SITE_URL}/hizmetlerimiz` },
-      { '@type': 'ListItem', position: 3, name: 'Ot Temizliği', item: `${SITE_URL}/hizmetlerimiz/ot-temizligi` },
-    ],
-  }
+  const breadcrumbSchema = buildServiceBreadcrumb('Ot Temizliği', '/hizmetlerimiz/ot-temizligi')
 
-  const serviceSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Service',
+  const serviceSchema = buildServiceSchema({
     name: 'GES Sahası Ot Temizliği',
     alternateName: ['GES Ot Temizliği', 'Panel Altı Bitki Temizliği', 'GES Saha Bakımı'],
     description: 'Güneş enerji santrali sahalarında panel altı ve aralarındaki ot ve bitki örtüsünün düzenli temizliği. Gölgelenme, yangın riski ve haşere üremesini önlüyoruz.',
-    serviceType: 'GES Sahası Ot Temizliği',
-    url: `${SITE_URL}/hizmetlerimiz/ot-temizligi`,
-    provider: { '@id': ORGANIZATION_ID },
-    areaServed: areaServedSchema,
-    hasOfferCatalog: {
-      '@type': 'OfferCatalog',
+    path: '/hizmetlerimiz/ot-temizligi',
+    areaServed: AREA_SERVED_GES,
+    offerCatalog: {
       name: 'GES Saha Ot Temizliği Hizmetleri',
-      itemListElement: [
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Panel Altı ve Arası Ot Temizliği' } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Yangın Riski Azaltma' } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Mevsimsel Bakım Takvimi' } },
-      ],
+      offers: ['Panel Altı ve Arası Ot Temizliği', 'Yangın Riski Azaltma', 'Mevsimsel Bakım Takvimi'],
     },
-  }
+  })
 
   return (
     <>

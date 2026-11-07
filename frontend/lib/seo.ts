@@ -1,6 +1,10 @@
 import type { Metadata } from 'next'
 
-export const SITE_URL = 'https://www.newtemizlik.com'
+// Canonical, sitemap, robots ve tüm JSON-LD id'leri buradan türer. Build-time
+// env (NEXT_PUBLIC_*, Dockerfile build-arg); boşsa mevcut domain. Domain geçişinde
+// (.com → .com.tr) yalnızca env değişir. Sondaki '/' kırpılır ki `${SITE_URL}/x`
+// birleştirmeleri çift slash üretmesin.
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.newtemizlik.com').replace(/\/+$/, '')
 export const SITE_NAME = 'New Temizlik'
 // Sitewide JSON-LD organizasyon düğümünün @id'si (bkz. app/(site)/layout.tsx);
 // diğer şemalar provider/publisher/author'ı bu id'ye referansla bağlar.

@@ -5,7 +5,8 @@ import SectionHeader from '@/components/ui/SectionHeader'
 import FaqAccordion from '@/components/ui/FaqAccordion'
 import JsonLd from '@/components/ui/JsonLd'
 import TrackedLink from '@/components/ui/TrackedLink'
-import { buildFaqSchema, buildMetadata, ORGANIZATION_ID, SITE_URL } from '@/lib/seo'
+import { buildFaqSchema, buildMetadata } from '@/lib/seo'
+import { AREA_SERVED_GES, buildServiceBreadcrumb, buildServiceSchema } from '@/lib/schema'
 import { getFaqs } from '@/lib/api'
 
 export const metadata = buildMetadata({
@@ -52,50 +53,22 @@ const nedenSomaCards = [
   },
 ]
 
-const areaServedSchema = [
-  { '@type': 'City', name: 'Soma' },
-  { '@type': 'City', name: 'Akhisar' },
-  { '@type': 'City', name: 'Kırkağaç' },
-  { '@type': 'AdministrativeArea', name: 'Manisa' },
-  { '@type': 'AdministrativeArea', name: 'İzmir' },
-  { '@type': 'AdministrativeArea', name: 'Balıkesir' },
-  { '@type': 'AdministrativeArea', name: 'Kütahya' },
-  { '@type': 'Country', name: 'Türkiye' },
-]
-
 export default async function PanelTemizlikPage() {
   const faqs = await getFaqs('panel-temizlik')
 
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Ana Sayfa', item: `${SITE_URL}/` },
-      { '@type': 'ListItem', position: 2, name: 'Hizmetlerimiz', item: `${SITE_URL}/hizmetlerimiz` },
-      { '@type': 'ListItem', position: 3, name: 'Panel Temizlik Hizmeti', item: `${SITE_URL}/hizmetlerimiz/panel-temizlik` },
-    ],
-  }
+  const breadcrumbSchema = buildServiceBreadcrumb('Panel Temizlik Hizmeti', '/hizmetlerimiz/panel-temizlik')
 
-  const serviceSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Service',
+  const serviceSchema = buildServiceSchema({
     name: 'GES Panel Temizliği',
     alternateName: ['Güneş Paneli Temizliği', 'Solar Panel Yıkama', 'GES Temizliği', 'Panel Temizliği', 'Soma GES Temizliği'],
     description: "Soma ve Türkiye genelinde profesyonel güneş enerji santrali (GES) panel temizliği, solar panel yıkama ve bakım hizmetleri. Yumuşak fırça sistemleri ve kontrollü su kullanımıyla panellerinizde %30'a kadar verim artışı.",
-    serviceType: 'GES Panel Temizliği',
-    url: `${SITE_URL}/hizmetlerimiz/panel-temizlik`,
-    provider: { '@id': ORGANIZATION_ID },
-    areaServed: areaServedSchema,
-    hasOfferCatalog: {
-      '@type': 'OfferCatalog',
+    path: '/hizmetlerimiz/panel-temizlik',
+    areaServed: AREA_SERVED_GES,
+    offerCatalog: {
       name: 'GES Temizlik Hizmetleri',
-      itemListElement: [
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Endüstriyel GES Panel Temizliği' } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Otonom Robot ile Panel Yıkama' } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Periyodik GES Bakım Sözleşmesi' } },
-      ],
+      offers: ['Endüstriyel GES Panel Temizliği', 'Otonom Robot ile Panel Yıkama', 'Periyodik GES Bakım Sözleşmesi'],
     },
-  }
+  })
 
   const faqSchema = buildFaqSchema(faqs)
 
