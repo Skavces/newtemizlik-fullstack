@@ -18,6 +18,15 @@ const SERVICE_GROUPS = (Object.keys(SERVICE_CATEGORIES) as ServiceCategory[])
   .map((category) => ({ category, label: SERVICE_CATEGORIES[category].label, services: getServicesByCategory(category) }))
   .filter((g) => g.services.length > 0)
 
+// Ücretsiz keşif yalnızca GES için geçerli; temizlikte teklif verilir. Hizmet henüz
+// seçilmemişse, temizlik de yayındayken ücretsiz keşif sözü verilmez.
+const ONLY_GES_PUBLISHED = SERVICE_GROUPS.every((g) => g.category === 'ges')
+
+function formCtaLabel(category: ServiceCategory | undefined): string {
+  const offersFreeSurvey = category ? category === 'ges' : ONLY_GES_PUBLISHED
+  return offersFreeSurvey ? 'Ücretsiz Keşif Talep Et' : 'Teklif Alın'
+}
+
 interface HeroQuoteFormProps {
   // Hizmet sayfalarında form o hizmet seçili açılır (kullanıcı değiştirebilir)
   defaultService?: string
@@ -31,6 +40,7 @@ export default function HeroQuoteForm({ defaultService }: HeroQuoteFormProps = {
 
   const category = getService(serviceSlug)?.category
   const asksWater = serviceSlug === 'panel-temizlik'
+  const ctaLabel = formCtaLabel(category)
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -94,7 +104,7 @@ export default function HeroQuoteForm({ defaultService }: HeroQuoteFormProps = {
       <div className="relative p-5 sm:p-7" style={{ width: '100%', background: 'var(--bg-card)', borderRadius: '24px', boxShadow: 'var(--shadow-md)' }}>
         {/* h2: sayfanın h1'inden sonra gelen ilk başlık seviyesi (h3 başlık sırasını atlatıyordu) */}
         <h2 className="section-heading" style={{ fontSize: '21px', marginBottom: '4px' }}>
-          Ücretsiz Keşif Talep Et
+          {ctaLabel}
         </h2>
         <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '18px', lineHeight: 1.5 }}>
           Formu doldurun, ekibimiz size en kısa sürede dönüş yapsın.
@@ -248,7 +258,7 @@ export default function HeroQuoteForm({ defaultService }: HeroQuoteFormProps = {
               className="cta-button w-full justify-center mt-1 cursor-pointer"
               style={{ border: 'none', opacity: status === 'submitting' ? 0.7 : 1 }}
             >
-              {status === 'submitting' ? 'Gönderiliyor...' : 'Ücretsiz Keşif Talep Et'}
+              {status === 'submitting' ? 'Gönderiliyor...' : ctaLabel}
               <ArrowRight aria-hidden="true" className="w-4 h-4" />
             </button>
           </form>
