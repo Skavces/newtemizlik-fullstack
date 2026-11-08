@@ -19,8 +19,8 @@ export const metadata = buildMetadata({
   canonical: '/hizmetlerimiz/robot-satisi',
   image: '/soma-ges-otonom-temizlik-robotu.webp',
   imageAlt: 'GES sahasında otonom solar panel temizlik robotu çalışma görüntüsü',
-  imageWidth: 1200,
-  imageHeight: 800,
+  imageWidth: 720,
+  imageHeight: 720,
 })
 
 const productPhotos = [

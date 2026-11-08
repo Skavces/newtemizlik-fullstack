@@ -16,8 +16,8 @@ export const metadata = buildMetadata({
   canonical: '/hizmetlerimiz/panel-temizlik',
   image: '/endustriyel-gunes-paneli-yikama.webp',
   imageAlt: 'GES sahasında profesyonel endüstriyel güneş paneli temizlik çalışması',
-  imageWidth: 1200,
-  imageHeight: 800,
+  imageWidth: 720,
+  imageHeight: 720,
 })
 
 const features = [

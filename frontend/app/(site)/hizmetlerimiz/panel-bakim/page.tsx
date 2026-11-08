@@ -15,8 +15,8 @@ export const metadata = buildMetadata({
   canonical: '/hizmetlerimiz/panel-bakim',
   image: '/ges-bakim-onarim-termal-analiz.webp',
   imageAlt: 'GES santralinde termal analiz ve bakım onarım izleme çalışması',
-  imageWidth: 1200,
-  imageHeight: 800,
+  imageWidth: 720,
+  imageHeight: 720,
 })
 
 const features = [
