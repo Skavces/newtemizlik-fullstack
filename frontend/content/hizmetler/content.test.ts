@@ -49,9 +49,9 @@ describe('temizlik hizmet içerikleri', () => {
 
   it.each(SERVICE_CONTENT.map((c) => [c.slug, c] as const))('%s yasak ifade içermez', (_slug, c) => {
     const text = allText(c)
-    // Ücretsiz keşif yalnızca GES için; halı yıkama hizmeti yok.
+    // Ücretsiz keşif yalnızca GES için; halı yıkama hizmeti yok (halıfleks yalnızca vakumlanır).
     expect(text).not.toMatch(/ücretsiz\s+keşif/iu)
-    expect(text).not.toMatch(/(^|[^\p{L}])halı/iu)
+    expect(text).not.toMatch(/(^|[^\p{L}])halı(?!fleks)/iu)
     expect(text).not.toMatch(/garanti/iu)
   })
 
