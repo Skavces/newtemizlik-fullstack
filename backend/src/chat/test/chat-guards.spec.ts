@@ -1,4 +1,4 @@
-import { extractTlAmounts, hasForeignWordLeak, hasPriceLeak, nonLatinLetterRatio } from '../chat-guards'
+import { extractTlAmounts, hasForeignWordLeak, hasPriceLeak, nonLatinLetterRatio, sanitizeContent } from '../chat-guards'
 
 describe('nonLatinLetterRatio', () => {
   it('is low for Turkish text with special characters', () => {
@@ -87,5 +87,11 @@ describe('hasPriceLeak', () => {
 
   it('flags an allow-listed amount if it is combined with a second, unlisted amount', () => {
     expect(hasPriceLeak('3.200 TL faturanıza karşılık 275.000 TL yatırım gerekir.', [3200])).toBe(true)
+  })
+})
+
+describe('sanitizeContent', () => {
+  it('markdown kalın yazı yıldızlarını kaldırır (sohbet penceresi markdown işlemiyor)', () => {
+    expect(sanitizeContent("Aşağıdaki **WhatsApp'tan Teklif Al** butonuna basın.")).toBe("Aşağıdaki WhatsApp'tan Teklif Al butonuna basın.")
   })
 })

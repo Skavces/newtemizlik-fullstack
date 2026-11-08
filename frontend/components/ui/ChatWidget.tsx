@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Bot, X, Send, Loader2, MessageCircle, Star, Droplets, Wrench, Cpu } from 'lucide-react'
+import { Bot, X, Send, Loader2, MessageCircle, Star, Sun, Home, Sofa, FileText } from 'lucide-react'
 import {
   sendChatMessage,
   generateWhatsappSummary,
@@ -17,26 +17,32 @@ const WA_NUMBER = '905304738793'
 const RATED_KEY = 'chatRated'
 
 const GREETING =
-  'Merhaba, New Temizlik Hizmetleri\'ne hoş geldiniz. Size en uygun hizmeti belirlemek için birkaç soru sormak istiyorum. Hangi konuda bilgi almak istersiniz?'
+  'Merhaba, New Temizlik Hizmetleri\'ne hoş geldiniz. Ev, iş yeri ve kurum temizliği ile güneş paneli temizliği ve bakımı konularında yardımcı olabilirim. Hangi konuda bilgi almak istersiniz?'
 
 const QUICK_REPLIES = [
   {
-    label: 'Panel Temizlik Hizmeti',
-    desc: 'Saf su ile profesyonel panel yıkama',
-    icon: Droplets,
-    value: 'Panel temizlik hizmeti hakkında bilgi almak istiyorum.',
+    label: 'GES Panel Temizliği',
+    desc: 'Güneş paneli yıkama ve bakım',
+    icon: Sun,
+    value: 'GES panel temizliği hakkında bilgi almak istiyorum.',
   },
   {
-    label: 'Panel Bakım & Onarım İzleme',
-    desc: 'Performans takibi ve arıza tespiti',
-    icon: Wrench,
-    value: 'Panel bakım ve onarım izleme hizmeti hakkında bilgi almak istiyorum.',
+    label: 'Ev / Ofis Temizliği',
+    desc: 'Ev, iş yeri ve kurum temizliği',
+    icon: Home,
+    value: 'Ev veya ofis temizliği hakkında bilgi almak istiyorum.',
   },
   {
-    label: 'Temizlik Robot & Makina Satışı',
-    desc: 'Otonom panel temizlik robotları',
-    icon: Cpu,
-    value: 'Temizlik robotu ve makina satışı hakkında bilgi almak istiyorum.',
+    label: 'Koltuk Yıkama',
+    desc: 'Koltuk ve kanepeleri yerinde yıkama',
+    icon: Sofa,
+    value: 'Koltuk yıkama hakkında bilgi almak istiyorum.',
+  },
+  {
+    label: 'Teklif Almak İstiyorum',
+    desc: 'İhtiyacınızı birlikte netleştirelim',
+    icon: FileText,
+    value: 'Teklif almak istiyorum.',
   },
 ]
 

@@ -128,6 +128,8 @@ export function sanitizeContent(text: string): string {
     .replace(/<\|[^|>]{1,30}\|>/g, '')
     // strip markdown separators used to fake prompt boundaries (###, ----, ====)
     .replace(/#{3,}|-{4,}|={4,}/g, '')
+    // sohbet penceresi markdown işlemiyor: kalın yazı yıldızları müşteriye olduğu gibi görünürdü
+    .replace(/\*\*/g, '')
     // collapse excessive whitespace/newlines
     .replace(/\n{3,}/g, '\n\n')
     .trim()
