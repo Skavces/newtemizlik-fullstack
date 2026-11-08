@@ -22,6 +22,10 @@ describe('chat-prompts', () => {
     expect(SYSTEM_PROMPT).not.toContain('(halı, perde')
   })
 
+  it('perde yıkamayı hizmet olarak tanır', () => {
+    expect(SYSTEM_PROMPT).toContain('- Perde Yıkama:')
+  })
+
   it('WhatsApp özeti iki hattın bilgi satırını da tanımlar', () => {
     expect(SUMMARY_PROMPT).toContain('Saha bilgisi:')
     expect(SUMMARY_PROMPT).toContain('Mekân bilgisi:')
