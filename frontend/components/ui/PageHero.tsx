@@ -57,7 +57,7 @@ export default function PageHero({ title, image, breadcrumbs = [] }: PageHeroPro
 
         {/* Sağ — breadcrumb */}
         {breadcrumbs.length > 0 && (
-          <nav aria-label="Breadcrumb">
+          <nav aria-label="Breadcrumb" className="hidden md:block">
             <ol style={{ display: 'flex', alignItems: 'center', gap: '6px', listStyle: 'none', margin: 0, padding: 0 }}>
               {breadcrumbs.map((crumb, i) => {
                 const isLast = i === breadcrumbs.length - 1
