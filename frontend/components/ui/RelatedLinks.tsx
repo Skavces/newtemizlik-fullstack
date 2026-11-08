@@ -31,7 +31,7 @@ export default function RelatedLinks({
           <SectionHeader eyebrow={eyebrow} title={title} titleSize="clamp(22px, 3vw, 30px)" />
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className={`grid sm:grid-cols-2 gap-5 ${links.length === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}`}>
           {links.map((l) => (
             <Link
               key={l.href}
