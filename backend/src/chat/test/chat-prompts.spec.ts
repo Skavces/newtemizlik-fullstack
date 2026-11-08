@@ -17,6 +17,11 @@ describe('chat-prompts', () => {
     expect(SYSTEM_PROMPT).toContain('Temizlik hizmetlerinde ücretsiz keşif sözü VERMEYİN')
   })
 
+  it('halı yıkamayı WhatsApp\'a yönlendirmeden reddeder', () => {
+    expect(SYSTEM_PROMPT).toContain('Halı yıkama hizmetimiz YOKTUR')
+    expect(SYSTEM_PROMPT).not.toContain('(halı, perde')
+  })
+
   it('WhatsApp özeti iki hattın bilgi satırını da tanımlar', () => {
     expect(SUMMARY_PROMPT).toContain('Saha bilgisi:')
     expect(SUMMARY_PROMPT).toContain('Mekân bilgisi:')
