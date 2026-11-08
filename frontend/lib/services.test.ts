@@ -1,7 +1,7 @@
 import { existsSync, readdirSync } from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { getService, getServicesByCategory, getTemplateServices, PUBLISHED_SERVICES, SERVICE_CATEGORIES, SERVICES, servicePath } from './services'
+import { getFeaturedServices, getService, getServicesByCategory, getTemplateServices, PUBLISHED_SERVICES, SERVICE_CATEGORIES, SERVICES, servicePath } from './services'
 
 const FRONTEND_ROOT = path.resolve(__dirname, '..')
 const SERVICES_ROUTE_DIR = path.join(FRONTEND_ROOT, 'app', '(site)', 'hizmetlerimiz')
@@ -86,6 +86,13 @@ describe('yardımcılar', () => {
     const ges = getServicesByCategory('ges')
     expect(ges.map((s) => s.slug)).toEqual(['panel-temizlik', 'panel-bakim', 'robot-satisi', 'ot-temizligi'])
     expect(ges.every((s) => s.published && s.category === 'ges')).toBe(true)
+  })
+
+  it('getFeaturedServices yalnızca o kategorinin yayındaki öne çıkanlarını döndürür', () => {
+    for (const category of ['ges', 'temizlik'] as const) {
+      expect(getFeaturedServices(category).every((s) => s.featured && s.published && s.category === category)).toBe(true)
+    }
+    expect(SERVICES.filter((s) => s.category === 'temizlik' && s.featured)).toHaveLength(6)
   })
 
   it('getTemplateServices özel sayfası olan hizmetleri içermez', () => {

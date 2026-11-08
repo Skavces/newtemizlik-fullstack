@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Facebook, Instagram, MapPin, Phone, Mail, type LucideIcon } from 'lucide-react'
 import TrackedLink from '@/components/ui/TrackedLink'
-import { getServicesByCategory, servicePath } from '@/lib/services'
+import { getFeaturedServices, getServicesByCategory, SERVICE_CATEGORIES, servicePath } from '@/lib/services'
 
 interface FooterLinkGroup {
   title: string
@@ -23,14 +23,26 @@ interface SocialItem {
   label: string
 }
 
+const featuredCleaning = getFeaturedServices('temizlik')
+
 const footerLinks: FooterLinkGroup[] = [
   {
-    title: 'Hizmetler',
+    title: SERVICE_CATEGORIES.ges.label,
     links: [
       ...getServicesByCategory('ges').map((s) => ({ label: s.shortName ?? s.name, path: servicePath(s) })),
       { label: 'Panel Kirlilik Rehberi', path: '/panel-kirlilik-rehberi' },
     ],
   },
+  // Temizlik sütunu, P7'de ilk grup yayına alınınca görünür.
+  ...(featuredCleaning.length > 0
+    ? [{
+        title: SERVICE_CATEGORIES.temizlik.label,
+        links: [
+          ...featuredCleaning.map((s) => ({ label: s.shortName ?? s.name, path: servicePath(s) })),
+          { label: 'Tüm hizmetler →', path: `/hizmetlerimiz#${SERVICE_CATEGORIES.temizlik.anchor}` },
+        ],
+      }]
+    : []),
   {
     title: 'Kurumsal',
     links: [
@@ -71,7 +83,8 @@ export default function Footer() {
       <div style={{ height: '4px', background: 'linear-gradient(90deg, var(--color-primary), var(--color-secondary))' }} />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
+        {/* 1024px'te 5 sütun e-posta adresini taşırıyor; 5 sütun xl'den itibaren */}
+        <div className={`grid md:grid-cols-2 gap-8 md:gap-10 ${footerLinks.length > 2 ? 'lg:grid-cols-3 xl:grid-cols-5' : 'lg:grid-cols-4'}`}>
 
           {/* Brand */}
           <div className="lg:col-span-1">

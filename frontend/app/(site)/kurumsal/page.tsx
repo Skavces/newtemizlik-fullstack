@@ -8,7 +8,7 @@ import CtaBand from '@/components/ui/CtaBand'
 import Referanslar from '@/components/sections/Referanslar'
 import { buildMetadata, ORGANIZATION_ID, SITE_URL } from '@/lib/seo'
 import { getReferences } from '@/lib/api'
-import { getServicesByCategory, servicePath } from '@/lib/services'
+import { getServicesByCategory, SERVICE_CATEGORIES, servicePath } from '@/lib/services'
 
 export const metadata = buildMetadata({
   title: 'Kurumsal - GES Temizlik ve Bakım Çözümleri | New Temizlik',
@@ -44,11 +44,23 @@ const KURUMSAL_DESC: Record<string, string> = {
   'ot-temizligi': 'Panel altı ve aralarındaki bitki örtüsünün düzenli temizliği; gölgelenme ve yangın riskine karşı.',
 }
 
-const services = getServicesByCategory('ges').map((s) => ({
-  title: s.name,
-  desc: KURUMSAL_DESC[s.slug] ?? s.summary,
-  href: servicePath(s),
-}))
+const services: { title: string; desc: string; href: string; wide?: boolean }[] = [
+  ...getServicesByCategory('ges').map((s) => ({
+    title: s.name,
+    desc: KURUMSAL_DESC[s.slug] ?? s.summary,
+    href: servicePath(s),
+  })),
+  // 13 temizlik hizmeti burada tek tek listelenmez; P7'de ilk grup yayına alınınca
+  // tek bir geniş kart olarak hizmetler sayfasındaki bölüme bağlanır.
+  ...(getServicesByCategory('temizlik').length > 0
+    ? [{
+        title: SERVICE_CATEGORIES.temizlik.label,
+        desc: 'Soma ve Manisa çevresinde ev, iş yeri ve kurumlar için profesyonel temizlik hizmetleri.',
+        href: `/hizmetlerimiz#${SERVICE_CATEGORIES.temizlik.anchor}`,
+        wide: true,
+      }]
+    : []),
+]
 
 const workSteps = [
   { icon: Search, title: 'Keşif', desc: 'Sahayı yerinde inceler, kirlilik türünü ve panel dizilimini belirleriz.' },
@@ -249,7 +261,7 @@ export default async function KurumsalPage() {
               <Link
                 key={svc.href}
                 href={svc.href}
-                className="section-card"
+                className={`section-card${svc.wide ? ' sm:col-span-2' : ''}`}
                 style={{ padding: '26px 26px 22px', textDecoration: 'none', display: 'block' }}
               >
                 <h3 style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '8px', letterSpacing: '0.02em' }}>

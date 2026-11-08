@@ -101,18 +101,18 @@ export const SERVICES: readonly ServiceEntry[] = [
 
   // ── Temizlik (P7'de gruplar halinde yayına alınır) ────────────────────
   // G1 — bireysel
-  { slug: 'ev-temizligi', category: 'temizlik', name: 'Ev Temizliği', summary: '', image: '', imageAlt: '', legacyIds: [5], published: false, customPage: false },
+  { slug: 'ev-temizligi', category: 'temizlik', name: 'Ev Temizliği', summary: '', image: '', imageAlt: '', legacyIds: [5], featured: true, published: false, customPage: false },
   { slug: 'villa-temizligi', category: 'temizlik', name: 'Villa Temizliği', summary: '', image: '', imageAlt: '', legacyIds: [8], published: false, customPage: false },
-  { slug: 'koltuk-yikama', category: 'temizlik', name: 'Yerinde Koltuk Yıkama', shortName: 'Koltuk Yıkama', summary: '', image: '', imageAlt: '', legacyIds: [9], published: false, customPage: false },
-  { slug: 'apartman-site-temizligi', category: 'temizlik', name: 'Apartman ve Site Temizliği', summary: '', image: '', imageAlt: '', legacyIds: [7], published: false, customPage: false },
-  { slug: 'insaat-sonrasi-temizlik', category: 'temizlik', name: 'İnşaat Sonrası Temizlik', summary: '', image: '', imageAlt: '', legacyIds: [11], published: false, customPage: false },
+  { slug: 'koltuk-yikama', category: 'temizlik', name: 'Yerinde Koltuk Yıkama', shortName: 'Koltuk Yıkama', summary: '', image: '', imageAlt: '', legacyIds: [9], featured: true, published: false, customPage: false },
+  { slug: 'apartman-site-temizligi', category: 'temizlik', name: 'Apartman ve Site Temizliği', summary: '', image: '', imageAlt: '', legacyIds: [7], featured: true, published: false, customPage: false },
+  { slug: 'insaat-sonrasi-temizlik', category: 'temizlik', name: 'İnşaat Sonrası Temizlik', summary: '', image: '', imageAlt: '', legacyIds: [11], featured: true, published: false, customPage: false },
   // G2 — iş yeri ve ticari
-  { slug: 'ofis-is-yeri-temizligi', category: 'temizlik', name: 'Ofis ve İş Yeri Temizliği', shortName: 'Ofis & İş Yeri Temizliği', summary: '', image: '', imageAlt: '', legacyIds: [6], published: false, customPage: false },
+  { slug: 'ofis-is-yeri-temizligi', category: 'temizlik', name: 'Ofis ve İş Yeri Temizliği', shortName: 'Ofis & İş Yeri Temizliği', summary: '', image: '', imageAlt: '', legacyIds: [6], featured: true, published: false, customPage: false },
   { slug: 'magaza-temizligi', category: 'temizlik', name: 'Mağaza Temizliği', summary: '', image: '', imageAlt: '', legacyIds: [16], published: false, customPage: false },
   { slug: 'banka-temizligi', category: 'temizlik', name: 'Banka Temizliği', summary: '', image: '', imageAlt: '', legacyIds: [13], published: false, customPage: false },
   { slug: 'avm-temizligi', category: 'temizlik', name: 'AVM Temizliği', summary: '', image: '', imageAlt: '', legacyIds: [15], published: false, customPage: false },
   // G3 — kurum ve sanayi
-  { slug: 'fabrika-temizligi', category: 'temizlik', name: 'Fabrika Temizliği', summary: '', image: '', imageAlt: '', legacyIds: [12], published: false, customPage: false },
+  { slug: 'fabrika-temizligi', category: 'temizlik', name: 'Fabrika Temizliği', summary: '', image: '', imageAlt: '', legacyIds: [12], featured: true, published: false, customPage: false },
   { slug: 'okul-temizligi', category: 'temizlik', name: 'Okul Temizliği', summary: '', image: '', imageAlt: '', legacyIds: [14], published: false, customPage: false },
   { slug: 'saglik-kurulusu-temizligi', category: 'temizlik', name: 'Sağlık Kuruluşu Temizliği', shortName: 'Sağlık Kuruluşu Temizliği', summary: '', image: '', imageAlt: '', legacyIds: [19], published: false, customPage: false },
   { slug: 'dis-cephe-cam-temizligi', category: 'temizlik', name: 'Dış Cephe Cam Temizliği', summary: '', image: '', imageAlt: '', legacyIds: [17], published: false, customPage: false },
@@ -126,6 +126,10 @@ export function servicePath(service: Pick<ServiceEntry, 'slug'>): string {
 
 export function getServicesByCategory(category: ServiceCategory): ServiceEntry[] {
   return PUBLISHED_SERVICES.filter((s) => s.category === category)
+}
+
+export function getFeaturedServices(category: ServiceCategory): ServiceEntry[] {
+  return getServicesByCategory(category).filter((s) => s.featured)
 }
 
 // Yalnızca yayındaki hizmetleri döndürür — yayında olmayan slug'ın sayfası yok.
