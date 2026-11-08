@@ -114,7 +114,7 @@ export default function Referanslar({ references }: { references: Reference[] })
             eyebrow="New Temizlik"
             title="Bizi Tercih Edenler"
             titleSize="clamp(26px, 3.8vw, 40px)"
-            lead="Güneşin olduğu her yerde enerjinin verimli üretimi için teknolojiler sunmaya güçlenerek devam ediyoruz."
+            lead="Farklı sektörlerden kurumlarla temizlik ve bakım alanında güçlenerek çalışmaya devam ediyoruz."
             align="center"
           />
         </div>

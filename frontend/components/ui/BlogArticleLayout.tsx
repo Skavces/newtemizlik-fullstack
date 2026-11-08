@@ -88,7 +88,7 @@ export default function BlogArticleLayout({ title, publishedAt, content, related
           style={{ padding: '28px', marginTop: '48px', background: 'rgba(127,191,58,0.06)', border: '1px solid rgba(127,191,58,0.2)' }}
         >
           <p style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '14px' }}>
-            GES santralınız için ücretsiz keşif alın
+            Hizmetlerimiz hakkında bilgi ve teklif alın
           </p>
           <TrackedLink
             href="tel:+905304738793"

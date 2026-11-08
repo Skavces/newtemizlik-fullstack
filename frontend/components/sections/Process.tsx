@@ -27,7 +27,7 @@ const steps: Step[] = [
     icon: Search,
     num: '01',
     title: 'Keşif',
-    description: 'Sahaya giderek detaylı analiz ve ihtiyaç tespiti yapıyoruz. Sorunlu paneller ve gölgelenme noktaları belirlenir.',
+    description: 'Yerinde inceleyerek ihtiyacı netleştiriyoruz. GES sahalarında sorunlu paneller ve gölgelenme noktaları da belirlenir.',
     color: 'var(--color-primary)',
     img: '/alankesif.jpg',
     alt: 'GES sahasında termal analiz ve keşif çalışması',
@@ -45,7 +45,7 @@ const steps: Step[] = [
     icon: Play,
     num: '03',
     title: 'Uygulama',
-    description: 'Sertifikalı ekibimiz ve otonom robotlarımızla planı sahada hayata geçiriyoruz. Su israfı yapmadan, panellere zarar vermeden profesyonel temizlik gerçekleştirilir.',
+    description: 'Sertifikalı ekibimiz planı işe uygun ekipmanla hayata geçiriyor. GES sahalarında otonom robotlarla, su israfı yapmadan ve panellere zarar vermeden çalışıyoruz.',
     color: 'var(--color-primary)',
     img: '/uygulama.jpg',
     alt: 'Otonom panel temizlik robotu uygulaması',
@@ -54,7 +54,7 @@ const steps: Step[] = [
     icon: CheckCircle2,
     num: '04',
     title: 'Kontrol',
-    description: 'Temizlik öncesi/sonrası veriler karşılaştırılır, invertör verileriyle kalite doğrulanır. Detaylı rapor ve garanti belgesi teslim edilir.',
+    description: 'İş bitiminde sonucu birlikte kontrol ediyoruz. GES projelerinde öncesi/sonrası invertör verileri karşılaştırılır; detaylı rapor ve garanti belgesi teslim edilir.',
     color: 'var(--color-secondary)',
     img: '/kontrol.jpg',
     alt: 'Güneş paneli temizlik kalite kontrol çalışması',
@@ -203,7 +203,7 @@ export default function Process() {
           <SectionHeader
             eyebrow="Süreç"
             title="Çalışma Sürecimiz"
-            lead="Sahadan rapora 4 adımda profesyonel hizmet."
+            lead="Keşiften teslime 4 adımda profesyonel hizmet."
           />
         </div>
 

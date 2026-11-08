@@ -97,7 +97,7 @@ export default function Footer() {
               style={{ filter: 'brightness(0) invert(1)' }}
             />
             <p style={{ fontSize: '14px', lineHeight: 1.75, color: 'rgba(255,255,255,0.45)', marginBottom: '20px' }}>
-              Profesyonel temizlik ve bakım çözümleri ile endüstriyel alanda güvenilir iş ortağınız.
+              Ev ve iş yerlerinden endüstriyel tesislere, profesyonel temizlik ve bakım çözümleri.
             </p>
             <div className="flex items-center gap-2">
               {socials.map((s) => (
@@ -119,9 +119,9 @@ export default function Footer() {
           {/* Link columns */}
           {footerLinks.map((group) => (
             <div key={group.title}>
-              <h4 style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '16px', fontWeight: 700, letterSpacing: '0.08em', color: '#ffffff', marginBottom: '18px', textTransform: 'uppercase' }}>
+              <h3 style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '16px', fontWeight: 700, letterSpacing: '0.08em', color: '#ffffff', marginBottom: '18px', textTransform: 'uppercase' }}>
                 {group.title}
-              </h4>
+              </h3>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {group.links.map((link) => (
                   <li key={link.label}>
@@ -140,9 +140,9 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '16px', fontWeight: 700, letterSpacing: '0.08em', color: '#ffffff', marginBottom: '18px', textTransform: 'uppercase' }}>
+            <h3 style={{ fontFamily: "'Rajdhani', sans-serif", fontSize: '16px', fontWeight: 700, letterSpacing: '0.08em', color: '#ffffff', marginBottom: '18px', textTransform: 'uppercase' }}>
               İletişim
-            </h4>
+            </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               {contactItems.map((item, i) => (
                 <div key={i} className="flex items-start gap-3">

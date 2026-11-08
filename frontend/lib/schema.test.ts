@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { AREA_SERVED_GES, buildBreadcrumbSchema, buildServiceBreadcrumb, buildServiceSchema } from './schema'
+import { AREA_SERVED_GES, AREA_SERVED_TEMIZLIK, buildBreadcrumbSchema, buildServiceBreadcrumb, buildServiceSchema } from './schema'
 import { ORGANIZATION_ID, SITE_URL } from './seo'
+
+describe('hizmet bölgeleri', () => {
+  it('GES bölgesi temizlik bölgesini kapsar (Organization areaServed tek listeyle iki hattı anlatır)', () => {
+    const ges = AREA_SERVED_GES.map((p) => p.name)
+    for (const place of AREA_SERVED_TEMIZLIK) expect(ges, place.name).toContain(place.name)
+  })
+})
 
 describe('buildBreadcrumbSchema', () => {
   it('sıralı ListItem\'lar ve SITE_URL ile mutlak URL üretir', () => {

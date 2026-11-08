@@ -4,10 +4,10 @@ import JsonLd from '@/components/ui/JsonLd'
 import { buildMetadata, SITE_URL } from '@/lib/seo'
 
 export const metadata = buildMetadata({
-  title: 'İletişim | Ücretsiz GES Temizlik Keşfi | New Temizlik',
-  description: 'New Temizlik ile iletişime geçin. Soma ve çevresindeki GES santralleriniz için ücretsiz keşif ve teklif almak üzere bizi arayın veya formu doldurun.',
+  title: 'İletişim | Temizlik ve GES Teklifi | New Temizlik',
+  description: 'New Temizlik ile iletişime geçin. Temizlik hizmetleri ve GES santralleriniz için teklif almak üzere bizi arayın veya formu doldurun.',
   canonical: '/iletisim',
-  imageAlt: 'New Temizlik - GES temizlik hizmetleri iletişim logosu',
+  imageAlt: 'New Temizlik - temizlik ve GES hizmetleri iletişim logosu',
 })
 
 const breadcrumbSchema = {
@@ -27,7 +27,7 @@ const contactPageSchema = {
   '@type': 'ContactPage',
   name: 'New Temizlik İletişim',
   url: `${SITE_URL}/iletisim`,
-  description: 'New Temizlik GES temizlik ve bakım hizmetleri için iletişim sayfası. Ücretsiz saha keşfi ve teklif.',
+  description: 'New Temizlik temizlik ve GES bakım hizmetleri için iletişim sayfası.',
   mainEntity: {
     '@type': 'LocalBusiness',
     name: 'New Temizlik',

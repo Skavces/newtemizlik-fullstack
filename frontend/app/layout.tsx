@@ -12,9 +12,9 @@ const poppins = Poppins({ subsets: ['latin', 'latin-ext'], weight: ['300', '400'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'Soma Güneş Enerji Santrali Temizliği ve Çözümleri | New Temizlik',
+  title: 'Soma Temizlik Hizmetleri ve GES Panel Bakımı | New Temizlik',
   description:
-    'Soma ve çevresinde endüstriyel güneş enerji santrali (GES) temizliği, verimlilik analizi, otonom panel yıkama robotu ve makine satışı.',
+    'Soma ve Manisa çevresinde ev, iş yeri ve kurum temizliği; Türkiye genelinde güneş enerji santrali (GES) temizliği, bakımı ve otonom robot satışı.',
   icons: {
     // Yaprak + damla ikonu (2026-11-08). SVG ikon bilerek yok: SVG destekleyen
     // tarayıcılar onu öncelikli seçer.

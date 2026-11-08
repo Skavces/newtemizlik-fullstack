@@ -375,6 +375,12 @@
     border-radius: 2px;
     background: var(--color-primary);
   }
+  /* Hero kontrolleri koyu görsel üzerinde: mavi halka seçilmez, beyaz kullanılır. */
+  .hero-control:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: -4px;
+    border-radius: 9999px;
+  }
   .nav-focus:focus-visible {
     outline: 2px solid var(--color-secondary);
     outline-offset: 4px;

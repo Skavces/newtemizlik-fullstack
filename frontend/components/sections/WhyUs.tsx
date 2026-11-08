@@ -11,11 +11,11 @@ interface Feature {
 }
 
 const features: Feature[] = [
-  { icon: Zap,             title: 'Veri Odaklı ROI Analizi',     desc: 'GES yıllık temizlik öncesi ve sonrası üretim artışını inverter verileriyle raporluyoruz.', href: '/neden-biz/veri-odakli-roi-analizi' },
+  { icon: Zap,             title: 'Veri Odaklı ROI Analizi',     desc: 'GES projelerinde temizlik öncesi ve sonrası üretim artışını inverter verileriyle raporluyoruz.', href: '/neden-biz/veri-odakli-roi-analizi' },
   { icon: ShieldCheck,     title: 'ISG & Otonom Teknoloji',       desc: 'Sahada riskleri sıfıra indiren otonom temizlik robotlarımızla uluslararası İş Güvenliği standartlarındayız.', href: '/neden-biz/isg-otonom-teknoloji' },
   { icon: Wrench,          title: 'Su İsrafı Yapmıyoruz',         desc: 'Minimum su tüketimiyle maksimum temizlik sağlayan yöntemlerimizle çevreye duyarlı hizmet veriyoruz.', href: '/neden-biz/su-tasarrufu' },
   { icon: CalendarCheck,   title: 'Periyodik Bakım Planı',        desc: 'Mevsimsel tozlanma verilerine göre optimize edilmiş yıllık bakım sözleşmeleri sunuyoruz.', href: '/neden-biz/periyodik-bakim-plani' },
-  { icon: Award,           title: 'Sertifikalı Uzman Kadrosu',    desc: 'Sadece temizlik değil, GES performans analizi. Her projede detaylı verim raporu teslim edilir.', href: '/neden-biz/sertifikali-uzman-kadro' },
+  { icon: Award,           title: 'Sertifikalı Uzman Kadrosu',    desc: 'Temizlikte titiz uygulama, GES projelerinde performans analizi ve detaylı verim raporu.', href: '/neden-biz/sertifikali-uzman-kadro' },
   { icon: HeadphonesIcon,  title: '7/24 Kesintisiz İzleme',       desc: 'Olası arıza veya verim düşüklüğünde anında müdahale için sistemlerinizi sürekli izliyoruz.', href: '/neden-biz/7-24-izleme' },
 ]
 
@@ -78,7 +78,7 @@ export default function WhyUs() {
               eyebrow="New Temizlik"
               title="Neden Sıradan Bir Temizlik Firması Değiliz?"
               titleSize="clamp(24px, 2.8vw, 36px)"
-              lead="GES santrallerinde enerji verimliliğini artırmak ve sürdürülebilirliği sağlamak adına profesyonel temizlik ve bakım çözümleri sunuyoruz."
+              lead="Ev ve iş yerlerinden güneş enerji santrallerine, ihtiyaca uygun profesyonel temizlik ve bakım çözümleri sunuyoruz."
               align="left"
               eyebrowWeight={700}
             />
@@ -105,7 +105,7 @@ export default function WhyUs() {
             }}
           >
             <h3 className="section-heading" style={{ fontSize: 'clamp(22px, 2.3vw, 30px)', color: 'var(--text-primary)', lineHeight: 1.2 }}>
-              Veriminizin Olduğu Her Yerdeyiz
+              İhtiyacınıza Uygun Çözüm
             </h3>
             <Link
               href="/hizmetlerimiz"
@@ -124,7 +124,7 @@ export default function WhyUs() {
               eyebrow="New Temizlik"
               title="Neden Sıradan Bir Temizlik Firması Değiliz?"
               titleSize="28px"
-              lead="GES santrallerinde enerji verimliliğini artırmak adına profesyonel temizlik ve bakım çözümleri sunuyoruz."
+              lead="Ev ve iş yerlerinden güneş enerji santrallerine profesyonel temizlik ve bakım çözümleri sunuyoruz."
               align="left"
               eyebrowWeight={700}
             />
