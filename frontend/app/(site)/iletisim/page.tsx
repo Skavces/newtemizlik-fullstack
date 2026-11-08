@@ -31,7 +31,7 @@ const contactPageSchema = {
   mainEntity: {
     '@type': 'LocalBusiness',
     name: 'New Temizlik',
-    telephone: '+905304738793',
+    telephone: ['+905304738793', '+905368831994'],
     url: SITE_URL,
     address: {
       '@type': 'PostalAddress',

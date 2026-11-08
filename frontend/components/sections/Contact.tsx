@@ -12,11 +12,13 @@ interface ContactInfoItem {
   href?: string
   event?: string
   params?: Record<string, unknown>
+  // Aynı kartta ikinci bağlantı (ikinci telefon numarası)
+  second?: { value: string; href: string; params: Record<string, unknown> }
 }
 
 const contactInfo: ContactInfoItem[] = [
   { icon: MapPin, label: 'Adres', value: 'Atatürk Mah. İzgin Sk. No:4 Soma/Manisa', color: 'var(--color-primary)' },
-  { icon: Phone, label: 'Telefon', value: '+90 530 473 87 93', href: 'tel:+905304738793', event: 'phone_click', params: { location: 'contact_section' }, color: 'var(--color-secondary)' },
+  { icon: Phone, label: 'Telefon', value: '+90 530 473 87 93', href: 'tel:+905304738793', event: 'phone_click', params: { location: 'contact_section' }, second: { value: '+90 536 883 19 94', href: 'tel:+905368831994', params: { location: 'contact_section_2' } }, color: 'var(--color-secondary)' },
   { icon: Mail, label: 'E-posta', value: 'info@newtemizlik.com.tr', href: 'mailto:info@newtemizlik.com.tr', color: 'var(--color-primary)' },
   { icon: Clock, label: 'Çalışma Saatleri', value: 'Pzt – Cmt: 09:00 – 18:00', color: 'var(--color-secondary)' },
 ]
@@ -69,6 +71,16 @@ export default function Contact() {
                   </a>
                 ) : (
                   <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.4 }}>{item.value}</p>
+                )}
+                {item.second && (
+                  <a
+                    href={item.second.href}
+                    onClick={() => item.event && trackEvent(item.event, item.second?.params)}
+                    className="hover-brand"
+                    style={{ display: 'block', marginTop: '2px', fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', textDecoration: 'none', lineHeight: 1.4 }}
+                  >
+                    {item.second.value}
+                  </a>
                 )}
               </div>
             </div>

@@ -26,7 +26,7 @@ const organizationSchema = {
       logo: `${SITE_URL}/logo.png`,
       image: `${SITE_URL}/logo.png`,
       description: SITE_DESCRIPTION,
-      telephone: '+905304738793',
+      telephone: ['+905304738793', '+905368831994'],
       address: { '@type': 'PostalAddress', addressLocality: 'Soma', addressRegion: 'Manisa', addressCountry: 'TR' },
       geo: { '@type': 'GeoCoordinates', latitude: 39.185, longitude: 27.607 },
       // GES listesi temizlik bölgesini (Soma, Akhisar, Kırkağaç, Manisa) de kapsıyor; test: schema.test.ts
