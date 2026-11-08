@@ -30,13 +30,13 @@ const QUICK_REPLIES = [
     label: 'Ev / Ofis Temizliği',
     desc: 'Ev, iş yeri ve kurum temizliği',
     icon: Home,
-    value: 'Ev veya ofis temizliği hakkında bilgi almak istiyorum.',
+    value: 'Ev veya ofisimi temizletmek istiyorum.',
   },
   {
     label: 'Koltuk Yıkama',
     desc: 'Koltuk ve kanepeleri yerinde yıkama',
     icon: Sofa,
-    value: 'Koltuk yıkama hakkında bilgi almak istiyorum.',
+    value: 'Koltuk yıkatmak istiyorum.',
   },
   {
     label: 'Teklif Almak İstiyorum',
