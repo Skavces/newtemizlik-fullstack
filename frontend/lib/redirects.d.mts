@@ -4,8 +4,8 @@ export interface LegacyRedirect {
   destination: string
   statusCode: 301
 }
-export const LEGACY_SERVICE_IDS: Record<number, string>
-export const LEGACY_BLOG_IDS: Record<number, string>
-export const MIGRATED_BLOG_SLUGS: string[]
-export const STATIC_REDIRECTS: [string, string][]
-export function legacyRedirects(): LegacyRedirect[]
+export declare const LEGACY_SERVICE_IDS: Record<number, string>
+export declare const LEGACY_BLOG_IDS: Record<number, string>
+export declare const MIGRATED_BLOG_SLUGS: string[]
+export declare const STATIC_REDIRECTS: [string, string][]
+export declare function legacyRedirects(): LegacyRedirect[]
