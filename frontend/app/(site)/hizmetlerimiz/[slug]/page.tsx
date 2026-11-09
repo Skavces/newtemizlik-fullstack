@@ -103,8 +103,6 @@ export default async function ServicePage({ params }: Props) {
                 src={service.image}
                 alt={service.imageAlt}
                 fill
-                loading="eager"
-                fetchPriority="high"
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
               />

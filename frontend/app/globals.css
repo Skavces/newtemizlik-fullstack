@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-poppins), var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-poppins), system-ui, -apple-system, sans-serif;
   /* --color-primary'nin gerçek değeri aşağıdaki [data-theme] bloklarında
      tanımlı (her iki temada da #7FBF3A) — burada yalnızca Tailwind'e
      bg-primary/text-primary/border-primary utility'lerini üretmesi için

@@ -31,7 +31,8 @@ export default function PageHero({ title, image, breadcrumbs = [] }: PageHeroPro
         src={`/${image}`}
         alt=""
         fill
-        priority
+        preload
+        fetchPriority="high"
         sizes="100vw"
         style={{ objectFit: 'cover', objectPosition: 'center', transform: 'scale(1.05)' }}
       />

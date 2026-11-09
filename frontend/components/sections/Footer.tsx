@@ -92,8 +92,8 @@ export default function Footer() {
             <Image
               src="/logo.png"
               alt="New Temizlik Hizmetleri"
-              width={1080}
-              height={1015}
+              width={68}
+              height={64}
               className="h-16 w-auto object-contain mb-5"
               style={{ filter: 'brightness(0) invert(1)' }}
             />

@@ -173,9 +173,10 @@ export default function Navbar() {
             <Image
               src="/logo.png"
               alt="New Temizlik Hizmetleri"
-              width={1080}
-              height={1015}
-              priority
+              // Ekrandaki boyut (en fazla 112px yükseklik); 1080 verilince 1080/3840px indiriliyordu.
+              width={120}
+              height={113}
+              loading="eager"
               className="h-20 md:h-28 w-auto object-contain"
             />
           </Link>

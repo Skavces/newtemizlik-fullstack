@@ -91,7 +91,7 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
       <Footer />
       <ChatWidget />
       <JsonLd data={organizationSchema} />
-      <Script src="https://www.googletagmanager.com/gtag/js?id=G-TZDD4EVYEF" strategy="afterInteractive" />
+      <Script src="https://www.googletagmanager.com/gtag/js?id=G-TZDD4EVYEF" strategy="lazyOnload" />
       <Script id="ga4-init" strategy="afterInteractive">
         {`window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
