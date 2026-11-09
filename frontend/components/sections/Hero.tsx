@@ -102,13 +102,13 @@ export default function Hero() {
         {slides.includes(TEMIZLIK_SLIDE) && (
           <div className="absolute inset-0 z-0" style={backgroundLayerStyle(!isVideoActive)} aria-hidden={isVideoActive}>
             <Image
-              src="/hero-temizlik.webp"
+              src="/gorseller/hero-temizlik.webp"
               alt="Aydınlık bir salonda profesyonel temizlik çalışması"
               fill
               loading="eager"
               fetchPriority="high"
               sizes="100vw"
-              className="object-cover"
+              className="object-cover object-[62%_center]"
             />
           </div>
         )}
