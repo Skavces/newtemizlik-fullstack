@@ -16,6 +16,13 @@ function makeService() {
 }
 
 describe('sanitizeRichHtml', () => {
+  it('site içi göreli linki korur, protokolsüz dış linkin href\'ini düşürür', () => {
+    expect(sanitizeRichHtml('<a href="/hizmetlerimiz/ev-temizligi">x</a>')).toBe(
+      '<a href="/hizmetlerimiz/ev-temizligi" rel="noopener noreferrer">x</a>',
+    )
+    expect(sanitizeRichHtml('<a href="//evil.com">x</a>')).toBe('<a rel="noopener noreferrer">x</a>')
+  })
+
   it('strips script tags and event handlers', () => {
     expect(sanitizeRichHtml('<p>merhaba<script>alert(1)</script></p>')).toBe('<p>merhaba</p>')
     expect(sanitizeRichHtml('<p onclick="alert(1)">tıkla</p>')).toBe('<p>tıkla</p>')

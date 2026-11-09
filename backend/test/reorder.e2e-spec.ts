@@ -39,11 +39,15 @@ describe('Reorder (e2e)', () => {
       ids.push(res.body.id)
     }
 
+    // reorder tüm yazıların listesini ister (base-content.service tamlık kontrolü);
+    // migration'la gelen yazılar (ör. AddLegacyCleaningPosts) da listeye girer.
+    const before = await request(server).get('/api/blog/admin/all').set('Cookie', cookie).expect(200)
+    const others = (before.body as Array<{ id: string }>).map(p => p.id).filter(id => !ids.includes(id))
     const reversed = [...ids].reverse()
     await request(server)
       .patch('/api/blog/reorder')
       .set('Cookie', cookie)
-      .send({ orderedIds: reversed })
+      .send({ orderedIds: [...others, ...reversed] })
       .expect(200)
 
     const all = await request(server).get('/api/blog/admin/all').set('Cookie', cookie).expect(200)

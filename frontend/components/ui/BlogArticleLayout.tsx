@@ -37,7 +37,10 @@ const SANITIZE_OPTIONS = {
   // UPLOAD_IMG_SRC) — without this, DOMPurify's default same-scheme-only check
   // stripped every body image's src, since relative /uploads/ paths match none
   // of https/mailto/tel. This silently broke Faz 4's content-image feature.
-  ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto|tel):|\/uploads\/)/i,
+  // Site içi göreli yollar da (/hizmetlerimiz/..., /iletisim) serbest; aksi halde
+  // yazı içi linklerin href'i siliniyordu. `//` ile başlayan protokolsüz adres
+  // başka siteye gidebileceği için hariç.
+  ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto|tel):|\/(?!\/))/i,
 }
 
 // Sayfa Navbar/Footer/ChatWidget'ı (site) layout'undan alır — burada

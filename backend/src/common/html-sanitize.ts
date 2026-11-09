@@ -36,6 +36,9 @@ const RICH_TEXT_OPTIONS: sanitizeHtml.IOptions = {
     },
   },
   allowedSchemes: ['http', 'https', 'mailto', 'tel'],
+  // Site içi göreli linkler (/hizmetlerimiz/...) serbest; `//evil.com` gibi
+  // protokolsüz adresler başka siteye gittiği için düşürülür.
+  allowProtocolRelative: false,
   transformTags: {
     a: sanitizeHtml.simpleTransform('a', { rel: 'noopener noreferrer' }, true),
   },
