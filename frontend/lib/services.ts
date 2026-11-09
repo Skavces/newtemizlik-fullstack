@@ -52,7 +52,7 @@ export const SERVICES: readonly ServiceEntry[] = [
       'Özel ekipmanlar ve uygun temizlik yöntemleri kullanarak güneş panellerinin yüzey temizliğini gerçekleştiriyoruz. Düzenli temizlik, panel veriminin korunmasına ve üretim kayıplarının azaltılmasına yardımcı olur.',
     image: '/endustriyel-gunes-paneli-yikama.webp',
     imageAlt: 'GES sahasında profesyonel güneş paneli temizlik çalışması',
-    legacyIds: [21],
+    legacyIds: [20, 21],
     featured: true,
     published: true,
     customPage: true,

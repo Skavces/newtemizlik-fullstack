@@ -2,6 +2,8 @@
 // kaynağı paylaşır. Prod'da nginx /uploads/'i zaten aynı origin'den backend'e
 // proxy'ler (bkz. Faz 7 planı); bu rewrite sadece lokal geliştirmede Next'in
 // next/image loader'ının backend'e (ayrı port) ulaşabilmesi için var.
+import { legacyRedirects } from './lib/redirects.mjs'
+
 const BACKEND_ORIGIN = (process.env.API_URL || 'http://localhost:3001/api').replace(/\/api$/, '')
 
 /** @type {import('next').NextConfig} */
@@ -16,6 +18,10 @@ const nextConfig = {
     // aşıp 504'e düşüyor ve görsel kalıcı olarak boş kalıyordu (bkz. next_cache volume
     // commit'i). WebP tek başına hem hızlı hem de hâlâ iyi bir sıkıştırma sağlıyor.
     formats: ['image/webp'],
+  },
+  // Eski .com.tr adresleri → yeni sayfalar (301). Ayrıntı: lib/redirects.mjs
+  async redirects() {
+    return legacyRedirects()
   },
   async rewrites() {
     return [{ source: '/uploads/:path*', destination: `${BACKEND_ORIGIN}/uploads/:path*` }]

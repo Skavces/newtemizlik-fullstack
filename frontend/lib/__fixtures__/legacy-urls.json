@@ -1,0 +1,201 @@
+{
+  "_kaynak": "Eski newtemizlik.com.tr adresleri: Search Console kapsam (dizinli 32) + performans (son 3 ay) dökümleri 2026-11-10, eski sitemap.xml ve wget yedeği. to=null: aynı adres yeni sitede var, yönlendirme yok.",
+  "urls": [
+    {
+      "path": "/",
+      "to": null
+    },
+    {
+      "path": "/blog/11/somada-ev-temizligi-profesyonel-hizmetin-farki",
+      "to": "/blog/somada-ev-temizligi-profesyonel-hizmetin-farki"
+    },
+    {
+      "path": "/blog/12/soma-is-yeri-temizliginde-profesyonellik-neden-onemli",
+      "to": "/blog/soma-is-yeri-temizliginde-profesyonellik-neden-onemli"
+    },
+    {
+      "path": "/blog/12/sss",
+      "to": "/blog/soma-is-yeri-temizliginde-profesyonellik-neden-onemli"
+    },
+    {
+      "path": "/blog/13/soma%E2%80%99da-temizlik-hizmetlerinde-dogru-firmayi-secmek",
+      "to": "/blog"
+    },
+    {
+      "path": "/bloglar",
+      "to": "/blog"
+    },
+    {
+      "path": "/bloglar/1",
+      "to": "/blog"
+    },
+    {
+      "path": "/e-katalog",
+      "to": "/hizmetlerimiz"
+    },
+    {
+      "path": "/ekibimiz",
+      "to": "/kurumsal"
+    },
+    {
+      "path": "/foto-galeri",
+      "to": "/referanslarimiz"
+    },
+    {
+      "path": "/foto-galeri/1",
+      "to": "/referanslarimiz"
+    },
+    {
+      "path": "/galeri/5/gunes-enerjisi-santral-temizligi",
+      "to": "/hizmetlerimiz/panel-temizlik"
+    },
+    {
+      "path": "/galeri/6/dis-cephe-bina-temizligi",
+      "to": "/hizmetlerimiz/dis-cephe-cam-temizligi"
+    },
+    {
+      "path": "/hesap-numaralarimiz",
+      "to": "/iletisim"
+    },
+    {
+      "path": "/hizmet/11/insaat-sonrasi-temizlik",
+      "to": "/hizmetlerimiz/insaat-sonrasi-temizlik"
+    },
+    {
+      "path": "/hizmet/12/fabrika-temizligi",
+      "to": "/hizmetlerimiz/fabrika-temizligi"
+    },
+    {
+      "path": "/hizmet/13/banka-temizligi",
+      "to": "/hizmetlerimiz/banka-temizligi"
+    },
+    {
+      "path": "/hizmet/13/markalar",
+      "to": "/hizmetlerimiz/banka-temizligi"
+    },
+    {
+      "path": "/hizmet/14/okul-temizligi",
+      "to": "/hizmetlerimiz/okul-temizligi"
+    },
+    {
+      "path": "/hizmet/15/avm-temizligi",
+      "to": "/hizmetlerimiz/avm-temizligi"
+    },
+    {
+      "path": "/hizmet/16/magaza-temizligi",
+      "to": "/hizmetlerimiz/magaza-temizligi"
+    },
+    {
+      "path": "/hizmet/17/dis-cephe-cam-temizligi",
+      "to": "/hizmetlerimiz/dis-cephe-cam-temizligi"
+    },
+    {
+      "path": "/hizmet/19/saglik-kurulusu-temizligi",
+      "to": "/hizmetlerimiz/saglik-kurulusu-temizligi"
+    },
+    {
+      "path": "/hizmet/20/gunes-enerjisi-santral-temizligi",
+      "to": "/hizmetlerimiz/panel-temizlik"
+    },
+    {
+      "path": "/hizmet/21/solar-gunes-panelleri-ges-temizligi-hizmeti-%E2%80%93-new-temizlik",
+      "to": "/hizmetlerimiz/panel-temizlik"
+    },
+    {
+      "path": "/hizmet/5",
+      "to": "/hizmetlerimiz/ev-temizligi"
+    },
+    {
+      "path": "/hizmet/5/ev-temizligi-soma",
+      "to": "/hizmetlerimiz/ev-temizligi"
+    },
+    {
+      "path": "/hizmet/6/ofis-ve-is-yeri-temizligi-soma",
+      "to": "/hizmetlerimiz/ofis-is-yeri-temizligi"
+    },
+    {
+      "path": "/hizmet/7/apartman-ve-site-temizligi",
+      "to": "/hizmetlerimiz/apartman-site-temizligi"
+    },
+    {
+      "path": "/hizmet/8/villa-temizligi-soma",
+      "to": "/hizmetlerimiz/villa-temizligi"
+    },
+    {
+      "path": "/hizmet/9/yerinde-koltuk-yikama",
+      "to": "/hizmetlerimiz/koltuk-yikama"
+    },
+    {
+      "path": "/hizmetler",
+      "to": "/hizmetlerimiz"
+    },
+    {
+      "path": "/hizmetler/1",
+      "to": "/hizmetlerimiz"
+    },
+    {
+      "path": "/hizmetler/2",
+      "to": "/hizmetlerimiz"
+    },
+    {
+      "path": "/iletisim",
+      "to": null
+    },
+    {
+      "path": "/index.html",
+      "to": "/"
+    },
+    {
+      "path": "/index.php",
+      "to": "/"
+    },
+    {
+      "path": "/insan-kaynaklari",
+      "to": "/iletisim"
+    },
+    {
+      "path": "/kurumsal/hakkimizda",
+      "to": "/kurumsal"
+    },
+    {
+      "path": "/kurumsal/iletisim",
+      "to": "/kurumsal"
+    },
+    {
+      "path": "/kurumsal/sss",
+      "to": "/kurumsal"
+    },
+    {
+      "path": "/markalar",
+      "to": "/referanslarimiz"
+    },
+    {
+      "path": "/projeler",
+      "to": "/referanslarimiz"
+    },
+    {
+      "path": "/rss.xml",
+      "to": "/blog"
+    },
+    {
+      "path": "/sayfa/gizlilik-sozlesmesi",
+      "to": "/kvkk"
+    },
+    {
+      "path": "/sss",
+      "to": null
+    },
+    {
+      "path": "/teklif-formu",
+      "to": "/iletisim"
+    },
+    {
+      "path": "/urunara",
+      "to": "/"
+    },
+    {
+      "path": "/video-galeri",
+      "to": "/referanslarimiz"
+    }
+  ]
+}
