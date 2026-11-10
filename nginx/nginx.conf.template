@@ -41,6 +41,14 @@ server {
     return 301 https://www.newtemizlik.com$request_uri;
 }
 
+# .com.tr apex → www (asıl yönlendirme VPS host nginx'inde; bu yedek katman).
+server {
+    listen 8080;
+    server_name newtemizlik.com.tr;
+    server_tokens off;
+    return 301 https://www.newtemizlik.com.tr$request_uri;
+}
+
 server {
     listen 8080 default_server;
     server_name _;

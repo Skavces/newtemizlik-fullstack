@@ -402,7 +402,7 @@ npm run migration:revert
 5. The workflow polls `http://localhost:8081/api/health` (10 × 5 s) and prints backend logs on failure.
 6. An ISR sweep (`POST /revalidate` with `tags: ["all"]`) refreshes pages that were statically generated at build time while the backend was still down.
 
-The VPS also runs a **host-level nginx** that terminates TLS (Certbot) and proxies `www.newtemizlik.com` to `127.0.0.1:8081` and the analytics subdomain to `127.0.0.1:3003`. That host configuration lives outside this repository.
+The VPS also runs a **host-level nginx** that terminates TLS (Certbot) and proxies `www.newtemizlik.com.tr` (Cloudflare Origin CA cert, vhost `newtemizlik-com-tr`) and the legacy `www.newtemizlik.com` to `127.0.0.1:8081` and the analytics subdomain to `127.0.0.1:3003`. That host configuration lives outside this repository.
 
 Persistent Docker volumes: `pgdata`, `redisdata`, `uploads`, `umami_pgdata`, `next_cache` (Next image-optimiser / ISR cache — keeps cold-cache image resizes from timing out after deploys).
 
