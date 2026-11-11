@@ -419,6 +419,130 @@
   .whyus-link:hover {
     color: var(--text-primary) !important;
   }
+  /* WhyUs sekmeleri (Temizlik / GES): mavi = kimlik, seçili sekme alt çizgisi */
+  .whyus-tablist {
+    display: flex;
+    gap: 36px;
+    width: fit-content;
+    max-width: 100%;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .whyus-tab {
+    margin-bottom: -1px;
+    padding: 10px 8px;
+    background: none;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .whyus-tab:hover {
+    color: var(--text-primary);
+  }
+  .whyus-tab[aria-selected="true"] {
+    color: var(--text-primary);
+    border-bottom-color: var(--color-secondary);
+  }
+  .whyus-tab[data-tab="ges"][aria-selected="true"] {
+    border-bottom-color: var(--color-primary);
+  }
+  .whyus-tab:focus-visible {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  .whyus-tab[data-tab="ges"]:focus-visible {
+    outline-color: var(--color-primary);
+  }
+  /*
+    WhyUs grid yerleşimi: iki panelin (Temizlik / GES) i. kartı aynı hücreye oturur,
+    pasif olan görünmez ama yer tutar; böylece sekme değişiminde yükseklik sabit kalır.
+    Paneller display: contents, kartlar grid'in doğrudan çocukları.
+  */
+  .whyus-panel {
+    display: contents;
+  }
+  /*
+    Sekme geçişi (cross-fade): giden set hızla 0'a iner (0.15s), gelen set kısa gecikmeyle
+    (0.12s) 0.24s'de 1'e çıkar; iki metin seti aynı hücrede çakışsa da neredeyse hiç
+    aynı anda görünür olmaz. Pasif kartlar opacity 0 + visibility hidden (visibility
+    geçişi opacity bitince devreye girer): Tab ile odaklanamaz, tıklanamaz, AT'den gizli.
+    İlk yüklemede sınıf değişimi olmadığından animasyon çalışmaz. Hover geçişleri korunur.
+  */
+  .whyus-panel > .service-card {
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity 0.24s ease 0.12s,
+      visibility 0s linear 0s,
+      box-shadow 0.3s ease, margin-top 0.3s ease, margin-bottom 0.3s ease, border-bottom-color 0.3s ease;
+  }
+  .whyus-panel-off > .service-card {
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.15s ease 0s,
+      visibility 0s linear 0.15s,
+      box-shadow 0.3s ease, margin-top 0.3s ease, margin-bottom 0.3s ease, border-bottom-color 0.3s ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .whyus-panel > .service-card,
+    .whyus-panel-off > .service-card {
+      transition: none;
+    }
+  }
+  .whyus-panel > :nth-child(1) { grid-row: 1; grid-column: 1; }
+  .whyus-panel > :nth-child(2) { grid-row: 2; grid-column: 1; }
+  .whyus-panel > :nth-child(3) { grid-row: 3; grid-column: 1; }
+  .whyus-panel > :nth-child(4) { grid-row: 4; grid-column: 1; }
+  .whyus-panel > :nth-child(5) { grid-row: 5; grid-column: 1; }
+  .whyus-panel > :nth-child(6) { grid-row: 6; grid-column: 1; }
+  /* sm: 2 kolon, 6 kart (intro/CTA gizli) */
+  @media (min-width: 640px) {
+    .whyus-panel > :nth-child(1) { grid-row: 1; grid-column: 1; }
+    .whyus-panel > :nth-child(2) { grid-row: 1; grid-column: 2; }
+    .whyus-panel > :nth-child(3) { grid-row: 2; grid-column: 1; }
+    .whyus-panel > :nth-child(4) { grid-row: 2; grid-column: 2; }
+    .whyus-panel > :nth-child(5) { grid-row: 3; grid-column: 1; }
+    .whyus-panel > :nth-child(6) { grid-row: 3; grid-column: 2; }
+  }
+  /* md: 2 kolon, intro + 6 kart + CTA = 8 hücre */
+  @media (min-width: 768px) {
+    .whyus-intro { grid-row: 1; grid-column: 1; }
+    .whyus-panel > :nth-child(1) { grid-row: 1; grid-column: 2; }
+    .whyus-panel > :nth-child(2) { grid-row: 2; grid-column: 1; }
+    .whyus-panel > :nth-child(3) { grid-row: 2; grid-column: 2; }
+    .whyus-panel > :nth-child(4) { grid-row: 3; grid-column: 1; }
+    .whyus-panel > :nth-child(5) { grid-row: 3; grid-column: 2; }
+    .whyus-panel > :nth-child(6) { grid-row: 4; grid-column: 1; }
+    .whyus-cta   { grid-row: 4; grid-column: 2; }
+  }
+  .whyus-cta { padding: 32px 28px; }
+  /* Kart başlıkları: yan yana kartlarda 1 ve 2 satırlı başlıklar gövde metnini hizasız bırakmasın diye
+     başlığın 2 satır (3em) yer tutması gereken genişliklerde min-height. 1 kolon ve 768-1023 aralığında
+     başlıklar kırılmadığı için uygulanmaz. */
+  @media (min-width: 640px) and (max-width: 767px), (min-width: 1024px) {
+    .whyus-card-title { min-height: 3em; }
+  }
+  /* lg+: 4 kolon — intro, 3 kart / 3 kart, CTA */
+  @media (min-width: 1024px) {
+    .whyus-panel > :nth-child(1) { grid-row: 1; grid-column: 2; }
+    .whyus-panel > :nth-child(2) { grid-row: 1; grid-column: 3; }
+    .whyus-panel > :nth-child(3) { grid-row: 1; grid-column: 4; }
+    .whyus-panel > :nth-child(4) { grid-row: 2; grid-column: 1; }
+    .whyus-panel > :nth-child(5) { grid-row: 2; grid-column: 2; }
+    .whyus-panel > :nth-child(6) { grid-row: 2; grid-column: 3; }
+    .whyus-cta   { grid-row: 2; grid-column: 4; }
+  }
+  /* lg'nin dar ucunda (hücre ~210-225px) "Hizmetlerimiz" butonu (170px) 28px yan padding ile sığmaz */
+  @media (min-width: 1024px) and (max-width: 1199px) {
+    .whyus-cta { padding-left: 12px; padding-right: 12px; }
+  }
   .cta-button {
     display: inline-flex;
     align-items: center;
