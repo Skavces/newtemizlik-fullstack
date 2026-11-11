@@ -27,15 +27,13 @@ const gesFeatures: Feature[] = [
   { icon: HeadphonesIcon,  title: '7/24 Kesintisiz İzleme',       desc: 'Olası arıza veya verim düşüklüğünde anında müdahale için sistemlerinizi sürekli izliyoruz.', href: '/neden-biz/7-24-izleme' },
 ]
 
-// Temizlik kartlarının detay sayfaları henüz yok: href verilmediği için
-// "Detaylı Bilgi" linki çıkmaz. Sayfalar açılınca href eklenecek.
 const cleaningFeatures: Feature[] = [
-  { icon: MapPin,             title: "Soma'dayız, bölgeyi biliyoruz", desc: "Merkezimiz Soma'da. Mahallenizi ve bölgenin toz yükünü uzaktan tarif etmenize gerek kalmaz." },
-  { icon: Award,              title: '5 Yılı Aşkın Saha Deneyimi',    desc: 'Ev, iş yeri ve GES sahalarından gelen deneyimimizle önce nereye bakılacağını biliyoruz.' },
-  { icon: SprayCan,           title: 'Malzeme ve Ekipman Bizden',     desc: 'Temizlik malzemesi ve ekipmanı ekibimizle birlikte gelir. Sizin hazırlık yapmanız gerekmez.' },
-  { icon: ClipboardCheck,     title: 'Kapsam Baştan Belli',           desc: 'Hangi işin dahil olduğunu iş başlamadan konuşuyoruz. Beklentiniz ile yapılan iş aynı olur.' },
-  { icon: Clock,              title: 'Programınıza Uyuyoruz',         desc: 'Temizliği mesai, vardiya ve açılış saatlerinize göre planlıyoruz. Operasyonunuzu aksatmıyoruz.' },
-  { icon: MessageSquareQuote, title: 'Size Özel Teklif',              desc: 'Alan, kir durumu ve sıklığa göre yerinde ya da form üzerinden teklif hazırlıyoruz. Ev, iş yeri ve kurum için çözüm sunuyoruz.' },
+  { icon: MapPin,             title: "Soma'dayız, bölgeyi biliyoruz", desc: "Merkezimiz Soma'da. Mahallenizi ve bölgenin toz yükünü uzaktan tarif etmenize gerek kalmaz.", href: '/neden-biz/soma-merkezli-temizlik' },
+  { icon: Award,              title: '5 Yılı Aşkın Saha Deneyimi',    desc: 'Ev, iş yeri ve GES sahalarından gelen deneyimimizle önce nereye bakılacağını biliyoruz.', href: '/neden-biz/temizlik-saha-deneyimi' },
+  { icon: SprayCan,           title: 'Malzeme ve Ekipman Bizden',     desc: 'Temizlik malzemesi ve ekipmanı ekibimizle birlikte gelir. Sizin hazırlık yapmanız gerekmez.', href: '/neden-biz/malzeme-ekipman-bizden' },
+  { icon: ClipboardCheck,     title: 'Kapsam Baştan Belli',           desc: 'Hangi işin dahil olduğunu iş başlamadan konuşuyoruz. Beklentiniz ile yapılan iş aynı olur.', href: '/neden-biz/kapsam-bastan-belli' },
+  { icon: Clock,              title: 'Programınıza Uyuyoruz',         desc: 'Temizliği mesai, vardiya ve açılış saatlerinize göre planlıyoruz. Operasyonunuzu aksatmıyoruz.', href: '/neden-biz/programiniza-uygun-temizlik' },
+  { icon: MessageSquareQuote, title: 'Size Özel Teklif',              desc: 'Alan, kir durumu ve sıklığa göre yerinde ya da form üzerinden teklif hazırlıyoruz. Ev, iş yeri ve kurum için çözüm sunuyoruz.', href: '/neden-biz/ozel-temizlik-teklifi' },
 ]
 
 type TabId = 'temizlik' | 'ges'

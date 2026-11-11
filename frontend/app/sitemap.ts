@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { SITE_URL } from '@/lib/seo'
 import { getBlogPosts } from '@/lib/api'
+import { NEDEN_BIZ_TEMIZLIK } from '@/content/neden-biz'
 import { PUBLISHED_SERVICES, servicePath } from '@/lib/services'
 
 interface StaticRoute {
@@ -22,6 +23,8 @@ const STATIC_ROUTES: StaticRoute[] = [
   { url: '/neden-biz/sertifikali-uzman-kadro', changeFrequency: 'monthly', priority: 0.6 },
   { url: '/neden-biz/su-tasarrufu', changeFrequency: 'monthly', priority: 0.6 },
   { url: '/neden-biz/veri-odakli-roi-analizi', changeFrequency: 'monthly', priority: 0.6 },
+  // Temizlik "neden biz" sayfaları content/neden-biz'den
+  ...NEDEN_BIZ_TEMIZLIK.map((c): StaticRoute => ({ url: `/neden-biz/${c.slug}`, changeFrequency: 'monthly', priority: 0.6 })),
   { url: '/referanslarimiz', changeFrequency: 'monthly', priority: 0.7 },
   { url: '/sss', changeFrequency: 'monthly', priority: 0.7 },
   { url: '/iletisim', changeFrequency: 'monthly', priority: 0.7 },
